@@ -393,9 +393,9 @@ export default function PortfolioWeb() {
               </Socials>
             </a>
           </div>
-          <div className="content-stretch flex items-center justify-center pb-0 pt-[16px] sm:pt-[16px] md:pt-[24px] lg:pt-[24px] px-0 relative shrink-0 w-full">
+          <div className="content-stretch flex items-center justify-start pb-0 pt-[16px] sm:pt-[16px] md:pt-[24px] lg:pt-[24px] px-0 relative shrink-0 w-full">
             <div aria-hidden="true" className="absolute border-[#d1d1ed] border-[1px_0px_0px] border-solid inset-0 pointer-events-none" />
-            <p className="basis-0 font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] grow leading-[18px] sm:leading-[22px] min-h-px min-w-px not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-center sm:text-left md:text-left lg:text-left">© 2026 Sahil Sinha. Designed in Figma. Built with AI.</p>
+            <p className="basis-0 font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] grow leading-[18px] sm:leading-[22px] min-h-px min-w-px not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-left">© 2026 Sahil Sinha. Designed in Figma. Built with AI.</p>
           </div>
         </div>
       </div>
