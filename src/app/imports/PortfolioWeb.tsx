@@ -336,7 +336,7 @@ export default function PortfolioWeb() {
       <div ref={aiBuildsRef} className="bg-white content-stretch flex flex-col items-center justify-center w-full px-[24px] sm:px-4 md:px-6 lg:px-6 py-[40px] sm:py-[60px] md:py-[120px] lg:py-[120px]" data-name="AI builds wrapper">
         <div className="content-stretch flex flex-col gap-[16px] sm:gap-[24px] items-center justify-center max-w-[960px] relative shrink-0 w-full" data-name="Content container">
           <HText text="AI builds" />
-          <div className="content-stretch flex flex-col gap-[40px] sm:gap-[30px] md:gap-[40px] lg:gap-[60px] items-start relative shrink-0 w-full" data-name="AI builds container">
+          <div className="content-stretch flex flex-col md:flex-col lg:flex-row gap-[40px] sm:gap-[30px] md:gap-[40px] lg:gap-[24px] items-start relative shrink-0 w-full" data-name="AI builds container">
             <div className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0" data-name="Card & text container">
               <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full" data-name="Card">
                 <div className="content-stretch flex items-start px-[24px] py-[20px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full">
