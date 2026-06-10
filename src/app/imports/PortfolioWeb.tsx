@@ -293,12 +293,12 @@ export default function PortfolioWeb() {
           <div className="content-stretch flex flex-col gap-[60px] md:gap-[60px] sm:gap-[30px] items-center justify-center relative shrink-0 text-center w-full" data-name="Hero container">
             {/* Mobile Heading container */}
             <div className="block sm:hidden w-[240px] h-[189.672px] relative shrink-0" data-name="Heading container">
-              <img src={heroMobileSvg} alt="Namaste, I'm Sahil Sinha. Product designer with a Builder's mindset" className="absolute block inset-0 size-full object-contain" />
+              <img src={heroMobileSvg} alt="Namaste, I'm Sahil Sinha. Product designer with a Builder's mindset" className="absolute block inset-0 size-full object-contain animate-fade-up" />
             </div>
 
             {/* Desktop Heading container */}
             <div className="hidden sm:block relative shrink-0 w-full max-w-[340px] sm:max-w-[340px] md:max-w-[600px] lg:max-w-[880px] px-4 md:px-0" data-name="Heading container">
-              <img src={heroSvg} alt="Namaste, I'm Sahil Sinha. Product designer with a Builder's mindset" className="w-full h-auto object-contain" />
+              <img src={heroSvg} alt="Namaste, I'm Sahil Sinha. Product designer with a Builder's mindset" className="w-full h-auto object-contain animate-fade-up" />
             </div>
           </div>
         </div>
