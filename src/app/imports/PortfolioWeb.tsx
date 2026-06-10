@@ -224,7 +224,7 @@ export default function PortfolioWeb() {
           </div>
 
           {/* Nav bar container */}
-          <div className="fixed top-0 left-0 right-0 z-50 w-full pointer-events-none" data-name="Nav bar container">
+          <div className="fixed top-0 left-0 right-0 z-50 w-full pointer-events-none animate-slide-down" data-name="Nav bar container">
             {/* Desktop Navigation header */}
             <div className="hidden sm:block size-full relative">
               {/* Background layer for progressive blur and gradient (does not affect child elements opacity) */}
