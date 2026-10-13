@@ -22,15 +22,34 @@ export default function App() {
   return (
     <BrowserRouter>
       <AudioProvider>
-        <SmoothScroll>
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<PortfolioWeb />} />
-            <Route path="/work/:slug" element={<CaseStudyDetail />} />
-            <Route path="/work" element={<PortfolioWeb />} />
-            <Route path="*" element={<PortfolioWeb />} />
-          </Routes>
-        </SmoothScroll>
+        <ScrollToTop />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <SmoothScroll>
+                <PortfolioWeb />
+              </SmoothScroll>
+            }
+          />
+          <Route path="/work/:slug" element={<CaseStudyDetail />} />
+          <Route
+            path="/work"
+            element={
+              <SmoothScroll>
+                <PortfolioWeb />
+              </SmoothScroll>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <SmoothScroll>
+                <PortfolioWeb />
+              </SmoothScroll>
+            }
+          />
+        </Routes>
       </AudioProvider>
     </BrowserRouter>
   );

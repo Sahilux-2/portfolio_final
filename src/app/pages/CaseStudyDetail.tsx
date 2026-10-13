@@ -59,13 +59,7 @@ export default function CaseStudyDetail() {
       const offset = isMobile ? 110 : 80;
       const targetTop = el.getBoundingClientRect().top + window.scrollY - offset;
 
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(
-          new CustomEvent("smooth-scroll-to", { detail: { top: targetTop } })
-        );
-      } else {
-        window.scrollTo({ top: targetTop, behavior: "smooth" });
-      }
+      window.scrollTo({ top: targetTop, behavior: "smooth" });
       setActiveSection(id);
     }
   };
