@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router";
 import { Play, Pause } from "lucide-react";
 import svgPaths from "./svg-asll6uiju1";
 import heroSvg from "../../../Hero container.svg";
 import heroMobileSvg from "../../../Hero container (Mobile viewport only).svg";
-import bgMusic from "../../../quietphase-instrumental-relax-496352.mp3";
+import { useAudio } from "../context/AudioContext";
 
 function SoundIcon({ className, play = true }: { className?: string; play?: boolean }) {
   return (
@@ -69,10 +70,8 @@ function HText({ text }: HTextProps) {
 }
 
 export default function PortfolioWeb() {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { isPlaying, togglePlay } = useAudio();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const fadeIntervalRef = useRef<number | null>(null);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const caseStudyRef = useRef<HTMLDivElement>(null);
@@ -96,79 +95,12 @@ export default function PortfolioWeb() {
     }
   };
 
-  const fadeAudio = (targetVolume: number, duration: number, callback?: () => void) => {
-    if (!audioRef.current) return;
-
-    if (fadeIntervalRef.current) {
-      clearInterval(fadeIntervalRef.current);
-    }
-
-    const audio = audioRef.current;
-    const startVolume = audio.volume;
-    const volumeDifference = targetVolume - startVolume;
-
-    if (volumeDifference === 0) {
-      if (callback) callback();
-      return;
-    }
-
-    const stepTime = 50;
-    const totalSteps = duration / stepTime;
-    const volumeStep = volumeDifference / totalSteps;
-    let currentStep = 0;
-
-    fadeIntervalRef.current = window.setInterval(() => {
-      currentStep++;
-      const newVolume = startVolume + volumeStep * currentStep;
-
-      audio.volume = Math.max(0, Math.min(1, newVolume));
-
-      if (currentStep >= totalSteps) {
-        if (fadeIntervalRef.current) {
-          clearInterval(fadeIntervalRef.current);
-          fadeIntervalRef.current = null;
-        }
-        audio.volume = targetVolume;
-        if (callback) callback();
-      }
-    }, stepTime);
-  };
-
-  const togglePlay = () => {
-    if (!audioRef.current) {
-      audioRef.current = new Audio(bgMusic);
-      audioRef.current.loop = true;
-      audioRef.current.volume = 0;
-    }
-
-    const audio = audioRef.current;
-
-    if (isPlaying) {
-      setIsPlaying(false);
-      fadeAudio(0, 600, () => {
-        audio.pause();
-      });
-    } else {
-      setIsPlaying(true);
-      if (audio.paused) {
-        audio.play().catch((err) => {
-          console.error("Audio playback failed:", err);
-        });
-      }
-      fadeAudio(1, 600);
-    }
-  };
-
   useEffect(() => {
-    return () => {
-      if (fadeIntervalRef.current) {
-        clearInterval(fadeIntervalRef.current);
-      }
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-    };
+    if (window.location.hash === "#case-study") {
+      setTimeout(() => {
+        scrollToSection(caseStudyRef);
+      }, 150);
+    }
   }, []);
 
   return (
@@ -305,29 +237,140 @@ export default function PortfolioWeb() {
       </div>
 
       {/* Case study wrapper */}
-      <div ref={caseStudyRef} className="bg-white content-stretch flex flex-col items-center justify-center w-full px-[24px] sm:px-4 md:px-6 lg:px-6 py-[40px] sm:py-[60px] md:py-[120px] lg:py-[120px]" data-name="Case study wrapper">
+      <div id="case-study" ref={caseStudyRef} className="bg-white content-stretch flex flex-col items-center justify-center w-full px-[24px] sm:px-4 md:px-6 lg:px-6 py-[40px] sm:py-[60px] md:py-[120px] lg:py-[120px]" data-name="Case study wrapper">
         <div className="content-stretch flex flex-col gap-[16px] sm:gap-[24px] items-center justify-center max-w-[960px] relative shrink-0 w-full" data-name="Content container">
           <HText text="Case study" />
           <div className="content-stretch flex flex-col gap-[40px] sm:gap-[30px] md:gap-[40px] lg:gap-[60px] items-start relative shrink-0 w-full" data-name="Case study container">
-            {[...Array(2).keys()].map((_, i) => (
-              <div key={i} className="content-stretch flex flex-col md:flex-col lg:flex-row gap-[40px] sm:gap-[16px] md:gap-[40px] lg:gap-[24px] items-start relative shrink-0 w-full" data-name="Case study container">
-                {[...Array(2).keys()].map((_, j) => (
-                  <div key={j} className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0" data-name="Card & text container">
-                    <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full" data-name="Card">
-                      <div className="content-stretch flex items-start px-[24px] py-[20px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full">
-                        <p className="font-['Satoshi:Medium',sans-serif] leading-[18px] sm:leading-[22px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-nowrap">WIP</p>
-                      </div>
-                    </div>
-                    <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
-                      <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
-                        <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">Trim (B2C)</p>
-                      </div>
-                      <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full">Helping users know if their subscription is worth continuing or not.</p>
-                    </div>
+            {/* Row 1 */}
+            <div className="content-stretch flex flex-col md:flex-col lg:flex-row gap-[40px] sm:gap-[16px] md:gap-[40px] lg:gap-[24px] items-start relative shrink-0 w-full" data-name="Case study container">
+              {/* Card 1: OpenAI x Hardware (Featured) */}
+              <Link
+                to="/work/openai-hardware"
+                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
+                data-name="Card & text container"
+              >
+                <div className="relative h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] rounded-[16px] shrink-0 w-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_20px_35px_-15px_rgba(232,74,39,0.3)] border border-black/[0.04]">
+                  {/* Radiant Sunset Mesh Gradient matching the detail page */}
+                  <div
+                    className="absolute inset-0 size-full transition-transform duration-500 group-hover:scale-105"
+                    style={{
+                      background: `radial-gradient(circle at 35% 35%, #f59e0b 0%, #ea580c 45%, #ec4899 75%, #8b5cf6 100%)`,
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
+                  <div className="content-stretch flex items-start justify-between p-[16px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full z-10">
+                    <span className="font-['Satoshi:Medium',sans-serif] leading-[22px] px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[#0d0b36] text-[12px] sm:text-[14px] font-semibold tracking-[-0.14px] shadow-sm">
+                      FEATURED
+                    </span>
+                    <span className="font-['Satoshi:Medium',sans-serif] text-white/90 text-[12px] group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform">
+                      View case study ↗
+                    </span>
                   </div>
-                ))}
-              </div>
-            ))}
+                  <div className="absolute bottom-6 left-6 right-6 z-10">
+                    <h3 className="text-white font-['Satoshi:Bold',sans-serif] text-2xl sm:text-3xl drop-shadow-sm">
+                      OpenAI x Hardware
+                    </h3>
+                  </div>
+                </div>
+                <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
+                  <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
+                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] group-hover:text-[#ea580c] transition-colors text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
+                      OpenAI x Hardware
+                    </p>
+                  </div>
+                  <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full">
+                    What should OpenAI build as their first AI device? 7-week product strategy.
+                  </p>
+                </div>
+              </Link>
+
+              {/* Card 2: Trim (B2C) */}
+              <Link
+                to="/work/openai-hardware"
+                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
+                data-name="Card & text container"
+              >
+                <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.12)]">
+                  <div className="content-stretch flex items-start justify-between px-[24px] py-[20px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full">
+                    <p className="font-['Satoshi:Medium',sans-serif] leading-[18px] sm:leading-[22px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-nowrap">
+                      WIP
+                    </p>
+                    <span className="font-['Satoshi:Medium',sans-serif] text-[#6e6d97] text-[12px] group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform opacity-0 group-hover:opacity-100">
+                      Explore ↗
+                    </span>
+                  </div>
+                </div>
+                <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
+                  <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
+                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] group-hover:text-[#ea580c] transition-colors text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
+                      Trim (B2C)
+                    </p>
+                  </div>
+                  <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full">
+                    Helping users know if their subscription is worth continuing or not.
+                  </p>
+                </div>
+              </Link>
+            </div>
+
+            {/* Row 2 */}
+            <div className="content-stretch flex flex-col md:flex-col lg:flex-row gap-[40px] sm:gap-[16px] md:gap-[40px] lg:gap-[24px] items-start relative shrink-0 w-full" data-name="Case study container">
+              {/* Card 3: Tomo Companion */}
+              <Link
+                to="/work/openai-hardware"
+                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
+                data-name="Card & text container"
+              >
+                <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.12)]">
+                  <div className="content-stretch flex items-start justify-between px-[24px] py-[20px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full">
+                    <p className="font-['Satoshi:Medium',sans-serif] leading-[18px] sm:leading-[22px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-nowrap">
+                      CONCEPT
+                    </p>
+                    <span className="font-['Satoshi:Medium',sans-serif] text-[#6e6d97] text-[12px] group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform opacity-0 group-hover:opacity-100">
+                      Explore ↗
+                    </span>
+                  </div>
+                </div>
+                <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
+                  <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
+                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] group-hover:text-[#ea580c] transition-colors text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
+                      Tomo Companion
+                    </p>
+                  </div>
+                  <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full">
+                    Continuous memory capture and moment-driven interaction design.
+                  </p>
+                </div>
+              </Link>
+
+              {/* Card 4: Spatial UI */}
+              <Link
+                to="/work/openai-hardware"
+                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
+                data-name="Card & text container"
+              >
+                <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.12)]">
+                  <div className="content-stretch flex items-start justify-between px-[24px] py-[20px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full">
+                    <p className="font-['Satoshi:Medium',sans-serif] leading-[18px] sm:leading-[22px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-nowrap">
+                      RESEARCH
+                    </p>
+                    <span className="font-['Satoshi:Medium',sans-serif] text-[#6e6d97] text-[12px] group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform opacity-0 group-hover:opacity-100">
+                      Explore ↗
+                    </span>
+                  </div>
+                </div>
+                <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
+                  <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
+                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] group-hover:text-[#ea580c] transition-colors text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
+                      Spatial Audio Canvas
+                    </p>
+                  </div>
+                  <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full">
+                    Exploring interfaces focused on real-time assistance and quiet ambient feedback.
+                  </p>
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -81,12 +81,20 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
         rafId = requestAnimationFrame(smoothScroll);
       }
     };
+
+    const handleReset = () => {
+      cancelAnimationFrame(rafId);
+      isScrolling = false;
+      scrollPos = window.scrollY;
+      targetScroll = window.scrollY;
+    };
     
     document.addEventListener('wheel', handleWheel, { passive: false });
     document.addEventListener('touchstart', handleTouchStart, { passive: true });
     document.addEventListener('touchmove', handleTouchMove, { passive: false });
     document.addEventListener('touchend', handleTouchEnd, { passive: true });
     window.addEventListener('smooth-scroll-to', handleSmoothScrollTo);
+    window.addEventListener('scroll-reset', handleReset);
     
     return () => {
       document.removeEventListener('wheel', handleWheel);
@@ -94,6 +102,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       document.removeEventListener('touchmove', handleTouchMove);
       document.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('smooth-scroll-to', handleSmoothScrollTo);
+      window.removeEventListener('scroll-reset', handleReset);
       cancelAnimationFrame(rafId);
     };
   }, []);
