@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { flushSync } from "react-dom";
 import { Link } from "react-router";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { BreadcrumbHeader } from "../components/case-study/BreadcrumbHeader";
@@ -12,6 +13,7 @@ import {
 import { GrainOverlay } from "../components/case-study/GrainOverlay";
 import { OPENAI_HARDWARE_CASE_STUDY } from "../data/caseStudies";
 import svgPaths from "../imports/svg-asll6uiju1";
+import heroImage from "../../../Hero image_pickwise_casestudy.svg";
 
 function Socials({ children }: React.PropsWithChildren<{}>) {
   return (
@@ -26,7 +28,16 @@ function Socials({ children }: React.PropsWithChildren<{}>) {
 export default function CaseStudyDetail() {
   const caseStudy = OPENAI_HARDWARE_CASE_STUDY;
   const [activeSection, setActiveSection] = useState<string>("overview");
+  const [heroExpanded, setHeroExpanded] = useState(false);
+  const [heroAnimating, setHeroAnimating] = useState(false);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+  const heroShellRef = useRef<HTMLDivElement | null>(null);
+  const heroExpandRef = useRef<HTMLButtonElement | null>(null);
+  const heroExpandedRef = useRef(false);
+  const heroAnimatingRef = useRef(false);
+
+  heroExpandedRef.current = heroExpanded;
+  heroAnimatingRef.current = heroAnimating;
 
   // Robust scroll spy effect
   useEffect(() => {
@@ -52,6 +63,133 @@ export default function CaseStudyDetail() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [caseStudy.toc]);
 
+  const applyHeroRect = (
+    el: HTMLElement,
+    rect: { top: number; left: number; width: number; height: number },
+    radius: string
+  ) => {
+    el.style.top = `${rect.top}px`;
+    el.style.left = `${rect.left}px`;
+    el.style.width = `${rect.width}px`;
+    el.style.height = `${rect.height}px`;
+    el.style.borderRadius = radius;
+  };
+
+  const clearHeroRect = (el: HTMLElement) => {
+    el.style.transition = "";
+    el.style.top = "";
+    el.style.left = "";
+    el.style.width = "";
+    el.style.height = "";
+    el.style.borderRadius = "";
+  };
+
+  /** Match absolute inset-0 inside the shell (content box, not border box). */
+  const getShellContentRect = (shell: HTMLElement) => {
+    const rect = shell.getBoundingClientRect();
+    const cs = getComputedStyle(shell);
+    const bt = parseFloat(cs.borderTopWidth) || 0;
+    const bl = parseFloat(cs.borderLeftWidth) || 0;
+    const br = parseFloat(cs.borderRightWidth) || 0;
+    const bb = parseFloat(cs.borderBottomWidth) || 0;
+    return {
+      top: rect.top + bt,
+      left: rect.left + bl,
+      width: rect.width - bl - br,
+      height: rect.height - bt - bb,
+      radius: cs.borderRadius,
+    };
+  };
+
+  const heroTransition =
+    "top 250ms cubic-bezier(0.22, 1, 0.36, 1), left 250ms cubic-bezier(0.22, 1, 0.36, 1), width 250ms cubic-bezier(0.22, 1, 0.36, 1), height 250ms cubic-bezier(0.22, 1, 0.36, 1), border-radius 250ms cubic-bezier(0.22, 1, 0.36, 1)";
+
+  const collapseHero = () => {
+    const shell = heroShellRef.current;
+    const expandEl = heroExpandRef.current;
+    if (!shell || !expandEl || !heroExpandedRef.current || heroAnimatingRef.current) return;
+
+    const { top, left, width, height, radius } = getShellContentRect(shell);
+
+    heroAnimatingRef.current = true;
+    setHeroAnimating(true);
+    expandEl.style.transition = heroTransition;
+    applyHeroRect(expandEl, { top, left, width, height }, radius);
+
+    const onEnd = (e: TransitionEvent) => {
+      if (e.propertyName !== "width") return;
+      expandEl.removeEventListener("transitionend", onEnd);
+      expandEl.style.transition = "none";
+      // Hide overlay first so the in-shell image shows through during the position reset.
+      expandEl.style.opacity = "0";
+
+      heroExpandedRef.current = false;
+      heroAnimatingRef.current = false;
+      flushSync(() => {
+        setHeroExpanded(false);
+        setHeroAnimating(false);
+      });
+      clearHeroRect(expandEl);
+      expandEl.style.opacity = "";
+    };
+    expandEl.addEventListener("transitionend", onEnd);
+  };
+
+  const expandHero = () => {
+    const shell = heroShellRef.current;
+    const expandEl = heroExpandRef.current;
+    if (!shell || !expandEl || heroExpandedRef.current || heroAnimatingRef.current) return;
+
+    const { top, left, width, height, radius } = getShellContentRect(shell);
+
+    heroAnimatingRef.current = true;
+    heroExpandedRef.current = true;
+    setHeroAnimating(true);
+    setHeroExpanded(true);
+
+    applyHeroRect(expandEl, { top, left, width, height }, radius);
+    expandEl.style.transition = "none";
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        expandEl.style.transition = heroTransition;
+        applyHeroRect(
+          expandEl,
+          { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight },
+          "0px"
+        );
+      });
+    });
+
+    const onEnd = (e: TransitionEvent) => {
+      if (e.propertyName !== "width") return;
+      heroAnimatingRef.current = false;
+      setHeroAnimating(false);
+      expandEl.removeEventListener("transitionend", onEnd);
+    };
+    expandEl.addEventListener("transitionend", onEnd);
+  };
+
+  const toggleHero = () => {
+    if (heroExpandedRef.current) collapseHero();
+    else expandHero();
+  };
+
+  useEffect(() => {
+    if (!heroExpanded) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") collapseHero();
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [heroExpanded]);
+
   const scrollToSection = (id: string) => {
     const el = sectionRefs.current[id];
     if (el) {
@@ -73,23 +211,34 @@ export default function CaseStudyDetail() {
       <main className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-24">
         {/* Hero Section Container (Image 1) */}
         <div className="w-full mb-12 sm:mb-20">
-          <div className="relative w-full h-[280px] sm:h-[420px] md:h-[500px] lg:h-[540px] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-[0_20px_50px_-20px_rgba(232,74,39,0.25)] flex items-center justify-center p-6 sm:p-12 border border-black/[0.04]">
-            {/* Animated radiant gradient mesh background matching Screenshot 1 */}
-            <div
-              className="absolute inset-0 size-full"
-              style={{
-                background: `radial-gradient(circle at 30% 40%, #f59e0b 0%, #ea580c 45%, #ec4899 75%, #8b5cf6 100%)`,
-                filter: "blur(20px)",
-                transform: "scale(1.1)",
-              }}
+          <div
+            ref={heroShellRef}
+            className="relative w-full h-[280px] sm:h-[420px] md:h-[500px] lg:h-[540px] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-[0_20px_50px_-20px_rgba(232,74,39,0.25)] border border-black/[0.04]"
+          >
+            {/* Resting image — visible during collapse handoff so position reset never flashes */}
+            <img
+              src={heroImage}
+              alt=""
+              aria-hidden
+              className="absolute inset-0 size-full object-cover pointer-events-none"
             />
-            {/* Subtle light overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-white/10" />
-
-            {/* Centered Hero Title */}
-            <h1 className="relative z-10 text-white font-['Satoshi:Bold',sans-serif] text-3xl sm:text-5xl md:text-6xl lg:text-[68px] tracking-tight text-center drop-shadow-[0_2px_15px_rgba(0,0,0,0.2)]">
-              {caseStudy.title}
-            </h1>
+            <button
+              ref={heroExpandRef}
+              type="button"
+              aria-label={heroExpanded ? "Collapse hero image" : "Expand hero image"}
+              onClick={toggleHero}
+              className={
+                heroExpanded
+                  ? "fixed z-[100] overflow-hidden cursor-zoom-out border-0 p-0 bg-transparent"
+                  : "absolute inset-0 z-10 overflow-hidden cursor-zoom-in border-0 p-0 bg-transparent"
+              }
+            >
+              <img
+                src={heroImage}
+                alt={caseStudy.title}
+                className="size-full object-cover pointer-events-none"
+              />
+            </button>
           </div>
         </div>
 
