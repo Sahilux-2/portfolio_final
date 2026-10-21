@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { flushSync } from "react-dom";
 import { BreadcrumbHeader } from "../components/case-study/BreadcrumbHeader";
 import { SidebarToc } from "../components/case-study/SidebarToc";
 import { CaseStudyMarkdown } from "../components/case-study/CaseStudyMarkdown";
 import { PICKWISE_CASE_STUDY } from "../data/caseStudies";
 import svgPaths from "../imports/svg-asll6uiju1";
-import heroImage from "../../../Hero image_pickwise_casestudy.svg";
 
 function Socials({ children }: React.PropsWithChildren<{}>) {
   return (
@@ -20,16 +18,7 @@ function Socials({ children }: React.PropsWithChildren<{}>) {
 export default function CaseStudyDetail() {
   const caseStudy = PICKWISE_CASE_STUDY;
   const [activeSection, setActiveSection] = useState<string>("overview");
-  const [heroExpanded, setHeroExpanded] = useState(false);
-  const [heroAnimating, setHeroAnimating] = useState(false);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
-  const heroShellRef = useRef<HTMLDivElement | null>(null);
-  const heroExpandRef = useRef<HTMLButtonElement | null>(null);
-  const heroExpandedRef = useRef(false);
-  const heroAnimatingRef = useRef(false);
-
-  heroExpandedRef.current = heroExpanded;
-  heroAnimatingRef.current = heroAnimating;
 
   // Robust scroll spy effect
   useEffect(() => {
@@ -56,133 +45,6 @@ export default function CaseStudyDetail() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [caseStudy.toc]);
 
-  const applyHeroRect = (
-    el: HTMLElement,
-    rect: { top: number; left: number; width: number; height: number },
-    radius: string
-  ) => {
-    el.style.top = `${rect.top}px`;
-    el.style.left = `${rect.left}px`;
-    el.style.width = `${rect.width}px`;
-    el.style.height = `${rect.height}px`;
-    el.style.borderRadius = radius;
-  };
-
-  const clearHeroRect = (el: HTMLElement) => {
-    el.style.transition = "";
-    el.style.top = "";
-    el.style.left = "";
-    el.style.width = "";
-    el.style.height = "";
-    el.style.borderRadius = "";
-  };
-
-  /** Match absolute inset-0 inside the shell (content box, not border box). */
-  const getShellContentRect = (shell: HTMLElement) => {
-    const rect = shell.getBoundingClientRect();
-    const cs = getComputedStyle(shell);
-    const bt = parseFloat(cs.borderTopWidth) || 0;
-    const bl = parseFloat(cs.borderLeftWidth) || 0;
-    const br = parseFloat(cs.borderRightWidth) || 0;
-    const bb = parseFloat(cs.borderBottomWidth) || 0;
-    return {
-      top: rect.top + bt,
-      left: rect.left + bl,
-      width: rect.width - bl - br,
-      height: rect.height - bt - bb,
-      radius: cs.borderRadius,
-    };
-  };
-
-  const heroTransition =
-    "top 250ms cubic-bezier(0.22, 1, 0.36, 1), left 250ms cubic-bezier(0.22, 1, 0.36, 1), width 250ms cubic-bezier(0.22, 1, 0.36, 1), height 250ms cubic-bezier(0.22, 1, 0.36, 1), border-radius 250ms cubic-bezier(0.22, 1, 0.36, 1)";
-
-  const collapseHero = () => {
-    const shell = heroShellRef.current;
-    const expandEl = heroExpandRef.current;
-    if (!shell || !expandEl || !heroExpandedRef.current || heroAnimatingRef.current) return;
-
-    const { top, left, width, height, radius } = getShellContentRect(shell);
-
-    heroAnimatingRef.current = true;
-    setHeroAnimating(true);
-    expandEl.style.transition = heroTransition;
-    applyHeroRect(expandEl, { top, left, width, height }, radius);
-
-    const onEnd = (e: TransitionEvent) => {
-      if (e.propertyName !== "width") return;
-      expandEl.removeEventListener("transitionend", onEnd);
-      expandEl.style.transition = "none";
-      // Hide overlay first so the in-shell image shows through during the position reset.
-      expandEl.style.opacity = "0";
-
-      heroExpandedRef.current = false;
-      heroAnimatingRef.current = false;
-      flushSync(() => {
-        setHeroExpanded(false);
-        setHeroAnimating(false);
-      });
-      clearHeroRect(expandEl);
-      expandEl.style.opacity = "";
-    };
-    expandEl.addEventListener("transitionend", onEnd);
-  };
-
-  const expandHero = () => {
-    const shell = heroShellRef.current;
-    const expandEl = heroExpandRef.current;
-    if (!shell || !expandEl || heroExpandedRef.current || heroAnimatingRef.current) return;
-
-    const { top, left, width, height, radius } = getShellContentRect(shell);
-
-    heroAnimatingRef.current = true;
-    heroExpandedRef.current = true;
-    setHeroAnimating(true);
-    setHeroExpanded(true);
-
-    applyHeroRect(expandEl, { top, left, width, height }, radius);
-    expandEl.style.transition = "none";
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        expandEl.style.transition = heroTransition;
-        applyHeroRect(
-          expandEl,
-          { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight },
-          "0px"
-        );
-      });
-    });
-
-    const onEnd = (e: TransitionEvent) => {
-      if (e.propertyName !== "width") return;
-      heroAnimatingRef.current = false;
-      setHeroAnimating(false);
-      expandEl.removeEventListener("transitionend", onEnd);
-    };
-    expandEl.addEventListener("transitionend", onEnd);
-  };
-
-  const toggleHero = () => {
-    if (heroExpandedRef.current) collapseHero();
-    else expandHero();
-  };
-
-  useEffect(() => {
-    if (!heroExpanded) return;
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") collapseHero();
-    };
-
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [heroExpanded]);
-
   const scrollToSection = (id: string) => {
     const el = sectionRefs.current[id];
     if (el) {
@@ -201,65 +63,7 @@ export default function CaseStudyDetail() {
 
       {/* Main Content Container */}
       <main className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-10 pb-16 sm:pb-24">
-        {/* Hero Section Container (Image 1) */}
-        <div className="w-full mb-8 sm:mb-16 lg:mb-20">
-          <div
-            ref={heroShellRef}
-            className="relative w-full aspect-[16/9] sm:aspect-auto sm:h-[420px] md:h-[500px] lg:h-[540px] rounded-[18px] sm:rounded-[32px] overflow-hidden shadow-[0_20px_50px_-20px_rgba(13,11,54,0.18)] border border-black/[0.04] bg-[#f0f0f7]"
-          >
-            {/* Resting image — visible during collapse handoff so position reset never flashes */}
-            <img
-              src={heroImage}
-              alt=""
-              aria-hidden
-              className="absolute inset-0 size-full object-cover pointer-events-none"
-            />
-            <button
-              ref={heroExpandRef}
-              type="button"
-              aria-label={heroExpanded ? "Collapse hero image" : "Expand hero image"}
-              onClick={toggleHero}
-              className={
-                heroExpanded
-                  ? "fixed z-[100] overflow-hidden cursor-zoom-out border-0 p-0 bg-[#0d0b36]/95 backdrop-blur-md flex items-center justify-center"
-                  : "absolute inset-0 z-10 overflow-hidden cursor-zoom-in border-0 p-0 bg-transparent group"
-              }
-            >
-              <img
-                src={heroImage}
-                alt={caseStudy.title}
-                className={`size-full ${heroExpanded ? "object-contain p-2 sm:p-6" : "object-cover"} pointer-events-none transition-transform duration-300`}
-              />
-              {!heroExpanded && (
-                <div className="pointer-events-none absolute bottom-2.5 right-2.5 sm:bottom-4 sm:right-4 z-20 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-md text-white text-[11px] sm:text-xs font-['Satoshi:Medium',sans-serif] flex items-center gap-1.5 opacity-90 transition-opacity">
-                  <svg className="size-3 sm:size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                  </svg>
-                  <span>Enlarge</span>
-                </div>
-              )}
-            </button>
-
-            {/* Mobile-accessible close button when expanded */}
-            {heroExpanded && (
-              <button
-                type="button"
-                aria-label="Close full view"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  collapseHero();
-                }}
-                className="fixed top-4 right-4 z-[110] size-10 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md flex items-center justify-center transition-all cursor-pointer shadow-lg active:scale-95 border border-white/20"
-              >
-                <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* 2-Column Layout: Sidebar TOC on Left + Content on Right (Images 2, 3, 4) */}
+        {/* 2-Column Layout: Sidebar TOC on Left + Content on Right */}
         <div className="relative lg:grid lg:grid-cols-[200px_1fr] xl:grid-cols-[220px_1fr] gap-8 xl:gap-14 items-start">
           {/* Left Table of Contents */}
           <SidebarToc

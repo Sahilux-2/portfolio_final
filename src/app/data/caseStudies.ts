@@ -83,7 +83,7 @@ function parseCaseStudy(md: string) {
 const parsed = parseCaseStudy(pickwiseMarkdown);
 
 export const PICKWISE_CASE_STUDY: CaseStudyData = {
-  slug: "openai-hardware",
+  slug: "pickwise",
   title: parsed.title,
   category: "Product Design & Engineering",
   subtitle: parsed.subtitle,

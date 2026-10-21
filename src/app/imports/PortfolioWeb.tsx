@@ -245,7 +245,7 @@ export default function PortfolioWeb() {
             <div className="content-stretch flex flex-col md:flex-col lg:flex-row gap-[40px] sm:gap-[16px] md:gap-[40px] lg:gap-[24px] items-start relative shrink-0 w-full" data-name="Case study container">
               {/* Card 1: Pickwise (Featured) */}
               <Link
-                to="/work/openai-hardware"
+                to="/work/pickwise"
                 className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
                 data-name="Card & text container"
               >
@@ -286,7 +286,7 @@ export default function PortfolioWeb() {
 
               {/* Card 2: Trim (B2C) */}
               <Link
-                to="/work/openai-hardware"
+                to="/work/pickwise"
                 className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
                 data-name="Card & text container"
               >
@@ -317,7 +317,7 @@ export default function PortfolioWeb() {
             <div className="content-stretch flex flex-col md:flex-col lg:flex-row gap-[40px] sm:gap-[16px] md:gap-[40px] lg:gap-[24px] items-start relative shrink-0 w-full" data-name="Case study container">
               {/* Card 3: Tomo Companion */}
               <Link
-                to="/work/openai-hardware"
+                to="/work/pickwise"
                 className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
                 data-name="Card & text container"
               >
@@ -345,7 +345,7 @@ export default function PortfolioWeb() {
 
               {/* Card 4: Spatial UI */}
               <Link
-                to="/work/openai-hardware"
+                to="/work/pickwise"
                 className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
                 data-name="Card & text container"
               >

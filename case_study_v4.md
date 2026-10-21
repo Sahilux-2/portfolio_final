@@ -6,15 +6,15 @@ Pickwise helps first-time laptop buyers find laptops that suit their software ne
 
 ---
 
-## 02. Live product
+## Live product
 
 **[Try Pickwise](https://pickwise-azure.vercel.app/questionnaire/use-case)**
 
-## 03. GitHub repository
+## GitHub repository
 
 **[View the source code](https://github.com/Sahilux-2/pickwise)**
 
-## 04. Product walkthrough
+## Product walkthrough
 
 ![Product walkthrough](/pickwise-full-walkthrough.mp4)
 
@@ -22,7 +22,7 @@ A short video showing the complete journey, from entering requirements to findin
 
 ---
 
-# 05. Context — Why did I build Pickwise?
+# 02. Context — Why did I build Pickwise?
 
 ## Finding the right laptop shouldn't require becoming a laptop expert.
 
@@ -40,7 +40,7 @@ I started with my own experience and then looked at existing platforms to unders
 
 
 
-# 06. User persona
+# 03. User persona
 
 ## Neil — an 18-year-old college fresher
 
@@ -57,7 +57,7 @@ Neil also has a short attention span, so he prefers concise content and short, s
 This is a working persona based on my own experience and the target scenario. I used it to guide my decisions, rather than treating it as a persona validated through formal user interviews.
 
 
-# 07. The three problems
+# 04. The three problems
 
 ## 01. Finding suitable laptops
 
@@ -83,7 +83,7 @@ After deciding which laptop they want, users still need to search retailer websi
 
 
 
-# 08. Competitive analysis — Why do these problems exist?
+# 05. Competitive analysis — Why do these problems exist?
 
 Since I had already experienced the problem myself, I wanted to understand how existing solutions handled these specific difficulties.
 
@@ -126,7 +126,7 @@ I saw an opportunity to bring together structured laptop data, recommendation ru
 
 
 
-# 09. User story 1 — Finding suitable laptops
+# 06. User story 1 — Finding suitable laptops
 
 **User story**
 
@@ -282,7 +282,7 @@ This tells me whether users are completing the starting flow. If multiple users 
 
 These metrics tell me about user behaviour, not whether every recommendation is technically suitable. That would require additional evaluation and user testing.
 
-# 10. User story 2 — Understanding and comparing laptops
+# 07. User story 2 — Understanding and comparing laptops
 
 **User story**
 
@@ -416,7 +416,7 @@ I measure this transition specifically from the comparison screen, excluding use
 
 This metric doesn't prove that users understood the comparison or chose the right laptop. It tells me whether they're progressing to the next step.
 
-# 11. User story 3 — Finding where to buy the laptop
+# 08. User story 3 — Finding where to buy the laptop
 
 **User story**
 
@@ -533,7 +533,7 @@ Only users who are shown a Recommended option should be included. If no option i
 >
 > Show a readable screenshot of the final buying-options table, with callouts for the recommendation label and location information.
 
-# 12. Analytics implementation
+# 09. Analytics implementation
 
 ## Measuring the journey without forcing account creation
 
@@ -559,7 +559,7 @@ The `trackEvent` function sends allowlisted events to Firestore. Rules restrict 
 
 This demonstrates that instrumentation is implemented and recording events. It isn't evidence of improved conversion or validated user outcomes.
 
-# 13. My learnings
+# 10. My learnings
 
 ## Understanding the WHY matters more than adding more information.
 
