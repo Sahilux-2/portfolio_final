@@ -243,7 +243,7 @@ export default function PortfolioWeb() {
           <div className="content-stretch flex flex-col gap-[40px] sm:gap-[30px] md:gap-[40px] lg:gap-[60px] items-start relative shrink-0 w-full" data-name="Case study container">
             {/* Row 1 */}
             <div className="content-stretch flex flex-col md:flex-col lg:flex-row gap-[40px] sm:gap-[16px] md:gap-[40px] lg:gap-[24px] items-start relative shrink-0 w-full" data-name="Case study container">
-              {/* Card 1: OpenAI x Hardware (Featured) */}
+              {/* Card 1: Pickwise (Featured) */}
               <Link
                 to="/work/openai-hardware"
                 className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
@@ -268,18 +268,18 @@ export default function PortfolioWeb() {
                   </div>
                   <div className="absolute bottom-6 left-6 right-6 z-10">
                     <h3 className="text-white font-['Satoshi:Bold',sans-serif] text-2xl sm:text-3xl drop-shadow-sm">
-                      OpenAI x Hardware
+                      Pickwise
                     </h3>
                   </div>
                 </div>
                 <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
                   <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
                     <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] group-hover:text-[#ea580c] transition-colors text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
-                      OpenAI x Hardware
+                      Pickwise
                     </p>
                   </div>
                   <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full">
-                    What should OpenAI build as their first AI device? 7-week product strategy.
+                    Helping first-time buyers choose the right laptop and find where to buy it.
                   </p>
                 </div>
               </Link>
