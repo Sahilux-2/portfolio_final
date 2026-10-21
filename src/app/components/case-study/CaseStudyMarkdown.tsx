@@ -37,11 +37,25 @@ const components: Components = {
   h3: ({ children }) => (
     <h4 className={`${bold} text-[16px] sm:text-[18px] md:text-[20px] text-[#0d0b36] mt-6 sm:mt-8 mb-2 sm:mb-2.5`}>{children}</h4>
   ),
-  p: ({ children }) => (
-    <p className={`${sans} text-[14.5px] sm:text-[16px] leading-[1.75] text-[#52525b] mb-4 break-words`}>
-      {children}
-    </p>
-  ),
+  p: ({ children }) => {
+    // Avoid invalid <p><div>/<video> nesting when markdown wraps a sole media node
+    const nodes = React.Children.toArray(children).filter(
+      (c) => !(typeof c === "string" && c.trim() === "")
+    );
+    if (
+      nodes.length === 1 &&
+      React.isValidElement(nodes[0]) &&
+      (nodes[0].props as { "data-case-study-media"?: boolean })["data-case-study-media"]
+    ) {
+      return <>{nodes[0]}</>;
+    }
+
+    return (
+      <p className={`${sans} text-[14.5px] sm:text-[16px] leading-[1.75] text-[#52525b] mb-4 break-words`}>
+        {children}
+      </p>
+    );
+  },
   strong: ({ children }) => (
     <strong className={`${bold} font-bold text-[#0d0b36]`}>
       {children}
@@ -58,6 +72,38 @@ const components: Components = {
       {children}
     </a>
   ),
+  img: ({ src, alt }) => {
+    if (src && /\.mp4($|\?)/i.test(src)) {
+      return (
+        <div
+          data-case-study-media
+          className="my-6 sm:my-8 w-full min-w-0 overflow-hidden rounded-xl sm:rounded-2xl border border-[#d1d1ed] bg-[#0d0b36]/[0.04] shadow-xs"
+        >
+          <video
+            className="block w-full h-auto bg-black"
+            controls
+            playsInline
+            preload="metadata"
+            title={alt || "Product walkthrough"}
+          >
+            {/* Original file from /public — served as-is, no re-encoding */}
+            <source src={src} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      );
+    }
+
+    return (
+      <img
+        data-case-study-media
+        src={src}
+        alt={alt ?? ""}
+        className="my-6 sm:my-8 w-full h-auto rounded-xl sm:rounded-2xl border border-[#d1d1ed]"
+        loading="lazy"
+      />
+    );
+  },
   ul: ({ children }) => (
     <ul className="my-4 sm:my-5 flex flex-col gap-2 sm:gap-2.5 pl-0 list-none">{children}</ul>
   ),

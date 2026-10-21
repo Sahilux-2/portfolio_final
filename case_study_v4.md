@@ -16,7 +16,7 @@ Pickwise helps first-time laptop buyers find laptops that suit their software ne
 
 ## 04. Product walkthrough
 
-**[Product walkthrough video — to be added]**
+![Product walkthrough](/pickwise-full-walkthrough.mp4)
 
 A short video showing the complete journey, from entering requirements to finding a suitable laptop and its buying options.
 
