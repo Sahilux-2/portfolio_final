@@ -284,25 +284,21 @@ export default function PortfolioWeb() {
                 </div>
               </Link>
 
-              {/* Card 2: Trim (B2C) */}
-              <Link
-                to="/work/pickwise"
-                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
+              {/* Card 2: Trim (B2C) — no case study yet */}
+              <div
+                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0"
                 data-name="Card & text container"
               >
-                <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.12)]">
+                <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full overflow-hidden">
                   <div className="content-stretch flex items-start justify-between px-[24px] py-[20px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full">
                     <p className="font-['Satoshi:Medium',sans-serif] leading-[18px] sm:leading-[22px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-nowrap">
                       WIP
                     </p>
-                    <span className="font-['Satoshi:Medium',sans-serif] text-[#6e6d97] text-[12px] group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform opacity-0 group-hover:opacity-100">
-                      Explore ↗
-                    </span>
                   </div>
                 </div>
                 <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
                   <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
-                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] group-hover:text-[#6e6d97] transition-colors text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
+                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
                       Trim (B2C)
                     </p>
                   </div>
@@ -310,30 +306,26 @@ export default function PortfolioWeb() {
                     Helping users know if their subscription is worth continuing or not.
                   </p>
                 </div>
-              </Link>
+              </div>
             </div>
 
             {/* Row 2 */}
             <div className="content-stretch flex flex-col md:flex-col lg:flex-row gap-[40px] sm:gap-[16px] md:gap-[40px] lg:gap-[24px] items-start relative shrink-0 w-full" data-name="Case study container">
-              {/* Card 3: Tomo Companion */}
-              <Link
-                to="/work/pickwise"
-                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
+              {/* Card 3: Tomo Companion — no case study yet */}
+              <div
+                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0"
                 data-name="Card & text container"
               >
-                <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.12)]">
+                <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full overflow-hidden">
                   <div className="content-stretch flex items-start justify-between px-[24px] py-[20px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full">
                     <p className="font-['Satoshi:Medium',sans-serif] leading-[18px] sm:leading-[22px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-nowrap">
                       CONCEPT
                     </p>
-                    <span className="font-['Satoshi:Medium',sans-serif] text-[#6e6d97] text-[12px] group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform opacity-0 group-hover:opacity-100">
-                      Explore ↗
-                    </span>
                   </div>
                 </div>
                 <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
                   <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
-                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] group-hover:text-[#6e6d97] transition-colors text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
+                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
                       Tomo Companion
                     </p>
                   </div>
@@ -341,27 +333,23 @@ export default function PortfolioWeb() {
                     Continuous memory capture and moment-driven interaction design.
                   </p>
                 </div>
-              </Link>
+              </div>
 
-              {/* Card 4: Spatial UI */}
-              <Link
-                to="/work/pickwise"
-                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
+              {/* Card 4: Spatial UI — no case study yet */}
+              <div
+                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0"
                 data-name="Card & text container"
               >
-                <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.12)]">
+                <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full overflow-hidden">
                   <div className="content-stretch flex items-start justify-between px-[24px] py-[20px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full">
                     <p className="font-['Satoshi:Medium',sans-serif] leading-[18px] sm:leading-[22px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-nowrap">
                       RESEARCH
                     </p>
-                    <span className="font-['Satoshi:Medium',sans-serif] text-[#6e6d97] text-[12px] group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform opacity-0 group-hover:opacity-100">
-                      Explore ↗
-                    </span>
                   </div>
                 </div>
                 <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
                   <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
-                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] group-hover:text-[#6e6d97] transition-colors text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
+                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
                       Spatial Audio Canvas
                     </p>
                   </div>
@@ -369,7 +357,7 @@ export default function PortfolioWeb() {
                     Exploring interfaces focused on real-time assistance and quiet ambient feedback.
                   </p>
                 </div>
-              </Link>
+              </div>
             </div>
           </div>
         </div>

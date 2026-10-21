@@ -38,16 +38,17 @@ const components: Components = {
     <h4 className={`${bold} text-[16px] sm:text-[18px] md:text-[20px] text-[#0d0b36] mt-6 sm:mt-8 mb-2 sm:mb-2.5`}>{children}</h4>
   ),
   p: ({ children }) => {
-    // Avoid invalid <p><div>/<video> nesting when markdown wraps a sole media node
+    // Markdown passes the unevaluated img element here, so data-case-study-media
+    // is not on props yet. A video renderer returns a div, which cannot sit inside p.
     const nodes = React.Children.toArray(children).filter(
       (c) => !(typeof c === "string" && c.trim() === "")
     );
-    if (
-      nodes.length === 1 &&
-      React.isValidElement(nodes[0]) &&
-      (nodes[0].props as { "data-case-study-media"?: boolean })["data-case-study-media"]
-    ) {
-      return <>{nodes[0]}</>;
+    const only = nodes[0];
+    const src = React.isValidElement(only)
+      ? (only.props as { src?: string }).src
+      : undefined;
+    if (nodes.length === 1 && typeof src === "string" && /\.mp4($|\?)/i.test(src)) {
+      return <>{only}</>;
     }
 
     return (

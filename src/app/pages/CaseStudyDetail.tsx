@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Navigate, useParams } from "react-router";
 import { BreadcrumbHeader } from "../components/case-study/BreadcrumbHeader";
 import { SidebarToc } from "../components/case-study/SidebarToc";
 import { CaseStudyMarkdown } from "../components/case-study/CaseStudyMarkdown";
@@ -16,6 +17,7 @@ function Socials({ children }: React.PropsWithChildren<{}>) {
 }
 
 export default function CaseStudyDetail() {
+  const { slug } = useParams();
   const caseStudy = PICKWISE_CASE_STUDY;
   const [activeSection, setActiveSection] = useState<string>("overview");
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
@@ -56,6 +58,10 @@ export default function CaseStudyDetail() {
       setActiveSection(id);
     }
   };
+
+  if (slug !== caseStudy.slug) {
+    return <Navigate to="/#case-study" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-[#ffffff] text-[#0d0b36] selection:bg-[#0d0b36] selection:text-white relative">
