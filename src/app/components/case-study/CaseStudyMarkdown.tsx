@@ -49,7 +49,7 @@ const components: Components = {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-1 text-[#e84a27] underline decoration-dotted underline-offset-4 hover:text-[#0d0b36] transition-colors"
+      className="inline-flex items-center gap-1 text-[#0d0b36] font-['Satoshi:Bold',sans-serif] underline decoration-[#6e6d97] decoration-dotted underline-offset-4 hover:text-[#6e6d97] transition-colors"
     >
       {children}
     </a>
@@ -60,42 +60,42 @@ const components: Components = {
   ol: ({ children }) => <ol className="my-5 flex flex-col gap-2.5 pl-5 list-decimal">{children}</ol>,
   li: ({ children }) => (
     <li
-      className={`${sans} relative pl-5 text-[15px] sm:text-[16px] leading-[1.7] text-[#52525b] before:content-[''] before:absolute before:left-0 before:top-[0.7em] before:size-[6px] before:rounded-[1px] before:bg-[#e84a27]`}
+      className={`${sans} relative pl-5 text-[15px] sm:text-[16px] leading-[1.7] text-[#52525b] before:content-[''] before:absolute before:left-0 before:top-[0.7em] before:size-[6px] before:rounded-[1px] before:bg-[#0d0b36]`}
     >
       {children}
     </li>
   ),
   hr: () => null,
   code: ({ children }) => (
-    <code className="font-mono text-[13px] bg-[#f2f3f6] text-[#0d0b36] rounded-md px-1.5 py-0.5 border border-black/[0.04]">
+    <code className="font-mono text-[13px] bg-[#f0f0f7] text-[#0d0b36] rounded-md px-1.5 py-0.5 border border-[#d1d1ed]">
       {children}
     </code>
   ),
   blockquote: ({ children }) =>
     isVisualPlaceholder(children) ? (
-      <aside className="my-8 rounded-2xl border border-dashed border-[#e84a27]/40 bg-[#e84a27]/[0.04] p-5 sm:p-6 [&_p]:mb-2 [&_p:last-child]:mb-0 [&_li]:text-[14px]">
-        <span className="inline-block mb-2 text-[11px] font-mono uppercase tracking-wider text-[#e84a27] font-semibold">
+      <aside className="my-8 rounded-2xl border border-dashed border-[#d1d1ed] bg-[#f0f0f7] p-5 sm:p-6 text-[#6e6d97] [&_p]:mb-2 [&_p:last-child]:mb-0 [&_p]:text-[#6e6d97] [&_li]:text-[14px] [&_strong]:text-[#0d0b36]">
+        <span className="inline-block mb-2 text-[11px] font-mono uppercase tracking-wider text-[#6e6d97] font-semibold">
           Visual · to be added
         </span>
         {children}
       </aside>
     ) : (
-      <blockquote className="my-8 pl-6 border-l-2 border-[#e84a27] font-editorial italic text-[20px] sm:text-[22px] text-[#334155] leading-relaxed [&_p]:text-inherit [&_p]:font-editorial [&_p]:text-[20px] [&_p]:sm:text-[22px]">
+      <blockquote className="my-8 pl-6 border-l-2 border-[#0d0b36] font-editorial italic text-[20px] sm:text-[22px] text-[#0d0b36] leading-relaxed [&_p]:text-inherit [&_p]:font-editorial [&_p]:text-[20px] [&_p]:sm:text-[22px]">
         {children}
       </blockquote>
     ),
   table: ({ children }) => (
-    <div className="my-8 overflow-x-auto rounded-2xl border border-black/[0.06] bg-white">
+    <div className="my-8 overflow-x-auto rounded-2xl border border-[#d1d1ed] bg-white">
       <table className="w-full min-w-[560px] border-collapse text-left">{children}</table>
     </div>
   ),
-  thead: ({ children }) => <thead className="bg-[#f2f3f6]">{children}</thead>,
+  thead: ({ children }) => <thead className="bg-[#f0f0f7]">{children}</thead>,
   th: ({ children }) => (
     <th className={`${bold} px-4 py-3 text-[12px] uppercase tracking-wider text-[#6e6d97]`}>
       {children}
     </th>
   ),
-  tr: ({ children }) => <tr className="border-t border-black/[0.05] first:border-t-0">{children}</tr>,
+  tr: ({ children }) => <tr className="border-t border-[#d1d1ed]/70 first:border-t-0">{children}</tr>,
   td: ({ children }) => (
     <td className={`${sans} px-4 py-3 align-top text-[14px] leading-relaxed text-[#52525b]`}>
       {children}

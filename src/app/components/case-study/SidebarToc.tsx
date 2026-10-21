@@ -24,7 +24,7 @@ export function SidebarToc({ items, activeId, onSelect }: SidebarTocProps) {
   return (
     <>
       {/* Mobile Sticky Horizontal Bar */}
-      <div className="lg:hidden sticky top-14 z-30 bg-[#fbfbfa]/95 backdrop-blur-md border-b border-black/[0.04] py-2.5 px-4 w-full">
+      <div className="lg:hidden sticky top-14 z-30 bg-white/95 backdrop-blur-md border-b border-black/[0.04] py-2.5 px-4 w-full">
         <div
           ref={mobileNavRef}
           className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth"
@@ -38,8 +38,8 @@ export function SidebarToc({ items, activeId, onSelect }: SidebarTocProps) {
                 onClick={() => onSelect(item.id)}
                 className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-['Satoshi:Medium',sans-serif] transition-all cursor-pointer flex items-center gap-1.5 ${
                   isActive
-                    ? "bg-[#e84a27] text-white shadow-xs"
-                    : "bg-black/[0.03] text-[#6e6d97] hover:text-[#0d0b36]"
+                    ? "bg-[#0d0b36] text-white shadow-xs"
+                    : "bg-[#f0f0f7] text-[#6e6d97] hover:text-[#0d0b36]"
                 }`}
               >
                 {isActive && <span className="size-1 bg-white rounded-full" />}
@@ -61,14 +61,14 @@ export function SidebarToc({ items, activeId, onSelect }: SidebarTocProps) {
                 onClick={() => onSelect(item.id)}
                 className={`group flex items-center gap-2 text-left text-[14px] leading-tight transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? "text-[#e84a27] font-['Satoshi:Bold',sans-serif]"
-                    : "text-[#8e8ea0] hover:text-[#0d0b36] font-['Satoshi:Medium',sans-serif]"
+                    ? "text-[#0d0b36] font-['Satoshi:Bold',sans-serif]"
+                    : "text-[#6e6d97] hover:text-[#0d0b36] font-['Satoshi:Medium',sans-serif]"
                 }`}
               >
                 {/* Active indicator dot/square matching screenshots */}
                 <span
                   className={`size-[5px] rounded-[1px] shrink-0 transition-opacity duration-200 ${
-                    isActive ? "bg-[#e84a27] opacity-100" : "bg-transparent opacity-0"
+                    isActive ? "bg-[#0d0b36] opacity-100" : "bg-transparent opacity-0"
                   }`}
                 />
                 <span className="truncate">{item.label}</span>

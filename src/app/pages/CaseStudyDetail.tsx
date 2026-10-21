@@ -5,7 +5,6 @@ import { ArrowRight, ArrowLeft } from "lucide-react";
 import { BreadcrumbHeader } from "../components/case-study/BreadcrumbHeader";
 import { SidebarToc } from "../components/case-study/SidebarToc";
 import { CaseStudyMarkdown } from "../components/case-study/CaseStudyMarkdown";
-import { GrainOverlay } from "../components/case-study/GrainOverlay";
 import { PICKWISE_CASE_STUDY } from "../data/caseStudies";
 import svgPaths from "../imports/svg-asll6uiju1";
 import heroImage from "../../../Hero image_pickwise_casestudy.svg";
@@ -198,8 +197,7 @@ export default function CaseStudyDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf9f6] text-[#0d0b36] selection:bg-[#e84a27] selection:text-white relative">
-      <GrainOverlay />
+    <div className="min-h-screen bg-[#ffffff] text-[#0d0b36] selection:bg-[#0d0b36] selection:text-white relative">
       <BreadcrumbHeader title={caseStudy.title} />
 
       {/* Main Content Container */}
@@ -208,7 +206,7 @@ export default function CaseStudyDetail() {
         <div className="w-full mb-12 sm:mb-20">
           <div
             ref={heroShellRef}
-            className="relative w-full h-[280px] sm:h-[420px] md:h-[500px] lg:h-[540px] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-[0_20px_50px_-20px_rgba(232,74,39,0.25)] border border-black/[0.04]"
+            className="relative w-full h-[280px] sm:h-[420px] md:h-[500px] lg:h-[540px] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-[0_20px_50px_-20px_rgba(13,11,54,0.18)] border border-black/[0.04]"
           >
             {/* Resting image — visible during collapse handoff so position reset never flashes */}
             <img
@@ -255,7 +253,7 @@ export default function CaseStudyDetail() {
                 ref={(el) => (sectionRefs.current[section.id] = el)}
                 className="scroll-mt-28 mb-20 pb-14 border-b border-black/[0.06]"
               >
-                <div className="size-3.5 bg-[#e84a27] rounded-[2px] mb-4 shadow-xs" />
+                <div className="size-3.5 bg-[#0d0b36] rounded-[2px] mb-4 shadow-xs" />
                 <div className="text-[13px] font-['Satoshi:Medium',sans-serif] uppercase tracking-wider text-[#6e6d97] mb-2.5">
                   {section.number ? `${section.number} · ${section.label}` : section.label}
                 </div>
@@ -284,7 +282,7 @@ export default function CaseStudyDetail() {
               </Link>
               <Link
                 to="/"
-                className="inline-flex items-center gap-2 text-sm font-['Satoshi:Bold',sans-serif] text-[#e84a27] hover:text-[#0d0b36] transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-['Satoshi:Bold',sans-serif] text-[#0d0b36] hover:text-[#6e6d97] transition-colors"
               >
                 <span>Home</span>
                 <ArrowRight className="size-4" />
