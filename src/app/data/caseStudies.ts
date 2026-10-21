@@ -1,6 +1,19 @@
+import pickwiseMarkdown from "../../../case_study_v4.md?raw";
+
 export interface TocItem {
   id: string;
   label: string;
+}
+
+export interface CaseStudySection {
+  id: string;
+  label: string;
+  /** Section number as written in the markdown (e.g. "05"), if any */
+  number?: string;
+  /** Section heading as written in the markdown */
+  heading?: string;
+  /** Markdown body (without the top-level heading) */
+  body: string;
 }
 
 export interface CaseStudyData {
@@ -8,65 +21,72 @@ export interface CaseStudyData {
   title: string;
   category: string;
   subtitle: string;
-  heroGradient: {
-    from: string;
-    via: string;
-    to: string;
-  };
-  overview: {
-    lead: string;
-    pillars: Array<{
-      title: string;
-      description: string;
-    }>;
-    problemTitle: string;
-    problemDescription: string;
-    problemFollowUp: string;
-  };
+  sections: CaseStudySection[];
   toc: TocItem[];
 }
 
-export const OPENAI_HARDWARE_CASE_STUDY: CaseStudyData = {
-  slug: "openai-hardware",
-  title: "OpenAI x Hardware",
-  category: "Product Strategy & Hardware Experience",
-  subtitle: "What should OpenAI build as their first AI device?",
-  heroGradient: {
-    from: "#EE9A56",
-    via: "#E85D3F",
-    to: "#A28CE4",
-  },
-  overview: {
-    lead: "As a team of 3 product designers, our goal was to land on a clear vision within 7 weeks.",
-    pillars: [
-      {
-        title: "Product Strategy",
-        description: "Thinking broadly about OpenAI, the AI landscape, and exploring widely in the solution space.",
-      },
-      {
-        title: "Prototyping & Testing",
-        description: "Going wide in ideation and rapidly testing concepts with users.",
-      },
-      {
-        title: "Iterating with Feedback",
-        description: "Continuously iterating on concepts and validating product decisions.",
-      },
-    ],
-    problemTitle: "Problem: ChatGPT is at the top of the stack.",
-    problemDescription:
-      "ChatGPT is an app, at the top of this technology stack. That's a risky place to be because it means leaves OpenAI at the mercy of the lower layers, like the platform, the operating system, and the hardware.",
-    problemFollowUp:
-      "Apple and Google are building their own consumer AI ecosystems, but with the advantage of being able to control the full hardware and operating system integration from silicon up.",
-  },
-  toc: [
-    { id: "overview", label: "Overview" },
-    { id: "solution", label: "Solution" },
-    { id: "core-flows", label: "Core Flows" },
-    { id: "research", label: "Research" },
-    { id: "form-factors", label: "Exploring Form Factors" },
-    { id: "prototyping", label: "Prototyping and Testing" },
-    { id: "decisions", label: "Design Decisions" },
-    { id: "hardware-constraints", label: "Hardware Constraints" },
-    { id: "reflection", label: "Reflection" },
-  ],
+/**
+ * Parses case_study_v4.md into sections.
+ * - Everything before the first numbered "# NN. ..." heading is the Overview.
+ * - Each numbered h1 becomes its own section / TOC entry.
+ */
+function parseCaseStudy(md: string) {
+  const lines = md.replace(/\r\n/g, "\n").split("\n");
+  const title = (lines.find((l) => /^# /.test(l)) ?? "# Pickwise").replace(/^# /, "").trim();
+  const numbered = /^# (\d{2})\.\s+(.*)$/;
+
+  const firstNumbered = lines.findIndex((l) => numbered.test(l));
+  const overviewLines = lines.slice(0, firstNumbered);
+
+  // Drop the document title (first h1) and pull the second h1 as the headline
+  const titleIdx = overviewLines.findIndex((l) => /^# /.test(l));
+  overviewLines.splice(titleIdx, 1);
+  const headlineIdx = overviewLines.findIndex((l) => /^# /.test(l));
+  const subtitle = overviewLines[headlineIdx].replace(/^# /, "").trim();
+  overviewLines.splice(headlineIdx, 1);
+
+  const sections: CaseStudySection[] = [
+    {
+      id: "overview",
+      label: "Overview",
+      body: overviewLines.join("\n").replace(/\n---\s*(\n|$)/g, "\n").trim(),
+    },
+  ];
+
+  let current: { number: string; heading: string; buf: string[] } | null = null;
+  const flush = () => {
+    if (!current) return;
+    const short = current.heading.split(" — ")[0].trim();
+    sections.push({
+      id: `section-${current.number}`,
+      label: short,
+      number: current.number,
+      heading: current.heading,
+      body: current.buf.join("\n").trim(),
+    });
+  };
+
+  for (const line of lines.slice(firstNumbered)) {
+    const m = line.match(numbered);
+    if (m) {
+      flush();
+      current = { number: m[1], heading: m[2].trim(), buf: [] };
+    } else if (current) {
+      current.buf.push(line);
+    }
+  }
+  flush();
+
+  return { title, subtitle, sections };
+}
+
+const parsed = parseCaseStudy(pickwiseMarkdown);
+
+export const PICKWISE_CASE_STUDY: CaseStudyData = {
+  slug: "pickwise",
+  title: parsed.title,
+  category: "Product Design & Engineering",
+  subtitle: parsed.subtitle,
+  sections: parsed.sections,
+  toc: parsed.sections.map(({ id, label }) => ({ id, label })),
 };
