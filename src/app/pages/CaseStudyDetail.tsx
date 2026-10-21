@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { flushSync } from "react-dom";
-import { Link } from "react-router";
-import { ArrowRight, ArrowLeft } from "lucide-react";
 import { BreadcrumbHeader } from "../components/case-study/BreadcrumbHeader";
 import { SidebarToc } from "../components/case-study/SidebarToc";
 import { CaseStudyMarkdown } from "../components/case-study/CaseStudyMarkdown";
@@ -37,7 +35,8 @@ export default function CaseStudyDetail() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const headerOffset = 160;
+      const isMobile = window.innerWidth < 1024;
+      const headerOffset = isMobile ? 120 : 160;
 
       for (let i = caseStudy.toc.length - 1; i >= 0; i--) {
         const item = caseStudy.toc[i];
@@ -188,7 +187,7 @@ export default function CaseStudyDetail() {
     const el = sectionRefs.current[id];
     if (el) {
       const isMobile = window.innerWidth < 1024;
-      const offset = isMobile ? 110 : 80;
+      const offset = isMobile ? 116 : 80;
       const targetTop = el.getBoundingClientRect().top + window.scrollY - offset;
 
       window.scrollTo({ top: targetTop, behavior: "smooth" });
@@ -201,12 +200,12 @@ export default function CaseStudyDetail() {
       <BreadcrumbHeader title={caseStudy.title} />
 
       {/* Main Content Container */}
-      <main className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-24">
+      <main className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-10 pb-16 sm:pb-24">
         {/* Hero Section Container (Image 1) */}
-        <div className="w-full mb-12 sm:mb-20">
+        <div className="w-full mb-8 sm:mb-16 lg:mb-20">
           <div
             ref={heroShellRef}
-            className="relative w-full h-[280px] sm:h-[420px] md:h-[500px] lg:h-[540px] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-[0_20px_50px_-20px_rgba(13,11,54,0.18)] border border-black/[0.04]"
+            className="relative w-full aspect-[16/9] sm:aspect-auto sm:h-[420px] md:h-[500px] lg:h-[540px] rounded-[18px] sm:rounded-[32px] overflow-hidden shadow-[0_20px_50px_-20px_rgba(13,11,54,0.18)] border border-black/[0.04] bg-[#f0f0f7]"
           >
             {/* Resting image — visible during collapse handoff so position reset never flashes */}
             <img
@@ -222,16 +221,41 @@ export default function CaseStudyDetail() {
               onClick={toggleHero}
               className={
                 heroExpanded
-                  ? "fixed z-[100] overflow-hidden cursor-zoom-out border-0 p-0 bg-transparent"
-                  : "absolute inset-0 z-10 overflow-hidden cursor-zoom-in border-0 p-0 bg-transparent"
+                  ? "fixed z-[100] overflow-hidden cursor-zoom-out border-0 p-0 bg-[#0d0b36]/95 backdrop-blur-md flex items-center justify-center"
+                  : "absolute inset-0 z-10 overflow-hidden cursor-zoom-in border-0 p-0 bg-transparent group"
               }
             >
               <img
                 src={heroImage}
                 alt={caseStudy.title}
-                className="size-full object-cover pointer-events-none"
+                className={`size-full ${heroExpanded ? "object-contain p-2 sm:p-6" : "object-cover"} pointer-events-none transition-transform duration-300`}
               />
+              {!heroExpanded && (
+                <div className="pointer-events-none absolute bottom-2.5 right-2.5 sm:bottom-4 sm:right-4 z-20 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-md text-white text-[11px] sm:text-xs font-['Satoshi:Medium',sans-serif] flex items-center gap-1.5 opacity-90 transition-opacity">
+                  <svg className="size-3 sm:size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>Enlarge</span>
+                </div>
+              )}
             </button>
+
+            {/* Mobile-accessible close button when expanded */}
+            {heroExpanded && (
+              <button
+                type="button"
+                aria-label="Close full view"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  collapseHero();
+                }}
+                className="fixed top-4 right-4 z-[110] size-10 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md flex items-center justify-center transition-all cursor-pointer shadow-lg active:scale-95 border border-white/20"
+              >
+                <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
 
@@ -251,18 +275,17 @@ export default function CaseStudyDetail() {
                 key={section.id}
                 id={section.id}
                 ref={(el) => (sectionRefs.current[section.id] = el)}
-                className="scroll-mt-28 mb-20 pb-14 border-b border-black/[0.06]"
+                className="scroll-mt-32 sm:scroll-mt-28 mb-12 pb-10 sm:mb-20 sm:pb-14 border-b border-black/[0.06] last:border-b-0 last:mb-4 last:pb-0"
               >
-                <div className="size-3.5 bg-[#0d0b36] rounded-[2px] mb-4 shadow-xs" />
-                <div className="text-[13px] font-['Satoshi:Medium',sans-serif] uppercase tracking-wider text-[#6e6d97] mb-2.5">
+                <div className="text-[12px] sm:text-[13px] font-['Satoshi:Medium',sans-serif] uppercase tracking-wider text-[#6e6d97] mb-2 sm:mb-2.5">
                   {section.number ? `${section.number} · ${section.label}` : section.label}
                 </div>
                 {idx === 0 ? (
-                  <h2 className="font-editorial text-[30px] sm:text-[40px] md:text-[44px] leading-[1.15] text-[#0d0b36] tracking-tight mb-5">
+                  <h2 className="font-editorial text-[24px] sm:text-[34px] md:text-[44px] leading-[1.2] text-[#0d0b36] tracking-tight mb-4 sm:mb-5">
                     {caseStudy.subtitle}
                   </h2>
                 ) : (
-                  <h2 className="font-editorial text-[30px] sm:text-[40px] md:text-[44px] leading-[1.15] text-[#0d0b36] tracking-tight mb-6">
+                  <h2 className="font-editorial text-[24px] sm:text-[34px] md:text-[44px] leading-[1.2] text-[#0d0b36] tracking-tight mb-4 sm:mb-6">
                     {section.heading!.includes(" — ")
                       ? section.heading!.split(" — ").slice(1).join(" — ")
                       : section.heading}
@@ -271,37 +294,20 @@ export default function CaseStudyDetail() {
                 <CaseStudyMarkdown>{section.body}</CaseStudyMarkdown>
               </section>
             ))}
-
-            <div className="mt-4 pt-8 border-t border-black/[0.06] flex items-center justify-between">
-              <Link
-                to="/#case-study"
-                className="inline-flex items-center gap-2 text-sm font-['Satoshi:Bold',sans-serif] text-[#6e6d97] hover:text-[#0d0b36] transition-colors"
-              >
-                <ArrowLeft className="size-4" />
-                <span>Back to all projects</span>
-              </Link>
-              <Link
-                to="/"
-                className="inline-flex items-center gap-2 text-sm font-['Satoshi:Bold',sans-serif] text-[#0d0b36] hover:text-[#6e6d97] transition-colors"
-              >
-                <span>Home</span>
-                <ArrowRight className="size-4" />
-              </Link>
-            </div>
           </article>
         </div>
       </main>
 
       {/* Case Study Footer matching Portfolio Design System */}
-      <footer className="bg-[#f0f0f7] border-t border-black/[0.04] py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-[1200px] mx-auto flex flex-col gap-8">
-          <div className="flex flex-col gap-4">
-            <h3 className="font-['Editor\'s_Note:Light_Italic',sans-serif] italic text-2xl sm:text-3xl text-[#6e6d97]">
+      <footer className="bg-[#f0f0f7] border-t border-black/[0.04] py-10 sm:py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1240px] mx-auto flex flex-col gap-6 sm:gap-8">
+          <div className="flex flex-col gap-3 sm:gap-4">
+            <h3 className="font-['Editor\'s_Note:Light_Italic',sans-serif] italic text-xl sm:text-3xl text-[#6e6d97] leading-snug">
               Let&apos;s build something meaningful.
             </h3>
             <a
               href="mailto:sahilsin04@gmail.com"
-              className="font-['Satoshi:Bold_Italic',sans-serif] italic text-lg sm:text-xl text-[#6e6d97] hover:text-[#0d0b36] underline decoration-dotted transition-colors"
+              className="font-['Satoshi:Bold_Italic',sans-serif] italic text-base sm:text-xl text-[#6e6d97] hover:text-[#0d0b36] underline decoration-dotted transition-colors"
             >
               sahilsin04@gmail.com
             </a>
@@ -312,7 +318,7 @@ export default function CaseStudyDetail() {
               href="https://www.linkedin.com/in/sahilsinha2004"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:opacity-70 transition-opacity"
+              className="hover:opacity-70 transition-opacity active:scale-95"
             >
               <Socials>
                 <path d={svgPaths.p2b9e5d00} fill="var(--fill-0, #6E6D97)" id="Shape" />
@@ -322,7 +328,7 @@ export default function CaseStudyDetail() {
               href="https://x.com/Sahilsinhaux"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:opacity-70 transition-opacity"
+              className="hover:opacity-70 transition-opacity active:scale-95"
             >
               <Socials>
                 <path d={svgPaths.p3a83a100} fill="var(--fill-0, #6E6D97)" id="Vector" />
@@ -332,7 +338,7 @@ export default function CaseStudyDetail() {
               href="https://www.instagram.com/sahil_sinhaaa/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:opacity-70 transition-opacity"
+              className="hover:opacity-70 transition-opacity active:scale-95"
             >
               <Socials>
                 <path d={svgPaths.p36afbb00} fill="var(--fill-0, #6E6D97)" id="Shape" />

@@ -13,9 +13,42 @@
 }
 
 @font-face {
+  font-family: "Satoshi:Regular";
+  src: url("../assets/fonts/Satoshi-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi:Regular";
+  src: url("../assets/fonts/Satoshi-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi:Regular";
+  src: url("../assets/fonts/Satoshi-Bold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi-Regular";
+  src: url("../assets/fonts/Satoshi-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Satoshi:Medium";
   src: url("../assets/fonts/Satoshi-Medium.otf") format("opentype");
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -55,6 +88,16 @@
 
 .font-editorial {
   font-family: 'Newsreader', "Editor's Note:Light Italic", ui-serif, Georgia, serif;
+}
+
+.font-satoshi-regular {
+  font-family: "Satoshi:Regular", "Satoshi-Regular", "Satoshi", sans-serif;
+  font-weight: 400;
+}
+
+.font-satoshi-bold {
+  font-family: "Satoshi:Bold", "Satoshi", sans-serif;
+  font-weight: 700;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -252,4 +295,28 @@ html {
   * {
     scroll-behavior: smooth;
   }
+}
+
+/* Utilities for responsive mobile scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f0f0f7;
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #d1d1ed;
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6e6d97;
 }

@@ -344,7 +344,7 @@ I also followed existing laptop and e-commerce patterns for the details and comp
 
 ### Why a reusable natural-language specification library?
 
-I considered showing raw technical values in the comparison table, but users would still have to interpret those values themselves—the exact problem Pickwise is trying to solve.
+I considered showing raw technical values in the comparison table, but users would still have to interpret those values themselves, the exact problem Pickwise is trying to solve.
 
 I also explored contextual copy for individual specifications, but creating unique sentences for every combination of user needs and laptop capabilities would be difficult to maintain.
 
@@ -368,7 +368,7 @@ The wording is specific to each type of specification. Not everything follows Lo
 
 **Control:** Prewritten copy mapped through explicit rules is easier to test, inspect, and update. It also reduces the risk of exaggerated or misleading statements.
 
-I chose to use AI where it adds value—interpreting inputs and generating the overall comparison verdict—while using predefined copy for individual specification rows.
+I chose to use AI where it adds value, interpreting inputs and generating the overall comparison verdict—while using predefined copy for individual specification rows.
 
 ### Other design decisions
 
@@ -607,4 +607,4 @@ Recommendations depend on structured data and evaluation rules. Comparison langu
 
 Building Pickwise end-to-end made these relationships tangible. I had to think about what the user sees, how each feature works, what data supports it, and what happens when something fails.
 
-**Pickwise started with a problem I experienced myself. Building it end-to-end helped me turn that problem into connected product decisions, design patterns, engineering logic, and measurable behaviours—while staying clear about what the product can and cannot yet verify.**
+**Pickwise started with a problem I experienced myself. Building it end-to-end helped me turn that problem into connected product decisions, design patterns, engineering logic, and measurable behaviours, while staying clear about what the product can and cannot yet verify.**
