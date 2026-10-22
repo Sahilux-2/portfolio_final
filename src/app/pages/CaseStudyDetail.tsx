@@ -93,7 +93,7 @@ export default function CaseStudyDetail() {
                   </div>
                 )}
                 {idx === 0 ? (
-                  <h2 className="font-editorial text-[24px] sm:text-[34px] md:text-[44px] leading-[1.2] text-[#0d0b36] tracking-tight mb-4 sm:mb-5">
+                  <h2 className="font-editorial text-[24px] sm:text-[34px] md:text-[44px] leading-[1.2] text-[#0d0b36] tracking-tight mb-3">
                     {caseStudy.subtitle}
                   </h2>
                 ) : (
