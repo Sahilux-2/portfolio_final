@@ -236,9 +236,11 @@ I also designed a no-exact-match state. If no laptop satisfies all the user's re
 - **No preferences selected:** Continue using the use case and budget.
 - **AI or network request fails:** Preserve user inputs and fall back to deterministic results and predefined copy where possible.
 
-> **[VISUAL 07 — RECOMMENDATIONS AND EDGE CASES]**
->
-> Show the normal listing beside the no-exact-match state. Add callouts to the result cards, Edit inputs, and explanation of the closest alternatives.
+![Closest alternatives when nothing matches all inputs](visual:edge-case-no-match)
+
+![Explain the budget mismatch on result cards](visual:edge-case-over-budget)
+
+![Keep results useful when preferences are skipped](visual:edge-case-over-budget-no-preference)
 
 ## How it works behind the scenes
 
@@ -325,12 +327,6 @@ The technical specifications remain available as evidence, and important mismatc
 Instead of maintaining contextual copy for every possible combination, I only need a small, consistent set of global states and separate logic for specific trade-offs.
 
 **Global summary = conclusion. Specs = evidence.**
-
-> **[VISUAL 08 — LAPTOP DETAILS ITERATION]**
->
-> Show the earlier concept with human-language copy repeated across specification rows beside the final global fit summary and technical-specification layout.
->
-> Callout: *“One overall conclusion, instead of repeating the interpretation for every spec.”*
 
 ## Comparison — explain what the differences actually mean
 

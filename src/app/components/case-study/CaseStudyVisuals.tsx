@@ -23,6 +23,21 @@ export const VISUAL_FRAMES: Record<string, VisualFrame> = {
     alt: "Pickwise budget screen showing recommended minimum and Quick Picks",
     callout: "Set realistic budget expectations",
   },
+  "edge-case-no-match": {
+    src: "/case-study/edge-case-no-match.svg",
+    alt: "Pickwise recommendations with no exact match, showing closest alternatives",
+    callout: "Closest alternatives when nothing matches all inputs",
+  },
+  "edge-case-over-budget": {
+    src: "/case-study/edge-case-over-budget.svg",
+    alt: "Pickwise recommendations explaining laptops that exceed the selected budget",
+    callout: "Explain the budget mismatch on result cards",
+  },
+  "edge-case-over-budget-no-preference": {
+    src: "/case-study/edge-case-over-budget-no-preference.svg",
+    alt: "Pickwise recommendations when budget is exceeded and preferences were skipped",
+    callout: "Keep results useful when preferences are skipped",
+  },
 };
 
 const VISUAL_GROUPS: Record<string, VisualFrame[]> = {};
@@ -75,7 +90,7 @@ export function CaseStudyVisualFrame({ frame }: { frame: VisualFrame }) {
       </div>
       <figcaption className="mt-3 sm:mt-3.5 font-['Satoshi:Medium',sans-serif] text-[13px] sm:text-[14px] leading-snug text-[#6e6d97]">
         <span className="text-[#0d0b36] font-['Satoshi:Bold',sans-serif]">
-          “{frame.callout}”
+          {frame.callout}
         </span>
       </figcaption>
     </figure>
