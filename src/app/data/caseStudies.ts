@@ -53,13 +53,28 @@ function parseCaseStudy(md: string) {
     },
   ];
 
+  /** Short TOC / section titles — keep mobile nav scannable */
+  const tocLabel = (heading: string) => {
+    const base = heading.split(" — ")[0].trim();
+    const map: Record<string, string> = {
+      "User persona": "Persona",
+      "The three problems": "Problems",
+      "Competitive analysis": "Analysis",
+      "User story 1": "Story 1",
+      "User story 2": "Story 2",
+      "User story 3": "Story 3",
+      "Analytics implementation": "Analytics",
+      "My learnings": "Learnings",
+    };
+    return map[base] ?? base;
+  };
+
   let current: { number: string; heading: string; buf: string[] } | null = null;
   const flush = () => {
     if (!current) return;
-    const short = current.heading.split(" — ")[0].trim();
     sections.push({
       id: `section-${current.number}`,
-      label: short,
+      label: tocLabel(current.heading),
       number: current.number,
       heading: current.heading,
       body: current.buf.join("\n").trim(),

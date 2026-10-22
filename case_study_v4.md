@@ -42,8 +42,6 @@ I started with my own experience and then looked at existing platforms to unders
 
 # 03. User persona
 
-## Neil — an 18-year-old college fresher
-
 Neil is an 18-year-old college fresher in Lucknow. He has chosen Game Development as his career path and wants to buy his first laptop.
 
 He'll mostly use it to run game engines and play light games. He knows what he'll be using the laptop for, but he only has surface-level technical knowledge. For example, he knows what RAM and ROM are, but isn't confident evaluating other laptop specifications.

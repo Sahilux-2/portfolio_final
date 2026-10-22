@@ -24,7 +24,7 @@ export function SidebarToc({ items, activeId, onSelect }: SidebarTocProps) {
   return (
     <>
       {/* Mobile Sticky Horizontal Bar */}
-      <div className="lg:hidden sticky top-14 sm:top-16 z-30 bg-white/95 backdrop-blur-md border-b border-black/[0.04] py-2 px-3 sm:px-4 w-full">
+      <div className="lg:hidden sticky top-14 sm:top-16 z-30 bg-white/95 backdrop-blur-md border-b border-black/[0.04] py-1.5 px-3 sm:px-4 w-full">
         <div className="relative w-full">
           {/* Subtle scroll cues on edges */}
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-white/95 to-transparent z-10" />
@@ -32,7 +32,7 @@ export function SidebarToc({ items, activeId, onSelect }: SidebarTocProps) {
 
           <div
             ref={mobileNavRef}
-            className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scroll-smooth pr-4 pl-0.5"
+            className="flex items-center gap-1 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pr-4 pl-0.5"
           >
             {items.map((item) => {
               const isActive = activeId === item.id;
@@ -41,13 +41,13 @@ export function SidebarToc({ items, activeId, onSelect }: SidebarTocProps) {
                   key={item.id}
                   ref={isActive ? activePillRef : null}
                   onClick={() => onSelect(item.id)}
-                  className={`shrink-0 px-3 py-1.5 rounded-full text-[12px] font-['Satoshi:Medium',sans-serif] transition-all cursor-pointer flex items-center gap-1.5 active:scale-95 select-none ${
+                  className={`shrink-0 snap-start px-2.5 py-1 rounded-full text-[11px] leading-none font-['Satoshi:Medium',sans-serif] transition-all cursor-pointer flex items-center gap-1 active:scale-95 select-none ${
                     isActive
                       ? "bg-[#0d0b36] text-white shadow-xs font-['Satoshi:Bold',sans-serif]"
                       : "bg-[#f0f0f7] text-[#6e6d97] hover:text-[#0d0b36] hover:bg-[#e6e6f2]"
                   }`}
                 >
-                  {isActive && <span className="size-1.5 bg-white rounded-full" />}
+                  {isActive && <span className="size-1 bg-white rounded-full" />}
                   <span>{item.label}</span>
                 </button>
               );

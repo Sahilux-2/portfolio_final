@@ -16,6 +16,25 @@ function Socials({ children }: React.PropsWithChildren<{}>) {
   );
 }
 
+/** Page title matches TOC label; em-dash suffix becomes a supporting deck line. */
+function SectionHeading({ label, heading }: { label: string; heading: string }) {
+  const parts = heading.split(" — ");
+  const deck = parts.length > 1 ? parts.slice(1).join(" — ").trim() : null;
+
+  return (
+    <div className="mb-6 sm:mb-8">
+      <h2 className="max-w-[760px] font-editorial text-[26px] sm:text-[34px] md:text-[40px] leading-[1.15] text-[#0d0b36] tracking-tight text-balance">
+        {label}
+      </h2>
+      {deck && (
+        <p className="mt-2 sm:mt-2.5 max-w-[640px] font-['Satoshi:Medium',sans-serif] text-[15px] sm:text-[17px] leading-snug text-[#6e6d97]">
+          {deck}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function CaseStudyDetail() {
   const { slug } = useParams();
   const caseStudy = PICKWISE_CASE_STUDY;
@@ -92,19 +111,9 @@ export default function CaseStudyDetail() {
                     {caseStudy.subtitle}
                   </h2>
                 ) : (
-                  <h2 className="max-w-[760px] font-editorial text-[26px] sm:text-[34px] md:text-[40px] leading-[1.15] text-[#0d0b36] tracking-tight mb-6 sm:mb-8 text-balance">
-                    {section.heading!.includes(" — ")
-                      ? section.heading!.split(" — ").slice(1).join(" — ")
-                      : section.heading}
-                  </h2>
+                  <SectionHeading label={section.label} heading={section.heading!} />
                 )}
-                <CaseStudyMarkdown
-                  className={
-                    idx === 0
-                      ? "[&>p:first-of-type]:max-w-[700px] [&>p:first-of-type]:text-[16px] sm:[&>p:first-of-type]:text-[18px] [&>p:first-of-type]:text-[#3a3a4d] [&>h3]:mt-10 [&>h3]:mb-3 [&>h3]:font-['Satoshi:Bold',sans-serif] [&>h3]:text-[12px] sm:[&>h3]:text-[13px] [&>h3]:uppercase [&>h3]:tracking-[0.08em] [&>h3]:text-[#6e6d97]"
-                      : undefined
-                  }
-                >
+                <CaseStudyMarkdown variant={idx === 0 ? "overview" : "default"}>
                   {section.body}
                 </CaseStudyMarkdown>
 
