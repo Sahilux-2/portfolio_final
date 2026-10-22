@@ -83,7 +83,7 @@ After deciding which laptop they want, users still need to search retailer websi
 
 
 
-# 05. Competitive analysis — Why do these problems exist?
+# 05. Competitive analysis
 
 Since I had already experienced the problem myself, I wanted to understand how existing solutions handled these specific difficulties.
 
