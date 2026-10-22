@@ -299,57 +299,6 @@ export default function PortfolioWeb() {
                 </div>
               </div>
             </div>
-
-            {/* Row 2 */}
-            <div className="content-stretch flex flex-col md:flex-col lg:flex-row gap-[40px] sm:gap-[16px] md:gap-[40px] lg:gap-[24px] items-start relative shrink-0 w-full" data-name="Case study container">
-              {/* Card 3: Tomo Companion — no case study yet */}
-              <div
-                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0"
-                data-name="Card & text container"
-              >
-                <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full overflow-hidden">
-                  <div className="content-stretch flex items-start justify-between px-[24px] py-[20px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full">
-                    <p className="font-['Satoshi:Medium',sans-serif] leading-[18px] sm:leading-[22px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-nowrap">
-                      CONCEPT
-                    </p>
-                  </div>
-                </div>
-                <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
-                  <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
-                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
-                      Tomo Companion
-                    </p>
-                  </div>
-                  <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full">
-                    Continuous memory capture and moment-driven interaction design.
-                  </p>
-                </div>
-              </div>
-
-              {/* Card 4: Spatial UI — no case study yet */}
-              <div
-                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0"
-                data-name="Card & text container"
-              >
-                <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full overflow-hidden">
-                  <div className="content-stretch flex items-start justify-between px-[24px] py-[20px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full">
-                    <p className="font-['Satoshi:Medium',sans-serif] leading-[18px] sm:leading-[22px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-nowrap">
-                      RESEARCH
-                    </p>
-                  </div>
-                </div>
-                <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
-                  <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
-                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
-                      Spatial Audio Canvas
-                    </p>
-                  </div>
-                  <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full">
-                    Exploring interfaces focused on real-time assistance and quiet ambient feedback.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
