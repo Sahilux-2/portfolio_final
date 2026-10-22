@@ -3,6 +3,8 @@ import pickwiseMarkdown from "../../../case_study_v4.md?raw";
 export interface TocItem {
   id: string;
   label: string;
+  /** Nested nav items — only used for user-story sections */
+  children?: TocItem[];
 }
 
 /** Expand shortened mobile TOC labels for desktop headings / sidebar. */
@@ -10,6 +12,36 @@ export function desktopTocLabel(label: string): string {
   if (label === "Analysis") return "Competitive analysis";
   if (label.startsWith("Story ")) return `User ${label}`;
   return label;
+}
+
+/** Sub-section nav under User story 1–3 only. Keys become `#section-NN--{key}` anchors. */
+export const USER_STORY_SUBNAV = [
+  // Story 1/3 use "The solution"; story 2 leads with laptop details as the solution.
+  {
+    key: "solution",
+    match: /^(the\s+)?solution\b|^laptop details\b/i,
+    label: "Solution",
+  },
+  { key: "why-this-solution", match: /^why this solution/i, label: "Why this solution" },
+  {
+    key: "how-it-works",
+    match: /^how it works behind the scenes/i,
+    label: "How it works",
+  },
+  {
+    key: "measure-success",
+    match: /^how i measure success/i,
+    label: "Measure success",
+  },
+] as const;
+
+export function matchUserStorySubnav(heading: string) {
+  const text = heading.trim();
+  return USER_STORY_SUBNAV.find((entry) => entry.match.test(text)) ?? null;
+}
+
+export function isUserStorySection(label: string): boolean {
+  return /^Story [123]$/.test(label);
 }
 
 export interface CaseStudySection {
@@ -102,6 +134,27 @@ function parseCaseStudy(md: string) {
   return { title, subtitle, sections };
 }
 
+function userStorySubnav(section: CaseStudySection): TocItem[] | undefined {
+  if (!isUserStorySection(section.label)) return undefined;
+
+  const seen = new Set<string>();
+  const children: TocItem[] = [];
+
+  for (const line of section.body.split("\n")) {
+    const m = line.match(/^##\s+(.+)$/);
+    if (!m) continue;
+    const entry = matchUserStorySubnav(m[1]);
+    if (!entry || seen.has(entry.key)) continue;
+    seen.add(entry.key);
+    children.push({
+      id: `${section.id}--${entry.key}`,
+      label: entry.label,
+    });
+  }
+
+  return children.length > 0 ? children : undefined;
+}
+
 const parsed = parseCaseStudy(pickwiseMarkdown);
 
 export const PICKWISE_CASE_STUDY: CaseStudyData = {
@@ -110,5 +163,9 @@ export const PICKWISE_CASE_STUDY: CaseStudyData = {
   category: "Product Design & Engineering",
   subtitle: parsed.subtitle,
   sections: parsed.sections,
-  toc: parsed.sections.map(({ id, label }) => ({ id, label })),
+  toc: parsed.sections.map(({ id, label, ...rest }) => ({
+    id,
+    label,
+    children: userStorySubnav({ id, label, ...rest }),
+  })),
 };

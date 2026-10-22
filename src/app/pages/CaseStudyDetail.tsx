@@ -3,7 +3,11 @@ import { Navigate, useParams } from "react-router";
 import { BreadcrumbHeader } from "../components/case-study/BreadcrumbHeader";
 import { SidebarToc } from "../components/case-study/SidebarToc";
 import { CaseStudyMarkdown } from "../components/case-study/CaseStudyMarkdown";
-import { desktopTocLabel, PICKWISE_CASE_STUDY } from "../data/caseStudies";
+import {
+  desktopTocLabel,
+  isUserStorySection,
+  PICKWISE_CASE_STUDY,
+} from "../data/caseStudies";
 import svgPaths from "../imports/svg-asll6uiju1";
 
 function Socials({ children }: React.PropsWithChildren<{}>) {
@@ -42,20 +46,28 @@ export default function CaseStudyDetail() {
   const [activeSection, setActiveSection] = useState<string>("overview");
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
-  // Robust scroll spy effect
+  const getScrollTarget = (id: string): HTMLElement | null =>
+    sectionRefs.current[id] ?? document.getElementById(id);
+
+  // Robust scroll spy — sections + user-story subsections
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const isMobile = window.innerWidth < 1024;
       const headerOffset = isMobile ? 120 : 160;
 
-      for (let i = caseStudy.toc.length - 1; i >= 0; i--) {
-        const item = caseStudy.toc[i];
-        const el = sectionRefs.current[item.id];
+      const spyIds = caseStudy.toc.flatMap((item) => [
+        item.id,
+        ...(item.children?.map((c) => c.id) ?? []),
+      ]);
+
+      for (let i = spyIds.length - 1; i >= 0; i--) {
+        const id = spyIds[i];
+        const el = getScrollTarget(id);
         if (el) {
           const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
           if (scrollY >= top - 30) {
-            setActiveSection(item.id);
+            setActiveSection(id);
             break;
           }
         }
@@ -68,7 +80,7 @@ export default function CaseStudyDetail() {
   }, [caseStudy.toc]);
 
   const scrollToSection = (id: string) => {
-    const el = sectionRefs.current[id];
+    const el = getScrollTarget(id);
     if (el) {
       const isMobile = window.innerWidth < 1024;
       const offset = isMobile ? 116 : 80;
@@ -114,7 +126,12 @@ export default function CaseStudyDetail() {
                 ) : (
                   <SectionHeading label={section.label} heading={section.heading!} />
                 )}
-                <CaseStudyMarkdown variant={idx === 0 ? "overview" : "default"}>
+                <CaseStudyMarkdown
+                  variant={idx === 0 ? "overview" : "default"}
+                  headingIdPrefix={
+                    isUserStorySection(section.label) ? section.id : undefined
+                  }
+                >
                   {section.body}
                 </CaseStudyMarkdown>
 

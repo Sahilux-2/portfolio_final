@@ -8,9 +8,22 @@ import {
   VISUAL_FRAMES,
   hasCaseStudyVisual,
 } from "./CaseStudyVisuals";
+import { matchUserStorySubnav } from "../../data/caseStudies";
 
 const sans = "font-satoshi-regular font-['Satoshi:Regular','Satoshi',sans-serif]";
 const bold = "font-satoshi-bold font-['Satoshi:Bold','Satoshi',sans-serif]";
+
+function plainTextFromNode(node: React.ReactNode): string {
+  return React.Children.toArray(node)
+    .map((n) =>
+      typeof n === "string"
+        ? n
+        : React.isValidElement(n)
+          ? plainTextFromNode((n as React.ReactElement<{ children?: React.ReactNode }>).props.children)
+          : ""
+    )
+    .join("");
+}
 
 function isVisualPlaceholder(children: React.ReactNode): boolean {
   const first = React.Children.toArray(children).find(
@@ -29,7 +42,10 @@ function isVisualPlaceholder(children: React.ReactNode): boolean {
   return first ? /^\s*\[VISUAL/i.test(text(first.props.children)) : false;
 }
 
-function createComponents(variant: "default" | "overview"): Components {
+function createComponents(
+  variant: "default" | "overview",
+  headingIdPrefix?: string
+): Components {
   const isOverview = variant === "overview";
 
   return {
@@ -38,16 +54,26 @@ function createComponents(variant: "default" | "overview"): Components {
         {children}
       </h2>
     ),
-    h2: ({ children }) =>
-      isOverview ? (
+    h2: ({ children }) => {
+      const subnav =
+        headingIdPrefix && !isOverview
+          ? matchUserStorySubnav(plainTextFromNode(children))
+          : null;
+      const id = subnav ? `${headingIdPrefix}--${subnav.key}` : undefined;
+
+      return isOverview ? (
         <h3 className={`${bold} mt-8 sm:mt-9 mb-2 text-[11px] sm:text-[12px] uppercase tracking-[0.1em] text-[#6e6d97]`}>
           {children}
         </h3>
       ) : (
-        <h3 className="font-editorial text-[22px] sm:text-[26px] md:text-[30px] leading-[1.25] tracking-tight text-[#0d0b36] mt-12 sm:mt-14 mb-4 sm:mb-5 text-balance">
+        <h3
+          id={id}
+          className="font-editorial text-[22px] sm:text-[26px] md:text-[30px] leading-[1.25] tracking-tight text-[#0d0b36] mt-12 sm:mt-14 mb-4 sm:mb-5 text-balance scroll-mt-32 sm:scroll-mt-28"
+        >
           {children}
         </h3>
-      ),
+      );
+    },
     h3: ({ children }) => (
       <h4 className={`${bold} text-[17px] sm:text-[19px] md:text-[20px] leading-snug text-[#0d0b36] mt-10 sm:mt-12 mb-3`}>
         {children}
@@ -245,12 +271,18 @@ export function CaseStudyMarkdown({
   children,
   className,
   variant = "default",
+  headingIdPrefix,
 }: {
   children: string;
   className?: string;
   variant?: "default" | "overview";
+  /** When set (user-story sections), matching h2s get stable `#prefix--key` ids for TOC. */
+  headingIdPrefix?: string;
 }) {
-  const components = React.useMemo(() => createComponents(variant), [variant]);
+  const components = React.useMemo(
+    () => createComponents(variant, headingIdPrefix),
+    [variant, headingIdPrefix]
+  );
 
   return (
     <div className={`[&>:first-child]:mt-0 [&>:last-child]:mb-0 ${className ?? ""}`}>
