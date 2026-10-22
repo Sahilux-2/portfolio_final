@@ -250,13 +250,18 @@ export default function PortfolioWeb() {
                 data-name="Card & text container"
               >
                 <div className="relative h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] rounded-[16px] shrink-0 w-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_20px_35px_-15px_rgba(13,11,54,0.18)] border border-black/[0.04]">
-                  {/* Radiant Sunset Mesh Gradient matching the detail page */}
-                  <div
-                    className="absolute inset-0 size-full transition-transform duration-500 group-hover:scale-105"
-                    style={{
-                      background: `radial-gradient(circle at 35% 35%, #f59e0b 0%, #ea580c 45%, #ec4899 75%, #8b5cf6 100%)`,
-                    }}
-                  />
+                  <video
+                    className="absolute inset-0 size-full object-cover object-left-top transition-transform duration-500 group-hover:scale-105"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    poster="/case-study/pickwise-cover.jpg"
+                    aria-label="Pickwise case study cover"
+                  >
+                    <source src="/case-study/pickwise-cover.mp4" type="video/mp4" />
+                  </video>
                 </div>
                 <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
                   <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
