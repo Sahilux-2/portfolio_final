@@ -85,27 +85,38 @@ export default function CaseStudyDetail() {
                 key={section.id}
                 id={section.id}
                 ref={(el) => (sectionRefs.current[section.id] = el)}
-                className="scroll-mt-32 sm:scroll-mt-28 mb-12 pb-10 sm:mb-20 sm:pb-14 border-b border-black/[0.06] last:border-b-0 last:mb-4 last:pb-0"
+                className="scroll-mt-32 sm:scroll-mt-28 mb-14 pb-12 sm:mb-24 sm:pb-16 border-b border-black/[0.06] last:border-b-0 last:mb-4 last:pb-0"
               >
                 {section.id !== "overview" && (
-                  <div className="text-[12px] sm:text-[13px] font-['Satoshi:Medium',sans-serif] uppercase tracking-wider text-[#6e6d97] mb-2 sm:mb-2.5">
-                    {section.number ? `${section.number} · ${section.label}` : section.label}
+                  <div className="flex items-center gap-2.5 mb-3 sm:mb-4 text-[12px] sm:text-[13px] font-['Satoshi:Bold',sans-serif] uppercase tracking-[0.08em]">
+                    {section.number && (
+                      <span className="text-[#0d0b36] tabular-nums">{section.number}</span>
+                    )}
+                    {section.number && <span aria-hidden className="h-px w-5 bg-[#d1d1ed]" />}
+                    <span className="text-[#6e6d97]">{section.label}</span>
                   </div>
                 )}
                 {idx === 0 ? (
-                  <h2 className="font-editorial text-[24px] sm:text-[34px] md:text-[44px] leading-[1.2] text-[#0d0b36] tracking-tight mb-3">
+                  <h2 className="max-w-[760px] font-editorial text-[26px] sm:text-[36px] md:text-[44px] leading-[1.15] text-[#0d0b36] tracking-tight mb-3 text-balance">
                     {caseStudy.subtitle}
                   </h2>
                 ) : (
-                  <h2 className="font-editorial text-[24px] sm:text-[34px] md:text-[44px] leading-[1.2] text-[#0d0b36] tracking-tight mb-4 sm:mb-6">
+                  <h2 className="max-w-[760px] font-editorial text-[26px] sm:text-[34px] md:text-[40px] leading-[1.15] text-[#0d0b36] tracking-tight mb-6 sm:mb-8 text-balance">
                     {section.heading!.includes(" — ")
                       ? section.heading!.split(" — ").slice(1).join(" — ")
                       : section.heading}
                   </h2>
                 )}
-                <CaseStudyMarkdown className={idx === 0 ? "[&>p:first-of-type]:max-w-[700px]" : undefined}>
+                <CaseStudyMarkdown
+                  className={
+                    idx === 0
+                      ? "[&>p:first-of-type]:max-w-[700px] [&>p:first-of-type]:text-[16px] sm:[&>p:first-of-type]:text-[18px] [&>p:first-of-type]:text-[#3a3a4d] [&>h3]:mt-10 [&>h3]:mb-3 [&>h3]:font-['Satoshi:Bold',sans-serif] [&>h3]:text-[12px] sm:[&>h3]:text-[13px] [&>h3]:uppercase [&>h3]:tracking-[0.08em] [&>h3]:text-[#6e6d97]"
+                      : undefined
+                  }
+                >
                   {section.body}
                 </CaseStudyMarkdown>
+
               </section>
             ))}
           </article>

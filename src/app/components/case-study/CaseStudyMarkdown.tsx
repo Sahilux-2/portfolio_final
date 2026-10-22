@@ -30,12 +30,12 @@ const components: Components = {
     </h2>
   ),
   h2: ({ children }) => (
-    <h3 className="font-editorial text-[20px] sm:text-[26px] md:text-[30px] leading-[1.25] text-[#0d0b36] mt-7 sm:mt-10 mb-3 sm:mb-4">
+    <h3 className="font-editorial text-[22px] sm:text-[26px] md:text-[30px] leading-[1.25] tracking-tight text-[#0d0b36] mt-12 sm:mt-14 mb-4 sm:mb-5 text-balance">
       {children}
     </h3>
   ),
   h3: ({ children }) => (
-    <h4 className={`${bold} text-[16px] sm:text-[18px] md:text-[20px] text-[#0d0b36] mt-6 sm:mt-8 mb-2 sm:mb-2.5`}>{children}</h4>
+    <h4 className={`${bold} text-[17px] sm:text-[19px] md:text-[20px] leading-snug text-[#0d0b36] mt-10 sm:mt-12 mb-3`}>{children}</h4>
   ),
   p: ({ children }) => {
     // Markdown passes the unevaluated img element here, so data-case-study-media
@@ -51,8 +51,25 @@ const components: Components = {
       return <>{only}</>;
     }
 
+    // A paragraph that is entirely bold plain text is a key takeaway: give it a callout treatment.
+    const onlyProps = React.isValidElement(only)
+      ? (only.props as { children?: React.ReactNode })
+      : undefined;
+    const isCallout =
+      nodes.length === 1 &&
+      React.isValidElement(only) &&
+      only.type === "strong" &&
+      React.Children.toArray(onlyProps?.children).every((c) => typeof c === "string");
+    if (isCallout) {
+      return (
+        <p className={`${sans} my-8 sm:my-10 rounded-r-xl border-l-[3px] border-[#0d0b36] bg-[#f6f6fb] px-4 py-4 sm:px-6 sm:py-5 text-[15.5px] sm:text-[17px] leading-[1.65] text-[#0d0b36] break-words`}>
+          {children}
+        </p>
+      );
+    }
+
     return (
-      <p className={`${sans} text-[14.5px] sm:text-[16px] leading-[1.75] text-[#52525b] mb-4 break-words`}>
+      <p className={`${sans} max-w-[720px] text-[15px] sm:text-[16px] leading-[1.8] text-[#4a4a5c] mb-5 break-words`}>
         {children}
       </p>
     );
@@ -78,7 +95,7 @@ const components: Components = {
       return (
         <div
           data-case-study-media
-          className="my-6 sm:my-8 w-full min-w-0 overflow-hidden rounded-xl sm:rounded-2xl border border-[#d1d1ed] bg-[#0d0b36]/[0.04] shadow-xs"
+          className="mt-4 mb-3 sm:mt-6 sm:mb-4 w-full min-w-0 overflow-hidden rounded-xl sm:rounded-2xl border border-[#d1d1ed] bg-[#0d0b36]/[0.04] shadow-xs"
         >
           <video
             className="block w-full h-auto bg-black"
@@ -106,12 +123,12 @@ const components: Components = {
     );
   },
   ul: ({ children }) => (
-    <ul className="my-4 sm:my-5 flex flex-col gap-2 sm:gap-2.5 pl-0 list-none">{children}</ul>
+    <ul className="max-w-[720px] mt-2 mb-6 flex flex-col gap-2.5 sm:gap-3 pl-0 list-none">{children}</ul>
   ),
-  ol: ({ children }) => <ol className="my-4 sm:my-5 flex flex-col gap-2 sm:gap-2.5 pl-5 list-decimal text-[14.5px] sm:text-[16px] text-[#52525b]">{children}</ol>,
+  ol: ({ children }) => <ol className="max-w-[720px] mt-2 mb-6 flex flex-col gap-2.5 sm:gap-3 pl-5 list-decimal text-[15px] sm:text-[16px] text-[#4a4a5c]">{children}</ol>,
   li: ({ children }) => (
     <li
-      className={`${sans} relative pl-4 sm:pl-5 text-[14.5px] sm:text-[16px] leading-[1.7] text-[#52525b] before:content-[''] before:absolute before:left-0 before:top-[0.7em] before:size-[5px] sm:before:size-[6px] before:rounded-[1px] before:bg-[#0d0b36]`}
+      className={`${sans} relative pl-5 sm:pl-6 text-[15px] sm:text-[16px] leading-[1.7] text-[#4a4a5c] before:content-[''] before:absolute before:left-0 before:top-[0.7em] before:size-[5px] sm:before:size-[6px] before:rounded-[1px] before:bg-[#0d0b36]`}
     >
       {children}
     </li>
@@ -136,7 +153,7 @@ const components: Components = {
       </blockquote>
     ),
   table: ({ children }) => (
-    <div className="my-6 sm:my-8 w-full min-w-0">
+    <div className="my-8 sm:my-10 w-full min-w-0">
       <div className="sm:hidden flex items-center justify-end gap-1 text-[11px] font-['Satoshi:Medium',sans-serif] text-[#6e6d97] mb-1.5 px-0.5">
         <span>Swipe table to view all →</span>
       </div>
@@ -153,7 +170,7 @@ const components: Components = {
   ),
   tr: ({ children }) => <tr className="border-t border-[#d1d1ed]/70 first:border-t-0">{children}</tr>,
   td: ({ children }) => (
-    <td className={`${sans} px-3.5 sm:px-4 py-2.5 sm:py-3 align-top text-[13.5px] sm:text-[14px] leading-relaxed text-[#52525b]`}>
+    <td className={`${sans} px-3.5 sm:px-4 py-3 sm:py-3.5 align-top text-[13.5px] sm:text-[14px] leading-relaxed text-[#4a4a5c]`}>
       {children}
     </td>
   ),
@@ -167,7 +184,7 @@ export function CaseStudyMarkdown({
   className?: string;
 }) {
   return (
-    <div className={className}>
+    <div className={`[&>:first-child]:mt-0 [&>:last-child]:mb-0 ${className ?? ""}`}>
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
         {children}
       </ReactMarkdown>
