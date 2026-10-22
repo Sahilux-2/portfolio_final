@@ -44,14 +44,53 @@ export default function CaseStudyDetail() {
   const { slug } = useParams();
   const caseStudy = PICKWISE_CASE_STUDY;
   const [activeSection, setActiveSection] = useState<string>("overview");
+  /** Which user-story submenu is open — driven by click / settled spy, not mid-scroll. */
+  const [expandedTocId, setExpandedTocId] = useState<string | null>(null);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+  /** While set, scroll-spy is paused so TOC doesn't flicker during smooth scroll. */
+  const scrollLockRef = useRef<string | null>(null);
+  const scrollUnlockTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const getScrollTarget = (id: string): HTMLElement | null =>
     sectionRefs.current[id] ?? document.getElementById(id);
 
+  const scrollOffset = () => (window.innerWidth < 1024 ? 116 : 80);
+
+  const distanceToTarget = (id: string) => {
+    const el = getScrollTarget(id);
+    if (!el) return Infinity;
+    const targetTop =
+      el.getBoundingClientRect().top + window.scrollY - scrollOffset();
+    return Math.abs(window.scrollY - targetTop);
+  };
+
+  const clearScrollLock = () => {
+    scrollLockRef.current = null;
+    if (scrollUnlockTimerRef.current) {
+      clearTimeout(scrollUnlockTimerRef.current);
+      scrollUnlockTimerRef.current = null;
+    }
+  };
+
+  const tocParentId = (id: string): string | null => {
+    for (const item of caseStudy.toc) {
+      if (item.id === id) return item.id;
+      if (item.children?.some((child) => child.id === id)) return item.id;
+    }
+    return null;
+  };
+
+  const expandForId = (id: string) => {
+    const parent = tocParentId(id);
+    const item = parent
+      ? caseStudy.toc.find((entry) => entry.id === parent)
+      : undefined;
+    setExpandedTocId(item?.children?.length ? parent : null);
+  };
+
   // Robust scroll spy — sections + user-story subsections
   useEffect(() => {
-    const handleScroll = () => {
+    const applySpy = () => {
       const scrollY = window.scrollY;
       const isMobile = window.innerWidth < 1024;
       const headerOffset = isMobile ? 120 : 160;
@@ -68,27 +107,59 @@ export default function CaseStudyDetail() {
           const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
           if (scrollY >= top - 30) {
             setActiveSection(id);
+            expandForId(id);
             break;
           }
         }
       }
     };
 
+    const handleScroll = () => {
+      const lockedId = scrollLockRef.current;
+      if (lockedId) {
+        // Stay locked until we actually reach the clicked target — prevents the
+        // previous story submenu from flashing open mid-scroll.
+        if (distanceToTarget(lockedId) > 12) return;
+        clearScrollLock();
+      }
+      applySpy();
+    };
+
+    const handleScrollEnd = () => {
+      if (!scrollLockRef.current) return;
+      if (distanceToTarget(scrollLockRef.current) > 12) return;
+      clearScrollLock();
+      applySpy();
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scrollend", handleScrollEnd);
+    applySpy();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scrollend", handleScrollEnd);
+      if (scrollUnlockTimerRef.current) clearTimeout(scrollUnlockTimerRef.current);
+    };
   }, [caseStudy.toc]);
 
   const scrollToSection = (id: string) => {
     const el = getScrollTarget(id);
-    if (el) {
-      const isMobile = window.innerWidth < 1024;
-      const offset = isMobile ? 116 : 80;
-      const targetTop = el.getBoundingClientRect().top + window.scrollY - offset;
+    if (!el) return;
 
-      window.scrollTo({ top: targetTop, behavior: "smooth" });
-      setActiveSection(id);
-    }
+    const targetTop =
+      el.getBoundingClientRect().top + window.scrollY - scrollOffset();
+
+    // Pin active + expanded menu to the click immediately; ignore spy until arrived.
+    if (scrollUnlockTimerRef.current) clearTimeout(scrollUnlockTimerRef.current);
+    scrollLockRef.current = id;
+    setActiveSection(id);
+    expandForId(id);
+    window.scrollTo({ top: targetTop, behavior: "smooth" });
+
+    // Safety unlock if scrollend never fires (already at target / unsupported).
+    scrollUnlockTimerRef.current = setTimeout(() => {
+      if (scrollLockRef.current === id) clearScrollLock();
+    }, 1600);
   };
 
   if (slug !== caseStudy.slug) {
@@ -107,6 +178,7 @@ export default function CaseStudyDetail() {
           <SidebarToc
             items={caseStudy.toc}
             activeId={activeSection}
+            expandedId={expandedTocId}
             onSelect={scrollToSection}
           />
 

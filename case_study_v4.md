@@ -150,12 +150,6 @@ I went with three focused screens instead. Each screen asks one main question, a
 
 **My reasoning:** Reducing the number of screens isn't always the best solution. In this case, making each step easier to understand was more important.
 
-> **[VISUAL 05 — QUESTIONNAIRE ITERATIONS]**
->
-> Show the initial single-screen questionnaire concept beside the final three-step flow.
->
-> Callout: *“One focused question per screen, with clear progress.”*
-
 ### Why start with the use case instead of specifications?
 
 I could have started with traditional filters such as processor, RAM, and graphics. But that would require users to understand specifications before they could get useful recommendations.

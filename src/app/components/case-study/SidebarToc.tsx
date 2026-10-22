@@ -4,6 +4,8 @@ import { desktopTocLabel, TocItem } from "../../data/caseStudies";
 interface SidebarTocProps {
   items: TocItem[];
   activeId: string;
+  /** Controlled: which user-story submenu is open */
+  expandedId: string | null;
   onSelect: (id: string) => void;
 }
 
@@ -12,7 +14,12 @@ function isItemOrChildActive(item: TocItem, activeId: string): boolean {
   return Boolean(item.children?.some((child) => child.id === activeId));
 }
 
-export function SidebarToc({ items, activeId, onSelect }: SidebarTocProps) {
+export function SidebarToc({
+  items,
+  activeId,
+  expandedId,
+  onSelect,
+}: SidebarTocProps) {
   const activePillRef = useRef<HTMLButtonElement | null>(null);
   const mobileNavRef = useRef<HTMLDivElement | null>(null);
 
@@ -46,7 +53,7 @@ export function SidebarToc({ items, activeId, onSelect }: SidebarTocProps) {
                   key={item.id}
                   ref={isActive ? activePillRef : null}
                   onClick={() => onSelect(item.id)}
-                  className={`shrink-0 snap-start px-2.5 py-1 rounded-full text-[11px] leading-none font-['Satoshi:Medium',sans-serif] transition-all cursor-pointer flex items-center gap-1 active:scale-95 select-none ${
+                  className={`shrink-0 snap-start px-2.5 py-1 rounded-full text-[11px] leading-none font-['Satoshi:Medium',sans-serif] transition-colors cursor-pointer flex items-center gap-1 active:scale-95 select-none ${
                     isActive
                       ? "bg-[#0d0b36] text-white shadow-xs font-['Satoshi:Bold',sans-serif]"
                       : "bg-[#f0f0f7] text-[#6e6d97] hover:text-[#0d0b36] hover:bg-[#e6e6f2]"
@@ -67,22 +74,22 @@ export function SidebarToc({ items, activeId, onSelect }: SidebarTocProps) {
           {items.map((item) => {
             const sectionActive = isItemOrChildActive(item, activeId);
             const children = item.children;
-            const showChildren = Boolean(children?.length && sectionActive);
+            const showChildren = Boolean(children?.length && expandedId === item.id);
 
             return (
               <div key={item.id} className="flex flex-col gap-2">
                 <button
                   type="button"
                   onClick={() => onSelect(item.id)}
-                  className={`group flex items-center gap-2 text-left text-[14px] leading-tight transition-all duration-200 cursor-pointer ${
+                  className={`group flex items-center gap-2 text-left text-[14px] leading-tight transition-colors duration-150 cursor-pointer ${
                     sectionActive
                       ? "text-[#0d0b36] font-['Satoshi:Bold',sans-serif]"
                       : "text-[#6e6d97] hover:text-[#0d0b36] font-['Satoshi:Medium',sans-serif]"
                   }`}
                 >
                   <span
-                    className={`size-[5px] rounded-[1px] shrink-0 transition-opacity duration-200 ${
-                      activeId === item.id
+                    className={`size-[5px] rounded-[1px] shrink-0 transition-opacity duration-150 ${
+                      sectionActive
                         ? "bg-[#0d0b36] opacity-100"
                         : "bg-transparent opacity-0"
                     }`}
@@ -103,7 +110,7 @@ export function SidebarToc({ items, activeId, onSelect }: SidebarTocProps) {
                           key={child.id}
                           type="button"
                           onClick={() => onSelect(child.id)}
-                          className={`text-left text-[12px] xl:text-[13px] leading-snug transition-colors duration-200 cursor-pointer ${
+                          className={`text-left text-[12px] xl:text-[13px] leading-snug transition-colors duration-150 cursor-pointer ${
                             childActive
                               ? "text-[#0d0b36] font-['Satoshi:Bold',sans-serif]"
                               : "text-[#6e6d97] hover:text-[#0d0b36] font-['Satoshi:Medium',sans-serif]"
