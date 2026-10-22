@@ -270,8 +270,6 @@ Completing the questionnaire doesn't necessarily mean users found the recommenda
 
 This tells me whether users are completing the starting flow. If multiple users abandon the questionnaire, I'd investigate where they're dropping off and find out why.
 
-These metrics tell me about user behaviour, not whether every recommendation is technically suitable. That would require additional evaluation and user testing.
-
 # 07. User story 2 — Understanding and comparing laptops
 
 **User story**

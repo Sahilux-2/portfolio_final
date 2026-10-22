@@ -42,9 +42,12 @@ function isVisualPlaceholder(children: React.ReactNode): boolean {
   return first ? /^\s*\[VISUAL/i.test(text(first.props.children)) : false;
 }
 
+type MeasureSuccessState = { active: boolean; inWhy: boolean };
+
 function createComponents(
   variant: "default" | "overview",
-  headingIdPrefix?: string
+  headingIdPrefix: string | undefined,
+  measure: MeasureSuccessState
 ): Components {
   const isOverview = variant === "overview";
 
@@ -55,9 +58,14 @@ function createComponents(
       </h2>
     ),
     h2: ({ children }) => {
+      const headingText = plainTextFromNode(children).trim();
+      const isMeasureSuccess = /^how i measure success$/i.test(headingText);
+      measure.active = isMeasureSuccess;
+      measure.inWhy = false;
+
       const subnav =
         headingIdPrefix && !isOverview
-          ? matchUserStorySubnav(plainTextFromNode(children))
+          ? matchUserStorySubnav(headingText)
           : null;
       const id = subnav ? `${headingIdPrefix}--${subnav.key}` : undefined;
 
@@ -68,17 +76,40 @@ function createComponents(
       ) : (
         <h3
           id={id}
-          className="font-editorial text-[22px] sm:text-[26px] md:text-[30px] leading-[1.25] tracking-tight text-[#0d0b36] mt-12 sm:mt-14 mb-4 sm:mb-5 text-balance scroll-mt-32 sm:scroll-mt-28"
+          className={`font-editorial text-[22px] sm:text-[26px] md:text-[30px] leading-[1.25] tracking-tight text-[#0d0b36] mt-12 sm:mt-14 text-balance scroll-mt-32 sm:scroll-mt-28 ${
+            isMeasureSuccess ? "mb-6" : "mb-1"
+          }`}
         >
           {children}
         </h3>
       );
     },
-    h3: ({ children }) => (
-      <h4 className={`${bold} text-[17px] sm:text-[19px] md:text-[20px] leading-snug text-[#0d0b36] mt-10 sm:mt-12 mb-3`}>
-        {children}
-      </h4>
-    ),
+    h3: ({ children }) => {
+      const headingText = plainTextFromNode(children).trim();
+      const isWhyMetric =
+        measure.active && /^why this metric/i.test(headingText);
+      if (isWhyMetric) {
+        measure.inWhy = true;
+        return (
+          <h4
+            className={`${bold} text-[17px] sm:text-[19px] md:text-[20px] leading-snug text-[#0d0b36] mt-0 mb-3`}
+          >
+            {children}
+          </h4>
+        );
+      }
+
+      measure.inWhy = false;
+      if (!/^how i measure success$/i.test(headingText)) {
+        measure.active = false;
+      }
+
+      return (
+        <h4 className={`${bold} text-[17px] sm:text-[19px] md:text-[20px] leading-snug text-[#0d0b36] mt-10 sm:mt-12 mb-3`}>
+          {children}
+        </h4>
+      );
+    },
     p: ({ children }) => {
       // Markdown passes the unevaluated img element here, so data-case-study-media
       // is not on props yet. A video renderer returns a div, which cannot sit inside p.
@@ -108,10 +139,45 @@ function createComponents(
           )
           .join("");
 
+      const paragraphText = plainText(children).trim();
+
       // "**User story**" labels above the italic story — tighter gap to the quote.
-      if (!isOverview && plainText(children).trim() === "User story") {
+      if (!isOverview && paragraphText === "User story") {
         return (
           <p className={`${sans} max-w-[720px] text-[15px] sm:text-[16px] leading-[1.8] text-[#4a4a5c] mb-2 break-words`}>
+            {children}
+          </p>
+        );
+      }
+
+      // Lead-ins before example quotes (e.g. "…might say:") — 4px gap to the quote.
+      if (!isOverview && /say:$/i.test(paragraphText)) {
+        return (
+          <p className={`${sans} max-w-[720px] text-[15px] sm:text-[16px] leading-[1.8] text-[#4a4a5c] mb-1 break-words`}>
+            {children}
+          </p>
+        );
+      }
+
+      // "How I measure success" — primary/secondary metric lines (20px below).
+      if (
+        measure.active &&
+        /^(primary|secondary) metric:/i.test(paragraphText)
+      ) {
+        measure.inWhy = false;
+        return (
+          <p className={`${sans} max-w-[720px] text-[15px] sm:text-[16px] leading-[1.8] text-[#4a4a5c] mb-5 break-words`}>
+            {children}
+          </p>
+        );
+      }
+
+      // "Why this metric" body — 20px between paragraphs, 48px after the block.
+      if (measure.inWhy) {
+        return (
+          <p
+            className={`why-metric-p ${sans} max-w-[720px] text-[15px] sm:text-[16px] leading-[1.8] text-[#4a4a5c] mb-12 break-words [&:has(+.why-metric-p)]:mb-5`}
+          >
             {children}
           </p>
         );
@@ -128,6 +194,8 @@ function createComponents(
         only.type === "strong" &&
         React.Children.toArray(onlyProps?.children).every((c) => typeof c === "string");
       if (isCallout) {
+        measure.active = false;
+        measure.inWhy = false;
         return (
           <p className={`${sans} my-8 sm:my-10 rounded-r-xl border-l-[3px] border-[#0d0b36] bg-[#f6f6fb] px-4 py-4 sm:px-6 sm:py-5 text-[15.5px] sm:text-[17px] leading-[1.65] text-[#0d0b36] break-words`}>
             {children}
@@ -279,13 +347,23 @@ export function CaseStudyMarkdown({
   /** When set (user-story sections), matching h2s get stable `#prefix--key` ids for TOC. */
   headingIdPrefix?: string;
 }) {
+  const measureRef = React.useRef<MeasureSuccessState>({
+    active: false,
+    inWhy: false,
+  });
+  // Reset before each pass so Strict Mode double-render can't leak flags.
+  measureRef.current.active = false;
+  measureRef.current.inWhy = false;
+
   const components = React.useMemo(
-    () => createComponents(variant, headingIdPrefix),
+    () => createComponents(variant, headingIdPrefix, measureRef.current),
     [variant, headingIdPrefix]
   );
 
   return (
-    <div className={`[&>:first-child]:mt-0 [&>:last-child]:mb-0 ${className ?? ""}`}>
+    <div
+      className={`[&>:first-child]:mt-0 [&>:last-child:not(.why-metric-p)]:mb-0 ${className ?? ""}`}
+    >
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={components}
