@@ -541,12 +541,6 @@ Firebase Anonymous Authentication provides that identity without a signup or log
 
 The `trackEvent` function sends allowlisted events to Firestore. Rules restrict client writes, prohibit client reads, and require authentication. Analytics failures don't interrupt the core experience.
 
-> **[VISUAL 13 — FIREBASE CONSOLE]**
->
-> Show Firestore event records and a few key journey events.
->
-> Caption: *“Anonymous analytics records important user actions without requiring account creation.”*
-
 This demonstrates that instrumentation is implemented and recording events. It isn't evidence of improved conversion or validated user outcomes.
 
 # 10. My learnings

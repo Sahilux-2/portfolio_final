@@ -39,11 +39,46 @@ export const VISUAL_FRAMES: Record<string, VisualFrame> = {
     alt: "Pickwise recommendations when budget is exceeded and preferences were skipped",
     callout: "Keep results useful when preferences are skipped",
   },
+  "laptops-edit-input": {
+    src: "/case-study/laptops-display-edit-input.svg",
+    alt: "Pickwise recommendations listing with Edit inputs control",
+    callout: "Edit inputs from the results screen",
+  },
+  "comparison-3": {
+    src: "/case-study/comparison-3-table-screen.svg",
+    alt: "Pickwise comparison table comparing three laptops with human-language specs and verdict",
+    callout: "Compare three laptops side by side",
+  },
+  "comparison-4": {
+    src: "/case-study/comparison-4-table-screen.svg",
+    alt: "Pickwise comparison table comparing four laptops with human-language specs and verdict",
+    callout: "Compare four laptops side by side",
+  },
+  "buying-options-iteration": {
+    src: "/case-study/buying-options-iteration.svg",
+    alt: "Pickwise buying options iteration showing online and offline options in one unified list",
+    callout: "One list for online and offline options",
+  },
+  "no-offline-stores": {
+    src: "/case-study/no-offline-stores-nearby.svg",
+    alt: "Pickwise buying options when no offline stores are nearby",
+    callout: "No offline stores nearby",
+  },
+  "no-online-options": {
+    src: "/case-study/no-online-options-available.svg",
+    alt: "Pickwise buying options when no online options are available",
+    callout: "No online options available",
+  },
+  "buying-options-final": {
+    src: "/case-study/buying-options-final.svg",
+    alt: "Pickwise final buying options table with online and offline options",
+    callout: "Final buying options table",
+  },
 };
 
 type VisualGroup = {
   frames: VisualFrame[];
-  /** VISUAL 07 uses a 2-column grid; third image leaves the right cell empty */
+  /** VISUAL 07 uses a 2-column grid */
   layout?: "stack" | "grid-2";
 };
 
@@ -54,7 +89,25 @@ const VISUAL_GROUPS: Record<string, VisualGroup> = {
       VISUAL_FRAMES["edge-case-no-match"],
       VISUAL_FRAMES["edge-case-over-budget"],
       VISUAL_FRAMES["edge-case-over-budget-no-preference"],
+      VISUAL_FRAMES["laptops-edit-input"],
     ],
+  },
+  "09": {
+    layout: "grid-2",
+    frames: [VISUAL_FRAMES["comparison-3"], VISUAL_FRAMES["comparison-4"]],
+  },
+  "10": {
+    frames: [VISUAL_FRAMES["buying-options-iteration"]],
+  },
+  "11": {
+    layout: "grid-2",
+    frames: [
+      VISUAL_FRAMES["no-offline-stores"],
+      VISUAL_FRAMES["no-online-options"],
+    ],
+  },
+  "12": {
+    frames: [VISUAL_FRAMES["buying-options-final"]],
   },
 };
 
