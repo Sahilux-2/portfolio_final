@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal, flushSync } from "react-dom";
 
 type VisualFrame = {
   src: string;
@@ -40,7 +41,34 @@ export const VISUAL_FRAMES: Record<string, VisualFrame> = {
   },
 };
 
-const VISUAL_GROUPS: Record<string, VisualFrame[]> = {};
+type VisualGroup = {
+  frames: VisualFrame[];
+  /** VISUAL 07 uses a 2-column grid; third image leaves the right cell empty */
+  layout?: "stack" | "grid-2";
+};
+
+const VISUAL_GROUPS: Record<string, VisualGroup> = {
+  "07": {
+    layout: "grid-2",
+    frames: [
+      VISUAL_FRAMES["edge-case-no-match"],
+      VISUAL_FRAMES["edge-case-over-budget"],
+      VISUAL_FRAMES["edge-case-over-budget-no-preference"],
+    ],
+  },
+};
+
+const EXPAND_MS = 200;
+const EXPAND_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
+const EXPAND_TRANSITION = [
+  `top ${EXPAND_MS}ms ${EXPAND_EASE}`,
+  `left ${EXPAND_MS}ms ${EXPAND_EASE}`,
+  `width ${EXPAND_MS}ms ${EXPAND_EASE}`,
+  `height ${EXPAND_MS}ms ${EXPAND_EASE}`,
+  `border-radius ${EXPAND_MS}ms ${EXPAND_EASE}`,
+  `padding ${EXPAND_MS}ms ${EXPAND_EASE}`,
+  `background-color ${EXPAND_MS}ms ease`,
+].join(", ");
 
 function extractVisualId(children: React.ReactNode): string | null {
   const text = (node: React.ReactNode): string =>
@@ -65,34 +93,195 @@ export function hasCaseStudyVisual(children: React.ReactNode): boolean {
 
 export function CaseStudyVisual({ children }: { children: React.ReactNode }) {
   const id = extractVisualId(children);
-  const frames = id ? VISUAL_GROUPS[id] : undefined;
-  if (!frames) return null;
+  const group = id ? VISUAL_GROUPS[id] : undefined;
+  if (!group) return null;
+
+  if (group.layout === "grid-2") {
+    return (
+      <div className="my-8 sm:my-10 w-full min-w-0 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+        {group.frames.map((frame) => (
+          <CaseStudyVisualFrame key={frame.callout} frame={frame} compact />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="my-8 sm:my-10 w-full min-w-0 flex flex-col gap-8 sm:gap-10">
-      {frames.map((frame) => (
+      {group.frames.map((frame) => (
         <CaseStudyVisualFrame key={frame.callout} frame={frame} />
       ))}
     </div>
   );
 }
 
-export function CaseStudyVisualFrame({ frame }: { frame: VisualFrame }) {
+function applyRect(
+  el: HTMLElement,
+  rect: { top: number; left: number; width: number; height: number },
+  radius: string,
+  padding: string,
+  background: string
+) {
+  el.style.top = `${rect.top}px`;
+  el.style.left = `${rect.left}px`;
+  el.style.width = `${rect.width}px`;
+  el.style.height = `${rect.height}px`;
+  el.style.borderRadius = radius;
+  el.style.padding = padding;
+  el.style.backgroundColor = background;
+}
+
+export function CaseStudyVisualFrame({
+  frame,
+  compact = false,
+}: {
+  frame: VisualFrame;
+  compact?: boolean;
+}) {
+  const shellRef = useRef<HTMLButtonElement | null>(null);
+  const layerRef = useRef<HTMLButtonElement | null>(null);
+  const [expanded, setExpanded] = useState(false);
+  const expandedRef = useRef(false);
+  const animatingRef = useRef(false);
+
+  useEffect(() => {
+    if (!expanded) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") collapse();
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [expanded]);
+
+  const collapse = () => {
+    const shell = shellRef.current;
+    const layer = layerRef.current;
+    if (!shell || !layer || !expandedRef.current || animatingRef.current) return;
+
+    const rect = shell.getBoundingClientRect();
+    const radius = getComputedStyle(shell).borderRadius;
+
+    animatingRef.current = true;
+    layer.style.transition = EXPAND_TRANSITION;
+    applyRect(layer, rect, radius, "0px", "transparent");
+
+    const img = layer.querySelector("img");
+    if (img) {
+      img.style.transition = `object-fit ${EXPAND_MS}ms ease`;
+      img.classList.remove("object-contain");
+      img.classList.add("object-cover");
+    }
+
+    const onEnd = (e: TransitionEvent) => {
+      if (e.propertyName !== "width") return;
+      layer.removeEventListener("transitionend", onEnd);
+      layer.style.transition = "none";
+      layer.style.opacity = "0";
+
+      expandedRef.current = false;
+      animatingRef.current = false;
+      flushSync(() => setExpanded(false));
+    };
+    layer.addEventListener("transitionend", onEnd);
+  };
+
+  const expand = () => {
+    const shell = shellRef.current;
+    if (!shell || expandedRef.current || animatingRef.current) return;
+
+    const rect = shell.getBoundingClientRect();
+    const radius = getComputedStyle(shell).borderRadius;
+
+    animatingRef.current = true;
+    expandedRef.current = true;
+    flushSync(() => setExpanded(true));
+
+    const layer = layerRef.current;
+    if (!layer) {
+      animatingRef.current = false;
+      return;
+    }
+
+    applyRect(layer, rect, radius, "0px", "transparent");
+    layer.style.transition = "none";
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        layer.style.transition = EXPAND_TRANSITION;
+        applyRect(
+          layer,
+          { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight },
+          "0px",
+          window.innerWidth < 640 ? "12px" : "24px",
+          "rgba(13, 11, 54, 0.92)"
+        );
+
+        const img = layer.querySelector("img");
+        if (img) {
+          img.classList.remove("object-cover");
+          img.classList.add("object-contain");
+        }
+      });
+    });
+
+    const onEnd = (e: TransitionEvent) => {
+      if (e.propertyName !== "width") return;
+      animatingRef.current = false;
+      layer.removeEventListener("transitionend", onEnd);
+    };
+    layer.addEventListener("transitionend", onEnd);
+  };
+
   return (
-    <figure data-case-study-media className="my-6 sm:my-8 w-full min-w-0">
-      <div className="overflow-hidden rounded-xl sm:rounded-2xl border border-[#d1d1ed] bg-white shadow-xs">
+    <figure
+      data-case-study-media
+      className={`w-full min-w-0 ${compact ? "m-0" : "my-6 sm:my-8"}`}
+    >
+      <button
+        ref={shellRef}
+        type="button"
+        aria-label={`Expand ${frame.alt}`}
+        onClick={expand}
+        className="relative block w-full overflow-hidden rounded-xl sm:rounded-2xl border border-[#d1d1ed] bg-white shadow-xs cursor-zoom-in p-0"
+      >
         <img
           src={frame.src}
           alt={frame.alt}
-          className="block w-full h-auto"
+          className="block w-full h-auto pointer-events-none"
           loading="lazy"
         />
-      </div>
-      <figcaption className="mt-3 sm:mt-3.5 font-['Satoshi:Medium',sans-serif] text-[13px] sm:text-[14px] leading-snug text-[#6e6d97]">
+      </button>
+
+      <figcaption className="mt-2.5 sm:mt-3 font-['Satoshi:Medium',sans-serif] text-[12px] sm:text-[14px] leading-snug text-[#6e6d97]">
         <span className="text-[#0d0b36] font-['Satoshi:Bold',sans-serif]">
           {frame.callout}
         </span>
       </figcaption>
+
+      {expanded &&
+        createPortal(
+          <button
+            ref={layerRef}
+            type="button"
+            aria-label="Collapse image"
+            onClick={collapse}
+            className="fixed z-[200] overflow-hidden border-0 cursor-zoom-out p-0 flex items-center justify-center"
+            style={{ margin: 0 }}
+          >
+            <img
+              src={frame.src}
+              alt={frame.alt}
+              className="size-full object-cover pointer-events-none"
+            />
+          </button>,
+          document.body
+        )}
     </figure>
   );
 }
