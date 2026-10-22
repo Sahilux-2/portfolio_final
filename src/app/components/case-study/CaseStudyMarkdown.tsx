@@ -61,6 +61,26 @@ function createComponents(variant: "default" | "overview"): Components {
         return <>{only}</>;
       }
 
+      const plainText = (node: React.ReactNode): string =>
+        React.Children.toArray(node)
+          .map((n) =>
+            typeof n === "string"
+              ? n
+              : React.isValidElement(n)
+                ? plainText((n as React.ReactElement<{ children?: React.ReactNode }>).props.children)
+                : ""
+          )
+          .join("");
+
+      // "**User story**" labels above the italic story — tighter gap to the quote.
+      if (!isOverview && plainText(children).trim() === "User story") {
+        return (
+          <p className={`${sans} max-w-[720px] text-[15px] sm:text-[16px] leading-[1.8] text-[#4a4a5c] mb-2 break-words`}>
+            {children}
+          </p>
+        );
+      }
+
       // A paragraph that is entirely bold plain text is a key takeaway: give it a callout treatment.
       const onlyProps = React.isValidElement(only)
         ? (only.props as { children?: React.ReactNode })
@@ -172,7 +192,7 @@ function createComponents(variant: "default" | "overview"): Components {
         </blockquote>
       ),
     table: ({ children }) => (
-      <div className="my-8 sm:my-10 w-full min-w-0">
+      <div className="mt-3.5 mb-4 sm:mt-5.5 sm:mb-6 w-full min-w-0">
         <div className="sm:hidden flex items-center justify-end gap-1 text-[11px] font-['Satoshi:Medium',sans-serif] text-[#6e6d97] mb-1.5 px-0.5">
           <span>Swipe table to view all →</span>
         </div>

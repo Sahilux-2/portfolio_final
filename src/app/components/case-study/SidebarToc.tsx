@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { TocItem } from "../../data/caseStudies";
+import { desktopTocLabel, TocItem } from "../../data/caseStudies";
 
 interface SidebarTocProps {
   items: TocItem[];
@@ -77,7 +77,7 @@ export function SidebarToc({ items, activeId, onSelect }: SidebarTocProps) {
                     isActive ? "bg-[#0d0b36] opacity-100" : "bg-transparent opacity-0"
                   }`}
                 />
-                <span className="truncate">{item.label}</span>
+                <span className="truncate">{desktopTocLabel(item.label)}</span>
               </button>
             );
           })}

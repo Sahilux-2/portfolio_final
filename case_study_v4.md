@@ -366,7 +366,7 @@ The wording is specific to each type of specification. Not everything follows Lo
 
 **Control:** Prewritten copy mapped through explicit rules is easier to test, inspect, and update. It also reduces the risk of exaggerated or misleading statements.
 
-I chose to use AI where it adds value, interpreting inputs and generating the overall comparison verdict—while using predefined copy for individual specification rows.
+I chose to use AI where it adds value, interpreting inputs and generating the overall comparison verdict, while using predefined copy for individual specification rows.
 
 ### Other design decisions
 

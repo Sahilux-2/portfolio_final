@@ -3,7 +3,7 @@ import { Navigate, useParams } from "react-router";
 import { BreadcrumbHeader } from "../components/case-study/BreadcrumbHeader";
 import { SidebarToc } from "../components/case-study/SidebarToc";
 import { CaseStudyMarkdown } from "../components/case-study/CaseStudyMarkdown";
-import { PICKWISE_CASE_STUDY } from "../data/caseStudies";
+import { desktopTocLabel, PICKWISE_CASE_STUDY } from "../data/caseStudies";
 import svgPaths from "../imports/svg-asll6uiju1";
 
 function Socials({ children }: React.PropsWithChildren<{}>) {
@@ -24,7 +24,8 @@ function SectionHeading({ label, heading }: { label: string; heading: string }) 
   return (
     <div className="mb-6 sm:mb-8">
       <h2 className="max-w-[760px] font-editorial text-[26px] sm:text-[34px] md:text-[40px] leading-[1.15] text-[#0d0b36] tracking-tight text-balance">
-        {label}
+        <span className="lg:hidden">{label}</span>
+        <span className="hidden lg:inline">{desktopTocLabel(label)}</span>
       </h2>
       {deck && (
         <p className="mt-2 sm:mt-2.5 max-w-[640px] font-['Satoshi:Medium',sans-serif] text-[15px] sm:text-[17px] leading-snug text-[#6e6d97]">

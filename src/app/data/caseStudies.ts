@@ -5,6 +5,13 @@ export interface TocItem {
   label: string;
 }
 
+/** Expand shortened mobile TOC labels for desktop headings / sidebar. */
+export function desktopTocLabel(label: string): string {
+  if (label === "Analysis") return "Competitive analysis";
+  if (label.startsWith("Story ")) return `User ${label}`;
+  return label;
+}
+
 export interface CaseStudySection {
   id: string;
   label: string;
