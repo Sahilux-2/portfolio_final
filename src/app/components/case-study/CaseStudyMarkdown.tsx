@@ -159,10 +159,18 @@ const components: Components = {
   ),
 };
 
-export function CaseStudyMarkdown({ children }: { children: string }) {
+export function CaseStudyMarkdown({
+  children,
+  className,
+}: {
+  children: string;
+  className?: string;
+}) {
   return (
-    <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
-      {children}
-    </ReactMarkdown>
+    <div className={className}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+        {children}
+      </ReactMarkdown>
+    </div>
   );
 }

@@ -87,9 +87,11 @@ export default function CaseStudyDetail() {
                 ref={(el) => (sectionRefs.current[section.id] = el)}
                 className="scroll-mt-32 sm:scroll-mt-28 mb-12 pb-10 sm:mb-20 sm:pb-14 border-b border-black/[0.06] last:border-b-0 last:mb-4 last:pb-0"
               >
-                <div className="text-[12px] sm:text-[13px] font-['Satoshi:Medium',sans-serif] uppercase tracking-wider text-[#6e6d97] mb-2 sm:mb-2.5">
-                  {section.number ? `${section.number} · ${section.label}` : section.label}
-                </div>
+                {section.id !== "overview" && (
+                  <div className="text-[12px] sm:text-[13px] font-['Satoshi:Medium',sans-serif] uppercase tracking-wider text-[#6e6d97] mb-2 sm:mb-2.5">
+                    {section.number ? `${section.number} · ${section.label}` : section.label}
+                  </div>
+                )}
                 {idx === 0 ? (
                   <h2 className="font-editorial text-[24px] sm:text-[34px] md:text-[44px] leading-[1.2] text-[#0d0b36] tracking-tight mb-4 sm:mb-5">
                     {caseStudy.subtitle}
@@ -101,7 +103,9 @@ export default function CaseStudyDetail() {
                       : section.heading}
                   </h2>
                 )}
-                <CaseStudyMarkdown>{section.body}</CaseStudyMarkdown>
+                <CaseStudyMarkdown className={idx === 0 ? "[&>p:first-of-type]:max-w-[700px]" : undefined}>
+                  {section.body}
+                </CaseStudyMarkdown>
               </section>
             ))}
           </article>
