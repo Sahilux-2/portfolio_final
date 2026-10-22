@@ -176,6 +176,8 @@ I considered showing the entire library upfront, but that would make the first s
 
 **This way, users can pick a common option quickly without losing the flexibility to describe more specific needs.**
 
+![Choose instead of type](visual:quick-picks)
+
 ### Why inline clarification instead of a modal?
 
 A broad answer like “editing” might not give Pickwise enough information to recommend suitable laptops.
@@ -187,6 +189,8 @@ I chose inline clarification because the user can answer the follow-up in the sa
 For example: *“What kind of designing or editing will you be doing?”*
 
 It's not an error state. The user hasn't done anything wrong; Pickwise just needs a little more information.
+
+![Clarify without interrupting](visual:inline-clarification)
 
 ### Why collect preferences separately?
 
@@ -210,11 +214,7 @@ This makes budget selection quicker and helps users understand the likely cost b
 
 It doesn't eliminate every no-match case, but it gives users more information before they continue.
 
-> **[VISUAL 06 — QUICK PICKS AND BUDGET]**
->
-> Show the use-case Quick Picks drawer, inline clarification state, and budget screen with the recommended minimum.
->
-> Add short callouts: **“Choose instead of type”**, **“Clarify without interrupting”**, and **“Set realistic budget expectations.”**
+![Set realistic budget expectations](visual:budget)
 
 ## The recommendations screen
 

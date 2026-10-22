@@ -1,7 +1,13 @@
 import React from "react";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { defaultUrlTransform } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { Components } from "react-markdown";
+import {
+  CaseStudyVisual,
+  CaseStudyVisualFrame,
+  VISUAL_FRAMES,
+  hasCaseStudyVisual,
+} from "./CaseStudyVisuals";
 
 const sans = "font-satoshi-regular font-['Satoshi:Regular','Satoshi',sans-serif]";
 const bold = "font-satoshi-bold font-['Satoshi:Bold','Satoshi',sans-serif]";
@@ -57,7 +63,11 @@ function createComponents(variant: "default" | "overview"): Components {
       const src = React.isValidElement(only)
         ? (only.props as { src?: string }).src
         : undefined;
-      if (nodes.length === 1 && typeof src === "string" && /\.mp4($|\?)/i.test(src)) {
+      if (
+        nodes.length === 1 &&
+        typeof src === "string" &&
+        (/\.mp4($|\?)/i.test(src) || src.startsWith("visual:"))
+      ) {
         return <>{only}</>;
       }
 
@@ -147,6 +157,12 @@ function createComponents(variant: "default" | "overview"): Components {
         );
       }
 
+      const visualKey = src?.startsWith("visual:") ? src.slice("visual:".length) : null;
+      const frame = visualKey ? VISUAL_FRAMES[visualKey] : undefined;
+      if (frame) {
+        return <CaseStudyVisualFrame frame={frame} />;
+      }
+
       return (
         <img
           data-case-study-media
@@ -178,19 +194,28 @@ function createComponents(variant: "default" | "overview"): Components {
         {children}
       </code>
     ),
-    blockquote: ({ children }) =>
-      isVisualPlaceholder(children) ? (
-        <aside className="my-6 sm:my-8 rounded-xl sm:rounded-2xl border border-dashed border-[#d1d1ed] bg-[#f0f0f7] p-4 sm:p-6 text-[#6e6d97] [&_p]:mb-2 [&_p:last-child]:mb-0 [&_p]:text-[#6e6d97] [&_p]:text-[13.5px] sm:[&_p]:text-[15px] [&_li]:text-[13px] sm:[&_li]:text-[14px] [&_strong]:text-[#0d0b36]">
-          <span className="inline-block mb-1.5 sm:mb-2 text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-[#6e6d97] font-semibold">
-            Visual · to be added
-          </span>
-          {children}
-        </aside>
-      ) : (
+    blockquote: ({ children }) => {
+      if (hasCaseStudyVisual(children)) {
+        return <CaseStudyVisual>{children}</CaseStudyVisual>;
+      }
+
+      if (isVisualPlaceholder(children)) {
+        return (
+          <aside className="my-6 sm:my-8 rounded-xl sm:rounded-2xl border border-dashed border-[#d1d1ed] bg-[#f0f0f7] p-4 sm:p-6 text-[#6e6d97] [&_p]:mb-2 [&_p:last-child]:mb-0 [&_p]:text-[#6e6d97] [&_p]:text-[13.5px] sm:[&_p]:text-[15px] [&_li]:text-[13px] sm:[&_li]:text-[14px] [&_strong]:text-[#0d0b36]">
+            <span className="inline-block mb-1.5 sm:mb-2 text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-[#6e6d97] font-semibold">
+              Visual · to be added
+            </span>
+            {children}
+          </aside>
+        );
+      }
+
+      return (
         <blockquote className="my-6 sm:my-8 pl-4 sm:pl-6 border-l-2 border-[#0d0b36] font-editorial italic text-[18px] sm:text-[22px] text-[#0d0b36] leading-relaxed [&_p]:text-inherit [&_p]:font-editorial [&_p]:text-[18px] sm:[&_p]:text-[22px]">
           {children}
         </blockquote>
-      ),
+      );
+    },
     table: ({ children }) => (
       <div className="mt-3.5 mb-4 sm:mt-5.5 sm:mb-6 w-full min-w-0">
         <div className="sm:hidden flex items-center justify-end gap-1 text-[11px] font-['Satoshi:Medium',sans-serif] text-[#6e6d97] mb-1.5 px-0.5">
@@ -229,7 +254,13 @@ export function CaseStudyMarkdown({
 
   return (
     <div className={`[&>:first-child]:mt-0 [&>:last-child]:mb-0 ${className ?? ""}`}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={components}
+        urlTransform={(url) =>
+          url.startsWith("visual:") ? url : defaultUrlTransform(url)
+        }
+      >
         {children}
       </ReactMarkdown>
     </div>
