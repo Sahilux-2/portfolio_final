@@ -42,8 +42,6 @@ I started with my own experience and then looked at existing platforms to unders
 
 # 03. User persona
 
-## Neil — an 18-year-old college fresher
-
 Neil is an 18-year-old college fresher in Lucknow. He has chosen Game Development as his career path and wants to buy his first laptop.
 
 He'll mostly use it to run game engines and play light games. He knows what he'll be using the laptop for, but he only has surface-level technical knowledge. For example, he knows what RAM and ROM are, but isn't confident evaluating other laptop specifications.
@@ -83,7 +81,7 @@ After deciding which laptop they want, users still need to search retailer websi
 
 
 
-# 05. Competitive analysis — Why do these problems exist?
+# 05. Competitive analysis
 
 Since I had already experienced the problem myself, I wanted to understand how existing solutions handled these specific difficulties.
 
@@ -152,12 +150,6 @@ I went with three focused screens instead. Each screen asks one main question, a
 
 **My reasoning:** Reducing the number of screens isn't always the best solution. In this case, making each step easier to understand was more important.
 
-> **[VISUAL 05 — QUESTIONNAIRE ITERATIONS]**
->
-> Show the initial single-screen questionnaire concept beside the final three-step flow.
->
-> Callout: *“One focused question per screen, with clear progress.”*
-
 ### Why start with the use case instead of specifications?
 
 I could have started with traditional filters such as processor, RAM, and graphics. But that would require users to understand specifications before they could get useful recommendations.
@@ -178,6 +170,8 @@ I considered showing the entire library upfront, but that would make the first s
 
 **This way, users can pick a common option quickly without losing the flexibility to describe more specific needs.**
 
+![Choose instead of type](visual:quick-picks)
+
 ### Why inline clarification instead of a modal?
 
 A broad answer like “editing” might not give Pickwise enough information to recommend suitable laptops.
@@ -189,6 +183,8 @@ I chose inline clarification because the user can answer the follow-up in the sa
 For example: *“What kind of designing or editing will you be doing?”*
 
 It's not an error state. The user hasn't done anything wrong; Pickwise just needs a little more information.
+
+![Clarify without interrupting](visual:inline-clarification)
 
 ### Why collect preferences separately?
 
@@ -212,11 +208,7 @@ This makes budget selection quicker and helps users understand the likely cost b
 
 It doesn't eliminate every no-match case, but it gives users more information before they continue.
 
-> **[VISUAL 06 — QUICK PICKS AND BUDGET]**
->
-> Show the use-case Quick Picks drawer, inline clarification state, and budget screen with the recommended minimum.
->
-> Add short callouts: **“Choose instead of type”**, **“Clarify without interrupting”**, and **“Set realistic budget expectations.”**
+![Set realistic budget expectations](visual:budget)
 
 ## The recommendations screen
 
@@ -239,8 +231,6 @@ I also designed a no-exact-match state. If no laptop satisfies all the user's re
 - **AI or network request fails:** Preserve user inputs and fall back to deterministic results and predefined copy where possible.
 
 > **[VISUAL 07 — RECOMMENDATIONS AND EDGE CASES]**
->
-> Show the normal listing beside the no-exact-match state. Add callouts to the result cards, Edit inputs, and explanation of the closest alternatives.
 
 ## How it works behind the scenes
 
@@ -279,8 +269,6 @@ Completing the questionnaire doesn't necessarily mean users found the recommenda
 ### Why this metric?
 
 This tells me whether users are completing the starting flow. If multiple users abandon the questionnaire, I'd investigate where they're dropping off and find out why.
-
-These metrics tell me about user behaviour, not whether every recommendation is technically suitable. That would require additional evaluation and user testing.
 
 # 07. User story 2 — Understanding and comparing laptops
 
@@ -328,12 +316,6 @@ Instead of maintaining contextual copy for every possible combination, I only ne
 
 **Global summary = conclusion. Specs = evidence.**
 
-> **[VISUAL 08 — LAPTOP DETAILS ITERATION]**
->
-> Show the earlier concept with human-language copy repeated across specification rows beside the final global fit summary and technical-specification layout.
->
-> Callout: *“One overall conclusion, instead of repeating the interpretation for every spec.”*
-
 ## Comparison — explain what the differences actually mean
 
 The details page explains one laptop. The comparison page helps users understand how multiple laptops differ and which one is better suited to their needs.
@@ -368,7 +350,7 @@ The wording is specific to each type of specification. Not everything follows Lo
 
 **Control:** Prewritten copy mapped through explicit rules is easier to test, inspect, and update. It also reduces the risk of exaggerated or misleading statements.
 
-I chose to use AI where it adds value, interpreting inputs and generating the overall comparison verdict—while using predefined copy for individual specification rows.
+I chose to use AI where it adds value, interpreting inputs and generating the overall comparison verdict, while using predefined copy for individual specification rows.
 
 ### Other design decisions
 
@@ -550,12 +532,6 @@ Firebase Anonymous Authentication provides that identity without a signup or log
 **Anonymous identity for analytics and reviews. Browser storage for the local journey.**
 
 The `trackEvent` function sends allowlisted events to Firestore. Rules restrict client writes, prohibit client reads, and require authentication. Analytics failures don't interrupt the core experience.
-
-> **[VISUAL 13 — FIREBASE CONSOLE]**
->
-> Show Firestore event records and a few key journey events.
->
-> Caption: *“Anonymous analytics records important user actions without requiring account creation.”*
 
 This demonstrates that instrumentation is implemented and recording events. It isn't evidence of improved conversion or validated user outcomes.
 

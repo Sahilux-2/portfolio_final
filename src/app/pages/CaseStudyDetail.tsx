@@ -3,7 +3,11 @@ import { Navigate, useParams } from "react-router";
 import { BreadcrumbHeader } from "../components/case-study/BreadcrumbHeader";
 import { SidebarToc } from "../components/case-study/SidebarToc";
 import { CaseStudyMarkdown } from "../components/case-study/CaseStudyMarkdown";
-import { PICKWISE_CASE_STUDY } from "../data/caseStudies";
+import {
+  desktopTocLabel,
+  isUserStorySection,
+  PICKWISE_CASE_STUDY,
+} from "../data/caseStudies";
 import svgPaths from "../imports/svg-asll6uiju1";
 
 function Socials({ children }: React.PropsWithChildren<{}>) {
@@ -16,47 +20,181 @@ function Socials({ children }: React.PropsWithChildren<{}>) {
   );
 }
 
+/** Page title matches TOC label; em-dash suffix becomes a supporting deck line. */
+function SectionHeading({ label, heading }: { label: string; heading: string }) {
+  const parts = heading.split(" — ");
+  const deck = parts.length > 1 ? parts.slice(1).join(" — ").trim() : null;
+
+  return (
+    <div className="mb-6 sm:mb-8">
+      <h2 className="max-w-[760px] font-editorial text-[26px] sm:text-[34px] md:text-[40px] leading-[1.15] text-[#0d0b36] tracking-tight text-balance">
+        <span className="lg:hidden">{label}</span>
+        <span className="hidden lg:inline">{desktopTocLabel(label)}</span>
+      </h2>
+      {deck && (
+        <p className="mt-2 sm:mt-2.5 max-w-[640px] font-['Satoshi:Medium',sans-serif] text-[15px] sm:text-[17px] leading-snug text-[#6e6d97]">
+          {deck}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function CaseStudyDetail() {
   const { slug } = useParams();
   const caseStudy = PICKWISE_CASE_STUDY;
   const [activeSection, setActiveSection] = useState<string>("overview");
+  /** Which user-story submenu is open — driven by click / settled spy, not mid-scroll. */
+  const [expandedTocId, setExpandedTocId] = useState<string | null>(null);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+  const articleRef = useRef<HTMLElement | null>(null);
+  /** While set, scroll-spy is paused so TOC doesn't flicker during smooth scroll. */
+  const scrollLockRef = useRef<string | null>(null);
+  const scrollUnlockTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const applySpyRef = useRef<() => void>(() => {});
 
-  // Robust scroll spy effect
+  const getScrollTarget = (id: string): HTMLElement | null =>
+    sectionRefs.current[id] ?? document.getElementById(id);
+
+  const scrollOffset = () => (window.innerWidth < 1024 ? 116 : 80);
+
+  const distanceToTarget = (id: string) => {
+    const el = getScrollTarget(id);
+    if (!el) return Infinity;
+    const targetTop =
+      el.getBoundingClientRect().top + window.scrollY - scrollOffset();
+    return Math.abs(window.scrollY - targetTop);
+  };
+
+  const clearScrollLock = () => {
+    scrollLockRef.current = null;
+    if (scrollUnlockTimerRef.current) {
+      clearTimeout(scrollUnlockTimerRef.current);
+      scrollUnlockTimerRef.current = null;
+    }
+  };
+
+  const tocParentId = (id: string): string | null => {
+    for (const item of caseStudy.toc) {
+      if (item.id === id) return item.id;
+      if (item.children?.some((child) => child.id === id)) return item.id;
+    }
+    return null;
+  };
+
+  const expandForId = (id: string) => {
+    const parent = tocParentId(id);
+    const item = parent
+      ? caseStudy.toc.find((entry) => entry.id === parent)
+      : undefined;
+    setExpandedTocId(item?.children?.length ? parent : null);
+  };
+
+  // Robust scroll spy — sections + user-story subsections.
+  // ResizeObserver picks up image layout shifts that don't emit a scroll event.
   useEffect(() => {
-    const handleScroll = () => {
+    const applySpy = () => {
       const scrollY = window.scrollY;
       const isMobile = window.innerWidth < 1024;
       const headerOffset = isMobile ? 120 : 160;
 
-      for (let i = caseStudy.toc.length - 1; i >= 0; i--) {
-        const item = caseStudy.toc[i];
-        const el = sectionRefs.current[item.id];
+      const spyIds = caseStudy.toc.flatMap((item) => [
+        item.id,
+        ...(item.children?.map((c) => c.id) ?? []),
+      ]);
+
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (maxScroll > 0 && scrollY >= maxScroll - 2) {
+        const last = [...spyIds].reverse().find((id) => getScrollTarget(id));
+        if (last) {
+          setActiveSection(last);
+          expandForId(last);
+          return;
+        }
+      }
+
+      for (let i = spyIds.length - 1; i >= 0; i--) {
+        const id = spyIds[i];
+        const el = getScrollTarget(id);
         if (el) {
           const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
           if (scrollY >= top - 30) {
-            setActiveSection(item.id);
+            setActiveSection(id);
+            expandForId(id);
             break;
           }
         }
       }
     };
 
+    applySpyRef.current = applySpy;
+
+    const handleScroll = () => {
+      const lockedId = scrollLockRef.current;
+      if (lockedId) {
+        // Stay locked until we actually reach the clicked target — prevents the
+        // previous story submenu from flashing open mid-scroll.
+        if (distanceToTarget(lockedId) > 12) return;
+        clearScrollLock();
+      }
+      applySpy();
+    };
+
+    const handleScrollEnd = () => {
+      if (!scrollLockRef.current) return;
+      if (distanceToTarget(scrollLockRef.current) > 12) return;
+      clearScrollLock();
+      applySpy();
+    };
+
+    const handleResize = () => {
+      if (scrollLockRef.current) return;
+      applySpy();
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scrollend", handleScrollEnd);
+    window.addEventListener("resize", handleResize);
+    applySpy();
+
+    const article = articleRef.current;
+    const observer =
+      article && typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(handleResize)
+        : null;
+    if (article && observer) observer.observe(article);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scrollend", handleScrollEnd);
+      window.removeEventListener("resize", handleResize);
+      observer?.disconnect();
+      if (scrollUnlockTimerRef.current) clearTimeout(scrollUnlockTimerRef.current);
+    };
   }, [caseStudy.toc]);
 
   const scrollToSection = (id: string) => {
-    const el = sectionRefs.current[id];
-    if (el) {
-      const isMobile = window.innerWidth < 1024;
-      const offset = isMobile ? 116 : 80;
-      const targetTop = el.getBoundingClientRect().top + window.scrollY - offset;
+    const el = getScrollTarget(id);
+    if (!el) return;
 
-      window.scrollTo({ top: targetTop, behavior: "smooth" });
-      setActiveSection(id);
-    }
+    const targetTop =
+      el.getBoundingClientRect().top + window.scrollY - scrollOffset();
+
+    // Pin active + expanded menu to the click immediately; ignore spy until arrived.
+    if (scrollUnlockTimerRef.current) clearTimeout(scrollUnlockTimerRef.current);
+    scrollLockRef.current = id;
+    setActiveSection(id);
+    expandForId(id);
+    window.scrollTo({ top: targetTop, behavior: "smooth" });
+
+    // Safety unlock if scrollend never fires (already at target / unsupported).
+    // Resync the spy so an interrupted scroll doesn't keep the clicked item forever.
+    scrollUnlockTimerRef.current = setTimeout(() => {
+      if (scrollLockRef.current === id) {
+        clearScrollLock();
+        applySpyRef.current();
+      }
+    }, 1600);
   };
 
   if (slug !== caseStudy.slug) {
@@ -75,11 +213,12 @@ export default function CaseStudyDetail() {
           <SidebarToc
             items={caseStudy.toc}
             activeId={activeSection}
+            expandedId={expandedTocId}
             onSelect={scrollToSection}
           />
 
           {/* Right Main Article Stream */}
-          <article className="max-w-[840px] w-full min-w-0">
+          <article ref={articleRef} className="max-w-[840px] w-full min-w-0">
             {caseStudy.sections.map((section, idx) => (
               <section
                 key={section.id}
@@ -87,31 +226,17 @@ export default function CaseStudyDetail() {
                 ref={(el) => (sectionRefs.current[section.id] = el)}
                 className="scroll-mt-32 sm:scroll-mt-28 mb-14 pb-12 sm:mb-24 sm:pb-16 border-b border-black/[0.06] last:border-b-0 last:mb-4 last:pb-0"
               >
-                {section.id !== "overview" && (
-                  <div className="flex items-center gap-2.5 mb-3 sm:mb-4 text-[12px] sm:text-[13px] font-['Satoshi:Bold',sans-serif] uppercase tracking-[0.08em]">
-                    {section.number && (
-                      <span className="text-[#0d0b36] tabular-nums">{section.number}</span>
-                    )}
-                    {section.number && <span aria-hidden className="h-px w-5 bg-[#d1d1ed]" />}
-                    <span className="text-[#6e6d97]">{section.label}</span>
-                  </div>
-                )}
                 {idx === 0 ? (
                   <h2 className="max-w-[760px] font-editorial text-[26px] sm:text-[36px] md:text-[44px] leading-[1.15] text-[#0d0b36] tracking-tight mb-3 text-balance">
                     {caseStudy.subtitle}
                   </h2>
                 ) : (
-                  <h2 className="max-w-[760px] font-editorial text-[26px] sm:text-[34px] md:text-[40px] leading-[1.15] text-[#0d0b36] tracking-tight mb-6 sm:mb-8 text-balance">
-                    {section.heading!.includes(" — ")
-                      ? section.heading!.split(" — ").slice(1).join(" — ")
-                      : section.heading}
-                  </h2>
+                  <SectionHeading label={section.label} heading={section.heading!} />
                 )}
                 <CaseStudyMarkdown
-                  className={
-                    idx === 0
-                      ? "[&>p:first-of-type]:max-w-[700px] [&>p:first-of-type]:text-[16px] sm:[&>p:first-of-type]:text-[18px] [&>p:first-of-type]:text-[#3a3a4d] [&>h3]:mt-10 [&>h3]:mb-3 [&>h3]:font-['Satoshi:Bold',sans-serif] [&>h3]:text-[12px] sm:[&>h3]:text-[13px] [&>h3]:uppercase [&>h3]:tracking-[0.08em] [&>h3]:text-[#6e6d97]"
-                      : undefined
+                  variant={idx === 0 ? "overview" : "default"}
+                  headingIdPrefix={
+                    isUserStorySection(section.label) ? section.id : undefined
                   }
                 >
                   {section.body}
