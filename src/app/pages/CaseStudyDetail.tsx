@@ -47,9 +47,11 @@ export default function CaseStudyDetail() {
   /** Which user-story submenu is open — driven by click / settled spy, not mid-scroll. */
   const [expandedTocId, setExpandedTocId] = useState<string | null>(null);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+  const articleRef = useRef<HTMLElement | null>(null);
   /** While set, scroll-spy is paused so TOC doesn't flicker during smooth scroll. */
   const scrollLockRef = useRef<string | null>(null);
   const scrollUnlockTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const applySpyRef = useRef<() => void>(() => {});
 
   const getScrollTarget = (id: string): HTMLElement | null =>
     sectionRefs.current[id] ?? document.getElementById(id);
@@ -88,7 +90,8 @@ export default function CaseStudyDetail() {
     setExpandedTocId(item?.children?.length ? parent : null);
   };
 
-  // Robust scroll spy — sections + user-story subsections
+  // Robust scroll spy — sections + user-story subsections.
+  // ResizeObserver picks up image layout shifts that don't emit a scroll event.
   useEffect(() => {
     const applySpy = () => {
       const scrollY = window.scrollY;
@@ -99,6 +102,16 @@ export default function CaseStudyDetail() {
         item.id,
         ...(item.children?.map((c) => c.id) ?? []),
       ]);
+
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (maxScroll > 0 && scrollY >= maxScroll - 2) {
+        const last = [...spyIds].reverse().find((id) => getScrollTarget(id));
+        if (last) {
+          setActiveSection(last);
+          expandForId(last);
+          return;
+        }
+      }
 
       for (let i = spyIds.length - 1; i >= 0; i--) {
         const id = spyIds[i];
@@ -113,6 +126,8 @@ export default function CaseStudyDetail() {
         }
       }
     };
+
+    applySpyRef.current = applySpy;
 
     const handleScroll = () => {
       const lockedId = scrollLockRef.current;
@@ -132,12 +147,28 @@ export default function CaseStudyDetail() {
       applySpy();
     };
 
+    const handleResize = () => {
+      if (scrollLockRef.current) return;
+      applySpy();
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("scrollend", handleScrollEnd);
+    window.addEventListener("resize", handleResize);
     applySpy();
+
+    const article = articleRef.current;
+    const observer =
+      article && typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(handleResize)
+        : null;
+    if (article && observer) observer.observe(article);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("scrollend", handleScrollEnd);
+      window.removeEventListener("resize", handleResize);
+      observer?.disconnect();
       if (scrollUnlockTimerRef.current) clearTimeout(scrollUnlockTimerRef.current);
     };
   }, [caseStudy.toc]);
@@ -157,8 +188,12 @@ export default function CaseStudyDetail() {
     window.scrollTo({ top: targetTop, behavior: "smooth" });
 
     // Safety unlock if scrollend never fires (already at target / unsupported).
+    // Resync the spy so an interrupted scroll doesn't keep the clicked item forever.
     scrollUnlockTimerRef.current = setTimeout(() => {
-      if (scrollLockRef.current === id) clearScrollLock();
+      if (scrollLockRef.current === id) {
+        clearScrollLock();
+        applySpyRef.current();
+      }
     }, 1600);
   };
 
@@ -183,7 +218,7 @@ export default function CaseStudyDetail() {
           />
 
           {/* Right Main Article Stream */}
-          <article className="max-w-[840px] w-full min-w-0">
+          <article ref={articleRef} className="max-w-[840px] w-full min-w-0">
             {caseStudy.sections.map((section, idx) => (
               <section
                 key={section.id}

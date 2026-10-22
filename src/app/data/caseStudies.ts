@@ -7,11 +7,20 @@ export interface TocItem {
   children?: TocItem[];
 }
 
-/** Expand shortened mobile TOC labels for desktop headings / sidebar. */
+/** Full section titles for desktop headings and the sidebar. Mobile keeps the short TOC label. */
+const DESKTOP_TOC_LABELS: Record<string, string> = {
+  Persona: "User persona",
+  Problems: "The three problems",
+  Analysis: "Competitive analysis",
+  "Story 1": "User story 1",
+  "Story 2": "User story 2",
+  "Story 3": "User story 3",
+  Analytics: "Analytics implementation",
+  Learnings: "My learnings",
+};
+
 export function desktopTocLabel(label: string): string {
-  if (label === "Analysis") return "Competitive analysis";
-  if (label.startsWith("Story ")) return `User ${label}`;
-  return label;
+  return DESKTOP_TOC_LABELS[label] ?? label;
 }
 
 /** Sub-section nav under User story 1–3 only. Keys become `#section-NN--{key}` anchors. */
@@ -23,6 +32,16 @@ export const USER_STORY_SUBNAV = [
     label: "Solution",
   },
   { key: "why-this-solution", match: /^why this solution/i, label: "Why this solution" },
+  {
+    key: "recommendations",
+    match: /^the recommendations screen\b/i,
+    label: "Recommendations",
+  },
+  {
+    key: "comparison",
+    match: /^comparison\b/i,
+    label: "Comparison",
+  },
   {
     key: "how-it-works",
     match: /^how it works behind the scenes/i,

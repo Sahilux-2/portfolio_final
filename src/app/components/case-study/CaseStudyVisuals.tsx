@@ -5,6 +5,8 @@ type VisualFrame = {
   src: string;
   alt: string;
   callout: string;
+  width: number;
+  height: number;
 };
 
 /** Inline case-study frames referenced from markdown as `visual:<key>`. */
@@ -13,66 +15,92 @@ export const VISUAL_FRAMES: Record<string, VisualFrame> = {
     src: "/case-study/quick-picks-side-drawer.svg",
     alt: "Pickwise use-case screen with Quick Picks side drawer open",
     callout: "Choose instead of type",
+    width: 1440,
+    height: 950,
   },
   "inline-clarification": {
     src: "/case-study/use-case-inline-banner.svg",
     alt: "Pickwise use-case screen with inline clarification banner",
     callout: "Clarify without interrupting",
+    width: 1440,
+    height: 1080,
   },
   budget: {
     src: "/case-study/setting-budget-screen.svg",
     alt: "Pickwise budget screen showing recommended minimum and Quick Picks",
     callout: "Set realistic budget expectations",
+    width: 1440,
+    height: 1080,
   },
   "edge-case-no-match": {
     src: "/case-study/edge-case-no-match.svg",
     alt: "Pickwise recommendations with no exact match, showing closest alternatives",
     callout: "Closest alternatives when nothing matches all inputs",
+    width: 1440,
+    height: 1608,
   },
   "edge-case-over-budget": {
     src: "/case-study/edge-case-over-budget.svg",
     alt: "Pickwise recommendations explaining laptops that exceed the selected budget",
     callout: "Explain the budget mismatch on result cards",
+    width: 1440,
+    height: 1608,
   },
   "edge-case-over-budget-no-preference": {
     src: "/case-study/edge-case-over-budget-no-preference.svg",
     alt: "Pickwise recommendations when budget is exceeded and preferences were skipped",
     callout: "Keep results useful when preferences are skipped",
+    width: 1440,
+    height: 1608,
   },
   "laptops-edit-input": {
     src: "/case-study/laptops-display-edit-input.svg",
     alt: "Pickwise recommendations listing with Edit inputs control",
     callout: "Edit inputs from the results screen",
+    width: 1440,
+    height: 1608,
   },
   "comparison-3": {
     src: "/case-study/comparison-3-table-screen.svg",
     alt: "Pickwise comparison table comparing three laptops with human-language specs and verdict",
     callout: "Compare three laptops side by side",
+    width: 1440,
+    height: 1890,
   },
   "comparison-4": {
     src: "/case-study/comparison-4-table-screen.svg",
     alt: "Pickwise comparison table comparing four laptops with human-language specs and verdict",
     callout: "Compare four laptops side by side",
+    width: 1600,
+    height: 1890,
   },
   "buying-options-iteration": {
     src: "/case-study/buying-options-iteration.svg",
     alt: "Pickwise buying options iteration showing online and offline options in one unified list",
     callout: "One list for online and offline options",
+    width: 1440,
+    height: 1080,
   },
   "no-offline-stores": {
     src: "/case-study/no-offline-stores-nearby.svg",
     alt: "Pickwise buying options when no offline stores are nearby",
     callout: "No offline stores nearby",
+    width: 1440,
+    height: 950,
   },
   "no-online-options": {
     src: "/case-study/no-online-options-available.svg",
     alt: "Pickwise buying options when no online options are available",
     callout: "No online options available",
+    width: 1440,
+    height: 950,
   },
   "buying-options-final": {
     src: "/case-study/buying-options-final.svg",
     alt: "Pickwise final buying options table with online and offline options",
     callout: "Final buying options table",
+    width: 1440,
+    height: 1080,
   },
 };
 
@@ -196,12 +224,30 @@ export function CaseStudyVisualFrame({
   const [expanded, setExpanded] = useState(false);
   const expandedRef = useRef(false);
   const animatingRef = useRef(false);
+  const animTimerRef = useRef<number | null>(null);
+  const forceCloseRef = useRef<() => void>(() => {});
+
+  const clearAnimTimer = () => {
+    if (animTimerRef.current != null) {
+      window.clearTimeout(animTimerRef.current);
+      animTimerRef.current = null;
+    }
+  };
+
+  const forceClose = () => {
+    clearAnimTimer();
+    animatingRef.current = false;
+    expandedRef.current = false;
+    document.body.style.overflow = "";
+    setExpanded(false);
+  };
+  forceCloseRef.current = forceClose;
 
   useEffect(() => {
     if (!expanded) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") collapse();
+      if (e.key === "Escape") forceCloseRef.current();
     };
 
     document.body.style.overflow = "hidden";
@@ -209,13 +255,19 @@ export function CaseStudyVisualFrame({
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKeyDown);
+      clearAnimTimer();
     };
   }, [expanded]);
 
   const collapse = () => {
     const shell = shellRef.current;
     const layer = layerRef.current;
-    if (!shell || !layer || !expandedRef.current || animatingRef.current) return;
+    if (!expandedRef.current) return;
+    // A missing layer, or a transition that never finishes, must not leave the page locked.
+    if (!shell || !layer || animatingRef.current) {
+      forceClose();
+      return;
+    }
 
     const rect = shell.getBoundingClientRect();
     const radius = getComputedStyle(shell).borderRadius;
@@ -231,17 +283,17 @@ export function CaseStudyVisualFrame({
       img.classList.add("object-cover");
     }
 
+    const finish = () => {
+      layer.removeEventListener("transitionend", onEnd);
+      forceClose();
+    };
     const onEnd = (e: TransitionEvent) => {
       if (e.propertyName !== "width") return;
-      layer.removeEventListener("transitionend", onEnd);
-      layer.style.transition = "none";
-      layer.style.opacity = "0";
-
-      expandedRef.current = false;
-      animatingRef.current = false;
-      flushSync(() => setExpanded(false));
+      finish();
     };
     layer.addEventListener("transitionend", onEnd);
+    clearAnimTimer();
+    animTimerRef.current = window.setTimeout(finish, EXPAND_MS + 80);
   };
 
   const expand = () => {
@@ -257,15 +309,29 @@ export function CaseStudyVisualFrame({
 
     const layer = layerRef.current;
     if (!layer) {
-      animatingRef.current = false;
+      forceClose();
       return;
     }
 
     applyRect(layer, rect, radius, "0px", "transparent");
     layer.style.transition = "none";
 
+    const finish = () => {
+      animatingRef.current = false;
+      layer.removeEventListener("transitionend", onEnd);
+      clearAnimTimer();
+    };
+    const onEnd = (e: TransitionEvent) => {
+      if (e.propertyName !== "width") return;
+      finish();
+    };
+    layer.addEventListener("transitionend", onEnd);
+    clearAnimTimer();
+    animTimerRef.current = window.setTimeout(finish, EXPAND_MS + 80);
+
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
+        if (!expandedRef.current || !layer.isConnected) return;
         layer.style.transition = EXPAND_TRANSITION;
         applyRect(
           layer,
@@ -282,13 +348,6 @@ export function CaseStudyVisualFrame({
         }
       });
     });
-
-    const onEnd = (e: TransitionEvent) => {
-      if (e.propertyName !== "width") return;
-      animatingRef.current = false;
-      layer.removeEventListener("transitionend", onEnd);
-    };
-    layer.addEventListener("transitionend", onEnd);
   };
 
   return (
@@ -306,8 +365,11 @@ export function CaseStudyVisualFrame({
         <img
           src={frame.src}
           alt={frame.alt}
+          width={frame.width}
+          height={frame.height}
           className="block w-full h-auto pointer-events-none"
           loading="lazy"
+          decoding="async"
         />
       </button>
 
@@ -330,6 +392,8 @@ export function CaseStudyVisualFrame({
             <img
               src={frame.src}
               alt={frame.alt}
+              width={frame.width}
+              height={frame.height}
               className="size-full object-cover pointer-events-none"
             />
           </button>,
