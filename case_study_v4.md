@@ -48,9 +48,7 @@ He'll mostly use it to run game engines and play light games. He knows what he'l
 
 His budget is ₹75,000–₹85,000.
 
-Neil also has a short attention span, so he prefers concise content and short, straightforward experiences.
-
-**His main need is simple: find a laptop that suits his work without spending hours trying to understand technical specifications.**
+**Neil also has a short attention span, so he prefers concise content and short, straightforward experiences.**
 
 This is a working persona based on my own experience and the target scenario. I used it to guide my decisions, rather than treating it as a persona validated through formal user interviews.
 
