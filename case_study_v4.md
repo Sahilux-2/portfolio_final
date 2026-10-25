@@ -114,9 +114,20 @@ The problem isn't that reviews are useless. It's that users still have to connec
 
 ### Why not just use AI?
 
-A general-purpose AI assistant can explain specifications and recommend laptops. But a conversational answer alone doesn't necessarily give users a consistent way to browse actual products, compare them visually, and find current buying options.
+The persona prefers concise & short content due to low attention span.
 
-I saw an opportunity to bring together structured laptop data, recommendation rules, understandable comparisons, and buying information in one purpose-built experience.
+AI search solves the 3 problems the non-technical user is facing:
+
+- Exploring and finding laptops that fits their needs without the user being required to know about tech specs.
+- Comparing multiple similar laptops the user has picked.
+- Finding logical, online & nearby offline buying options.
+
+**Problems in the simple gemini/google/ai search:**
+
+1. Only text-based layout and lot of content in to consume at once. User has to read through almost all the content in order get value from it. And the target user has low attention span & prefers concise experiences.
+2. AI can hallucinates due to so much information stored in it’s memory. While competitive analysis, the AI recommended mobile phone while I was looking for a laptop. Not something that can happen frequently, but shows AI can hallucinate due to lot of content being stored in it.
+3. Single large prompt would lead to lot of content to read/skim through, even after commanding it to be short & concise. Smaller, dedicated task prompts require constant user attention & effort.
+4. The database of all laptops & buying options may not be up-to-date. During competitive analysis, the AI pulled out latest laptops availability according to user’s needs when the user commanded it to get the latest info.
 
 ### The opportunity
 

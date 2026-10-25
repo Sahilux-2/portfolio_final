@@ -51,6 +51,10 @@ function createComponents(
 ): Components {
   const isOverview = variant === "overview";
 
+  const Strong = ({ children }: { children?: React.ReactNode }) => (
+    <strong className={`${bold} font-bold text-[#0d0b36]`}>{children}</strong>
+  );
+
   return {
     h1: ({ children }) => (
       <h2 className="font-editorial text-[24px] sm:text-[34px] md:text-[44px] leading-[1.2] text-[#0d0b36] tracking-tight mb-4 sm:mb-5">
@@ -187,17 +191,29 @@ function createComponents(
       const onlyProps = React.isValidElement(only)
         ? (only.props as { children?: React.ReactNode })
         : undefined;
-      const isCallout =
+      const isEntirelyBold =
         !isOverview &&
         nodes.length === 1 &&
         React.isValidElement(only) &&
-        only.type === "strong" &&
+        (only.type === "strong" || only.type === Strong) &&
         React.Children.toArray(onlyProps?.children).every((c) => typeof c === "string");
-      if (isCallout) {
+      if (isEntirelyBold) {
+        const boldText = plainText(onlyProps?.children).trim();
+        // Bold label lines ending with ":" — Satoshi Bold; padding-top so gap can't collapse with the list.
+        if (boldText.endsWith(":")) {
+          return (
+            <p
+              className={`${sans} max-w-[720px] text-[15px] sm:text-[16px] leading-[1.8] text-[#0d0b36] pt-4 mb-5 break-words`}
+            >
+              {children}
+            </p>
+          );
+        }
+
         measure.active = false;
         measure.inWhy = false;
         return (
-          <p className={`${sans} my-8 sm:my-10 rounded-r-xl border-l-[3px] border-[#0d0b36] bg-[#f6f6fb] px-4 py-4 sm:px-6 sm:py-5 text-[15.5px] sm:text-[17px] leading-[1.65] text-[#0d0b36] break-words`}>
+          <p className={`${sans} mt-6 mb-8 sm:mb-10 rounded-r-xl border-l-[3px] border-[#0d0b36] bg-[#f6f6fb] px-4 py-4 sm:px-6 sm:py-5 text-[15.5px] sm:text-[17px] leading-[1.65] text-[#0d0b36] break-words`}>
             {children}
           </p>
         );
@@ -215,9 +231,7 @@ function createComponents(
         </p>
       );
     },
-    strong: ({ children }) => (
-      <strong className={`${bold} font-bold text-[#0d0b36]`}>{children}</strong>
-    ),
+    strong: Strong,
     em: ({ children }) => <em className="italic">{children}</em>,
     a: ({ href, children }) => (
       <a
@@ -271,7 +285,7 @@ function createComponents(
       <ul className="max-w-[720px] mt-2 mb-6 flex flex-col gap-2.5 sm:gap-3 pl-0 list-none">{children}</ul>
     ),
     ol: ({ children }) => (
-      <ol className="max-w-[720px] mt-2 mb-6 flex flex-col gap-2.5 sm:gap-3 pl-5 list-decimal text-[15px] sm:text-[16px] text-[#4a4a5c]">
+      <ol className="max-w-[720px] mt-2 mb-6 flex flex-col gap-5 sm:gap-6 pl-5 list-decimal text-[15px] sm:text-[16px] text-[#4a4a5c] [&_li]:pl-1 sm:[&_li]:pl-1.5 [&_li]:before:hidden">
         {children}
       </ol>
     ),
