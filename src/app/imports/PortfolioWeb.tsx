@@ -270,7 +270,7 @@ export default function PortfolioWeb() {
                     </p>
                   </div>
                   <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full">
-                    Helping first-time buyers choose the right laptop and find where to buy it.
+                    Making laptop exploring & buying effortless for first-time buyer with no technical knowledge.
                   </p>
                 </div>
               </Link>
