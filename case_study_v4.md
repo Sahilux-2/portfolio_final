@@ -22,23 +22,23 @@ A short video showing the complete journey, from entering requirements to findin
 
 ---
 
-# 02. Context — Why did I build Pickwise?
+# 02. Context
 
-## Finding the right laptop shouldn't require becoming a laptop expert.
+While looking for a laptop for myself, I had no knowledge about technical specs; I just knew what I wanted to use the laptop for and my budget range.
 
-I faced this problem myself when I was looking for a laptop for demanding software usage.
+Existing platforms like Laptop Arena, Gadgets Now, etc. Had their own set of limitations. Like laptop information in technical specs, I couldn’t understand if this laptop is a good fit for me or not.
 
-I knew what I wanted to do with the laptop, but I didn't know exactly what hardware specifications I needed. I had to research software requirements, understand specifications, compare different laptops, and figure out where to buy the one I eventually chose.
+Doing an AI/google search helped me to a certain extent, but it had an all-text layout which was getting overwhelming for me as I wanted to explore, pick & compare different laptops. It led me to just skim through and not truly understand if this laptop is good for me or not.
 
-There was plenty of information available, but I still had to do the work of connecting everything myself.
+It also would hallucinate sometimes and provide phone recommendations. (Technical edge case, but happened).
 
-This made me think: **Why should someone need to understand laptop specifications just to find a laptop that suits their needs?**
+A single, big prompt led to a lot of text-oriented sections to read through, even after asking it to condense the info.
 
-I wanted to explore a simpler way of doing this, where users could start with what they want to do instead of having to understand laptop hardware first.
+Smaller, dedicated prompts required constant effort to type and continue.
 
-I started with my own experience and then looked at existing platforms to understand how they were solving these problems and where there was room to do things differently.
+Asking people required additional effort to contact, and multiple opinions depending on their context led to a paradox of choice.
 
-
+**I decided to solve these problems by building a dedicated visual interface that takes the reasoning power of AI, removes the cognitive load of chatting, and scales it with reliable, structured laptop data.**
 
 # 03. User persona
 
