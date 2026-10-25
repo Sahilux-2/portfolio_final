@@ -2,7 +2,7 @@
 
 # Making laptop exploring & buying effortless for first-time buyer with no technical knowledge.
 
-Pickwise helps first-time laptop buyers find laptops that suit their software needs, understand the differences between them, and find available online and offline buying options, all in one place.
+Find laptops that suit your software needs, understand the differences between them, and discover available offline and online buying options, without reading through long texts or risking outdated information.
 
 ---
 
