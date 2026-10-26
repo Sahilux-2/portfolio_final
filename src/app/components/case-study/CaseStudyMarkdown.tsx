@@ -213,9 +213,11 @@ function createComponents(
         measure.active = false;
         measure.inWhy = false;
         return (
-          <p className={`${sans} mt-6 mb-8 sm:mb-10 rounded-r-xl border-l-[3px] border-[#0d0b36] bg-[#f6f6fb] px-4 py-4 sm:px-6 sm:py-5 text-[15.5px] sm:text-[17px] leading-[1.65] text-[#0d0b36] break-words`}>
+          <aside
+            className={`${sans} mt-6 mb-8 sm:mb-10 rounded-xl bg-[#f0f0f7] px-5 py-5 sm:px-8 sm:py-7 text-[15px] sm:text-[16.5px] leading-[1.7] text-[#2f2f2f] break-words [&_strong]:font-['Satoshi:Medium',sans-serif] [&_strong]:font-medium [&_strong]:text-[#2f2f2f]`}
+          >
             {children}
-          </p>
+          </aside>
         );
       }
 

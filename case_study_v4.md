@@ -65,11 +65,14 @@ For example, Neil wants to get into game development, but he may not know what p
 
 ## 02. Understanding the differences between laptops
 
-Even after finding a few suitable laptops, users still need to compare their specifications and figure out what those differences actually mean for their work.
+Even after finding some suitable laptops through Gemini/AI search, users still need to compare their specifications and figure out what those differences actually mean for their work.
 
-Two laptops might have similar prices but differ in graphics performance, cooling, battery life, or weight.
+Asking AI to do the comparison and then reading/skimming through all that, and constantly typing to ask it to do stuff requires effort.
+And all the information in a single scrollable screen can create lot of clutter, and laptops exploring, picking & comparing requires back & forth.
 
-**The problem:** Users have to interpret technical specifications to understand which laptop is better suited to their needs.
+Existing platforms provide hardware specs in technical terms, user doesn’t understand what that means.
+
+**Even if users find options via an AI search, comparing them in a text-heavy chat causes cognitive overload. Users need to easily compare differences back-and-forth without interpreting raw technical specifications or reading long paragraphs.**
 
 ## 03. Finding where to buy the chosen laptop
 
