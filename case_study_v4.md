@@ -1,8 +1,8 @@
 # Pickwise
 
-# Making laptop exploring & buying effortless for first-time buyer with no technical knowledge.
+# Effortless laptop picking and buying for non-technical first-time buyers.
 
-Find laptops that suit your software needs, understand the differences between them, and discover available offline and online buying options, without reading through long texts or risking outdated information.
+Find, compare, and buy the right laptop without reading text walls or risking stale data.
 
 ---
 
@@ -24,88 +24,57 @@ A short video showing the complete journey, from entering requirements to findin
 
 # 02. Context
 
-While looking for a laptop for myself, I had no knowledge about technical specs; I just knew what I wanted to use the laptop for and my budget range.
+While looking for high-end laptops myself, I faced certain problems that arrived due to some of my traits and the existing solutions (AI chatbots, Laptop Arena etc) not catering to them.
 
-Existing platforms like Laptop Arena, Gadgets Now, etc. Had their own set of limitations. Like laptop information in technical specs, I couldn’t understand if this laptop is a good fit for me or not.
-
-Doing an AI/google search helped me to a certain extent, but it had an all-text layout which was getting overwhelming for me as I wanted to explore, pick & compare different laptops. It led me to just skim through and not truly understand if this laptop is good for me or not.
-
-It also would hallucinate sometimes and provide phone recommendations. (Technical edge case, but happened).
-
-A single, big prompt led to a lot of text-oriented sections to read through, even after asking it to condense the info.
-
-Smaller, dedicated prompts required constant effort to type and continue.
-
-Asking people required additional effort to contact, and multiple opinions depending on their context led to a paradox of choice.
-
-**I decided to solve these problems by building a dedicated visual interface that takes the reasoning power of AI, removes the cognitive load of chatting, and scales it with reliable, structured laptop data.**
+So decided to solve the problems to the maximum extent I can and build the product end-to-end.
 
 # 03. User persona
 
-Neil is an 18-year-old college fresher in Lucknow. He has chosen Game Development as his career path and wants to buy his first laptop.
+Neil is a college fresher.
 
-He'll mostly use it to run game engines and play light games. He knows what he'll be using the laptop for, but he only has surface-level technical knowledge. For example, he knows what RAM and ROM are, but isn't confident evaluating other laptop specifications.
+Wants to buy his first laptop.
 
-His budget is ₹75,000–₹85,000.
+Will mostly use it for game development and light gaming.
 
-**Neil also has a short attention span, so he prefers concise content and short, straightforward experiences.**
+Has no technical knowledge about laptop specs.
+
+But knows what he wants to use the laptop for.
+
+Has a short attention span and prefers concise content with straightforward experiences.
 
 This is a working persona based on my own experience and the target scenario. I used it to guide my decisions, rather than treating it as a persona validated through formal user interviews.
 
+# 04. User actions/needs
 
-# 04. The three problems
+3 needs/actions of the persona while looking for a laptop, specifically valid for this target user:
 
-## 01. Finding suitable laptops
+1. Explore & pick laptop/s.
+2. Comparing few picked laptops.
+3. Exploring different online & offline buying options to know which one is best for them.
 
-Users know what they want to do with a laptop, but may not know which hardware specifications their software requires.
+# 05. Current scenario
 
-For example, Neil wants to get into game development, but he may not know what processor, graphics card, or RAM configuration he should look for.
+### Existing platforms
 
-**The problem:** Users have to figure out the technical requirements themselves before they can identify suitable laptops.
+Laptop Arena, Gadgets Now, Help me choose (By Microsoft), Smartprix etc.
 
-## 02. Understanding the differences between laptops
+- All display technical specs.
+- Some provide buying options, but that too only online options.
+- Comparison is all in technical terms.
 
-Even after finding some suitable laptops through Gemini/AI search, users still need to compare their specifications and figure out what those differences actually mean for their work.
+### AI chatbots (ChatGPT, Claude, Gemini etc)
 
-Asking AI to do the comparison and then reading/skimming through all that, and constantly typing to ask it to do stuff requires effort.
-And all the information in a single scrollable screen can create lot of clutter, and laptops exploring, picking & comparing requires back & forth.
+- All text layout, requiring to read through all texts. And the target user has low attention span & prefers concise experiences/content.
+- Does web search to fetch laptops, sometimes leads to hallucinations. Displayed phone when asked for laptops (technical edge case).
+- Multiple, dedicated prompts require constant user effort.
+- Single, large prompt leads to content overload with text, especially when comparing laptops. Even after explicitly stating it to be concise.
 
-Existing platforms provide hardware specs in technical terms, user doesn’t understand what that means.
+AI chatbots try to fulfill the 3 user needs to a certain extent. But fail at some crucial points, especially for the target user.
 
-**Even if users find options via an AI search, comparing them in a text-heavy chat causes cognitive overload. Users need to easily compare differences back-and-forth without interpreting raw technical specifications or reading long paragraphs.**
+### Asking other people
 
-## 03. Finding where to buy the chosen laptop
-
-After deciding which laptop they want, users still need to search retailer websites, compare prices, and look for nearby offline stores.
-
-**The problem:** The buying process is spread across multiple sources, so users have to continue researching even after choosing a laptop.
-
-
-
-# 05. Competitive analysis
-
-Since I had already experienced the problem myself, I wanted to understand how existing solutions handled these specific difficulties.
-
-I reviewed six platforms: Laptop Arena, Microsoft's Help Me Choose, Gadgets 360, Gadgets Now, Smartprix, and 91mobiles.
-
-I focused on three things:
-
-- Can users start with what they want to do instead of laptop names or technical specifications?
-- Can users understand the practical differences between laptops without interpreting the specifications themselves?
-- Can users move from choosing a laptop to finding buying options without doing all the research again?
-
-## What I observed
-
-| Platform | Key takeaway from my review |
-|---|---|
-| **Laptop Arena** | Specification-led discovery, extensive comparisons, and a single Amazon buying link in the experience reviewed. |
-| **Microsoft Help Me Choose** | Windows-focused recommendations; the experience I reviewed didn't cover the broader comparison and buying journey I wanted to solve. |
-| **Gadgets 360** | Product-led discovery, lengthy comparisons, and limited buying links in the experience reviewed. |
-| **Gadgets Now** | Visual indicators highlight differences, but users still need to interpret the specifications. |
-| **Smartprix** | Price trends and comparison indicators help, but users still need to understand technical differences. |
-| **91mobiles** | Product-led discovery and extensive comparisons, with limited purchasing support in the experience reviewed. |
-
-These are observations from the platforms I reviewed at the time, not a claim that these platforms fail for every user.
+- Requires additional effort to connect & contact people.
+- Multiple opinions leads to paradox of choice.
 
 ### Why not just watch YouTube reviews?
 
@@ -113,34 +82,9 @@ YouTube reviews are useful, but users still need to find reviewers they trust, w
 
 The problem isn't that reviews are useless. It's that users still have to connect all that information to their own needs.
 
-### Why not just use AI?
+# 06. User story 1
 
-The persona prefers concise & short content due to low attention span.
-
-AI search solves the 3 problems the non-technical user is facing:
-
-- Exploring and finding laptops that fits their needs without the user being required to know about tech specs.
-- Comparing multiple similar laptops the user has picked.
-- Finding logical, online & nearby offline buying options.
-
-**Problems in the simple gemini/google/ai search:**
-
-1. Only text-based layout and lot of content in to consume at once. User has to read through almost all the content in order get value from it. And the target user has low attention span & prefers concise experiences.
-2. AI can hallucinates due to so much information stored in it’s memory. While competitive analysis, the AI recommended mobile phone while I was looking for a laptop. Not something that can happen frequently, but shows AI can hallucinate due to lot of content being stored in it.
-3. Single large prompt would lead to lot of content to read/skim through, even after commanding it to be short & concise. Smaller, dedicated task prompts require constant user attention & effort.
-4. The database of all laptops & buying options may not be up-to-date. During competitive analysis, the AI pulled out latest laptops availability according to user’s needs when the user commanded it to get the latest info.
-
-### The opportunity
-
-**Existing platforms already provide parts of the solution. I wanted Pickwise to connect those tasks around the user's needs, instead of making users do all the interpretation themselves.**
-
-
-
-# 06. User story 1 — Finding suitable laptops
-
-**User story**
-
-*As a first-time buyer who knows what they'll use the laptop for but lacks technical knowledge, I want to easily identify laptops that can run my software so I can shortlist suitable options without understanding specifications.*
+*As a non-technical, first-time buyer with a short attention span, I want to find laptops that fit within my needs without having to learn specs terminology or read through paragraphs of text, so that I can quickly narrow down my choices without experiencing cognitive overload or prompt exhaustion.*
 
 ## The solution
 
@@ -242,7 +186,7 @@ I also designed a no-exact-match state. If no laptop satisfies all the user's re
 - **No preferences selected:** Continue using the use case and budget.
 - **AI or network request fails:** Preserve user inputs and fall back to deterministic results and predefined copy where possible.
 
-> **[VISUAL 07 — RECOMMENDATIONS AND EDGE CASES]**
+> **[VISUAL 07: RECOMMENDATIONS AND EDGE CASES]**
 
 ## How it works behind the scenes
 
@@ -282,13 +226,11 @@ Completing the questionnaire doesn't necessarily mean users found the recommenda
 
 This tells me whether users are completing the starting flow. If multiple users abandon the questionnaire, I'd investigate where they're dropping off and find out why.
 
-# 07. User story 2 — Understanding and comparing laptops
+# 07. User story 2
 
-**User story**
+*As a non-technical, first-time buyer, I want to easily evaluate the real-world differences between my shortlisted laptops, so that I can make a confident decision without needing to memorize technical specifications or manually go through long chat responses & excessive text-layouts.*
 
-*As a first-time buyer, I want to quickly understand the practical differences between two or more similar laptops without understanding technical specifications, so I can confidently choose one.*
-
-## Laptop details — conclusion first, evidence after
+## Laptop details: conclusion first, evidence after
 
 Initially, I explored showing human-language explanations for individual specifications directly on the laptop details page.
 
@@ -328,7 +270,7 @@ Instead of maintaining contextual copy for every possible combination, I only ne
 
 **Global summary = conclusion. Specs = evidence.**
 
-## Comparison — explain what the differences actually mean
+## Comparison: explain what the differences actually mean
 
 The details page explains one laptop. The comparison page helps users understand how multiple laptops differ and which one is better suited to their needs.
 
@@ -372,7 +314,7 @@ I chose to use AI where it adds value, interpreting inputs and generating the ov
 
 **The final verdict comes last.** Users see the comparison before receiving the overall conclusion. If multiple laptops are equally suitable, the verdict can acknowledge that instead of inventing a single winner.
 
-> **[VISUAL 09 — COMPARISON EXPERIENCE]**
+> **[VISUAL 09: COMPARISON EXPERIENCE]**
 >
 > Show the comparison screen prominently. Add callouts to the relevant-first ordering, human-language copy, and final verdict.
 >
@@ -410,15 +352,13 @@ I measure this transition specifically from the comparison screen, excluding use
 
 This metric doesn't prove that users understood the comparison or chose the right laptop. It tells me whether they're progressing to the next step.
 
-# 08. User story 3 — Finding where to buy the laptop
+# 08. User story 3
 
-**User story**
-
-*As a first-time buyer, I want to know the safest and most cost-effective place to purchase my chosen laptop, online or offline, so I can maximize value and confidence.*
+*As a first-time buyer, I want to view accurate online and nearby offline buying options for my final choice, so that I can pick a buying option effortlessly without having to risk clicking hallucinated or outdated links.*
 
 ## The solution
 
-I designed a single buying-options screen that presents available online and nearby offline options together.
+I designed a single buying-options screen that presents available online and nearby offline options together, pulled from search and place data, not AI-invented links.
 
 The screen includes the retailer or store name, price where available, category, and location for offline stores.
 
@@ -436,7 +376,7 @@ I chose one unified list, with a small **Recommended** label when the available 
 
 I also removed the secondary details drawer because it would mostly repeat information available on the retailer or map destination.
 
-> **[VISUAL 10 — BUYING OPTIONS ITERATION]**
+> **[VISUAL 10: BUYING OPTIONS ITERATION]**
 >
 > Show the rejected two-section concept beside the final unified table.
 >
@@ -464,15 +404,15 @@ If no nearby stores are found, online options should remain accessible. If onlin
 
 Replacing the entire screen with an empty state would hide useful information just because one source failed.
 
-> **[VISUAL 11 — LOCATION AND PARTIAL STATES]**
+> **[VISUAL 11: LOCATION AND PARTIAL STATES]**
 >
 > Show the location modal, the buying-options screen with location enabled, and a partial-result state.
 >
-> Callout: *“Ask when the location is useful—not before.”*
+> Callout: *“Ask when the location is useful, not before.”*
 
 ## How it works behind the scenes
 
-### Online buying options — SerpApi
+### Online buying options (SerpApi)
 
 The `/api/buying-options` route uses SerpApi to retrieve Google organic search results for the Indian market.
 
@@ -482,7 +422,7 @@ I implemented in-memory caching, in-flight request deduplication, timeouts, and 
 
 Search-derived results aren't the same as verified live stock or guaranteed prices.
 
-### Offline-store discovery — Geoapify
+### Offline-store discovery (Geoapify)
 
 The `/api/stores` route uses Geoapify for reverse geocoding and nearby-place discovery. It can also geocode a manually entered address.
 
@@ -523,7 +463,7 @@ I wanted to measure whether the recommendation label helps users identify an opt
 
 Only users who are shown a Recommended option should be included. If no option is recommended, that session shouldn't count towards this metric.
 
-> **[VISUAL 12 — FINAL BUYING OPTIONS]**
+> **[VISUAL 12: FINAL BUYING OPTIONS]**
 >
 > Show a readable screenshot of the final buying-options table, with callouts for the recommendation label and location information.
 

@@ -10,8 +10,8 @@ export interface TocItem {
 /** Full section titles for desktop headings and the sidebar. Mobile keeps the short TOC label. */
 const DESKTOP_TOC_LABELS: Record<string, string> = {
   Persona: "User persona",
-  Problems: "The three problems",
-  Analysis: "Competitive analysis",
+  Needs: "User actions/needs",
+  Scenario: "Current scenario",
   "Story 1": "User story 1",
   "Story 2": "User story 2",
   "Story 3": "User story 3",
@@ -116,8 +116,8 @@ function parseCaseStudy(md: string) {
     const base = heading.split(" — ")[0].trim();
     const map: Record<string, string> = {
       "User persona": "Persona",
-      "The three problems": "Problems",
-      "Competitive analysis": "Analysis",
+      "User actions/needs": "Needs",
+      "Current scenario": "Scenario",
       "User story 1": "Story 1",
       "User story 2": "Story 2",
       "User story 3": "Story 3",

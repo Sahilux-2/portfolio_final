@@ -238,68 +238,45 @@ export default function PortfolioWeb() {
 
       {/* Case study wrapper */}
       <div id="case-study" ref={caseStudyRef} className="bg-white content-stretch flex flex-col items-center justify-center w-full px-[24px] sm:px-4 md:px-6 lg:px-6 py-[40px] sm:py-[60px] md:py-[120px] lg:py-[120px]" data-name="Case study wrapper">
-        <div className="content-stretch flex flex-col gap-[16px] sm:gap-[24px] items-center justify-center max-w-[960px] relative shrink-0 w-full" data-name="Content container">
+        <div className="content-stretch flex flex-col gap-[24px] sm:gap-[32px] md:gap-[40px] items-center justify-center max-w-[960px] relative shrink-0 w-full" data-name="Content container">
           <HText text="Case study" />
-          <div className="content-stretch flex flex-col gap-[40px] sm:gap-[30px] md:gap-[40px] lg:gap-[60px] items-start relative shrink-0 w-full" data-name="Case study container">
-            {/* Row 1 */}
-            <div className="content-stretch flex flex-col md:flex-col lg:flex-row gap-[40px] sm:gap-[16px] md:gap-[40px] lg:gap-[24px] items-start relative shrink-0 w-full" data-name="Case study container">
-              {/* Card 1: Pickwise (Featured) */}
-              <Link
-                to="/work/pickwise"
-                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
-                data-name="Card & text container"
-              >
-                <div className="relative h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] rounded-[16px] shrink-0 w-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_20px_35px_-15px_rgba(13,11,54,0.18)] border border-black/[0.04]">
-                  <video
-                    className="absolute inset-0 size-full object-cover object-left-top transition-transform duration-500 group-hover:scale-105"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    poster="/case-study/pickwise-cover.jpg"
-                    aria-label="Pickwise case study cover"
-                  >
-                    <source src="/case-study/pickwise-cover.mp4" type="video/mp4" />
-                  </video>
-                </div>
-                <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
-                  <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
-                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] group-hover:text-[#6e6d97] transition-colors text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
-                      Pickwise
-                    </p>
-                  </div>
-                  <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full line-clamp-2">
-                    Making laptop exploring & buying effortless for first-time buyer with no technical knowledge.
-                  </p>
-                </div>
-              </Link>
 
-              {/* Card 2: Trim (B2C) — no case study yet */}
-              <div
-                className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0"
-                data-name="Card & text container"
+          <Link
+            to="/work/pickwise"
+            className="w-full max-w-[960px] grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-8 items-center group cursor-pointer"
+            data-name="Featured case study"
+          >
+            {/* Left: cover visual */}
+            <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] lg:aspect-auto lg:h-[420px] xl:h-[460px] rounded-[20px] sm:rounded-[24px] overflow-hidden border border-black/[0.04] shadow-[0_16px_40px_-18px_rgba(13,11,54,0.22)] transition-transform duration-300 group-hover:-translate-y-1">
+              <video
+                className="absolute inset-0 size-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster="/case-study/pickwise-cover.jpg"
+                aria-label="Pickwise case study cover"
               >
-                <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full overflow-hidden">
-                  <div className="content-stretch flex items-start justify-between px-[24px] py-[20px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full">
-                    <p className="font-['Satoshi:Medium',sans-serif] leading-[18px] sm:leading-[22px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-nowrap">
-                      WIP
-                    </p>
-                  </div>
-                </div>
-                <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
-                  <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
-                    <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">
-                      Trim (B2C)
-                    </p>
-                  </div>
-                  <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full">
-                    Helping users know if their subscription is worth continuing or not.
-                  </p>
-                </div>
-              </div>
+                <source src="/case-study/pickwise-cover.mp4" type="video/mp4" />
+              </video>
             </div>
-          </div>
+
+            {/* Right: meta + title + description */}
+            <div className="flex flex-col items-start gap-4 sm:gap-5 lg:gap-6 min-w-0">
+              <p className="font-['Satoshi:Medium',sans-serif] text-[11px] sm:text-[12px] uppercase tracking-[0.12em] text-[#6e6d97]">
+                Designed &amp; built end-to-end
+              </p>
+
+              <h3 className="font-editorial text-[28px] sm:text-[34px] md:text-[40px] lg:text-[44px] leading-[1.15] tracking-tight text-[#0d0b36] text-balance group-hover:text-[#6e6d97] transition-colors">
+                Effortless laptop picking and buying for non-technical first-time buyers.
+              </h3>
+
+              <p className="font-['Satoshi:Medium',sans-serif] text-[14px] sm:text-[15px] md:text-[16px] leading-[1.65] text-[#6e6d97] max-w-[420px]">
+                Find, compare, and buy the right laptop without reading text walls or risking stale data.
+              </p>
+            </div>
+          </Link>
         </div>
       </div>
 
