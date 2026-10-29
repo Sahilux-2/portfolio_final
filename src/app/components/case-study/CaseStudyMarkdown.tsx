@@ -235,16 +235,28 @@ function createComponents(
     },
     strong: Strong,
     em: ({ children }) => <em className="italic">{children}</em>,
-    a: ({ href, children }) => (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-1 text-[#0d0b36] font-['Satoshi:Bold',sans-serif] underline decoration-[#6e6d97] decoration-dotted underline-offset-4 hover:text-[#6e6d97] transition-colors break-all"
-      >
-        {children}
-      </a>
-    ),
+    a: ({ href, children }) => {
+      if (href?.startsWith("highlight:")) {
+        return (
+          <strong
+            className={`${bold} font-bold text-[#0d0b36] underline underline-offset-[3px] decoration-[#0d0b36]`}
+          >
+            {children}
+          </strong>
+        );
+      }
+
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-[#0d0b36] font-['Satoshi:Bold',sans-serif] underline decoration-[#6e6d97] decoration-dotted underline-offset-4 hover:text-[#6e6d97] transition-colors break-all"
+        >
+          {children}
+        </a>
+      );
+    },
     img: ({ src, alt }) => {
       if (src && /\.mp4($|\?)/i.test(src)) {
         return (
@@ -384,7 +396,9 @@ export function CaseStudyMarkdown({
         remarkPlugins={[remarkGfm]}
         components={components}
         urlTransform={(url) =>
-          url.startsWith("visual:") ? url : defaultUrlTransform(url)
+          url.startsWith("visual:") || url.startsWith("highlight:")
+            ? url
+            : defaultUrlTransform(url)
         }
       >
         {children}

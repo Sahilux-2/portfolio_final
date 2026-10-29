@@ -18,7 +18,7 @@ Find, compare, and buy the right laptop without reading text walls or risking st
 
 ![Product walkthrough](/pickwise-full-walkthrough.mp4)
 
-A short video showing the complete journey, from entering requirements to finding a suitable laptop and its buying options.
+End-to-end journey: from entering software needs to live buying options.
 
 ---
 
@@ -36,11 +36,11 @@ Wants to buy his first laptop.
 
 Will mostly use it for game development and light gaming.
 
-Has no technical knowledge about laptop specs.
+[Has no technical knowledge about laptop specs.](highlight:)
 
 But knows what he wants to use the laptop for.
 
-Has a short attention span and prefers concise content with straightforward experiences.
+[Has a short attention span and prefers concise content with straightforward experiences.](highlight:)
 
 This is a working persona based on my own experience and the target scenario. I used it to guide my decisions, rather than treating it as a persona validated through formal user interviews.
 
@@ -86,131 +86,68 @@ The problem isn't that reviews are useless. It's that users still have to connec
 
 *As a non-technical, first-time buyer with a short attention span, I want to find laptops that fit within my needs without having to learn specs terminology or read through paragraphs of text, so that I can quickly narrow down my choices without experiencing cognitive overload or prompt exhaustion.*
 
-## The solution
+## The Solution: A 3-Step Questionnaire
 
-I designed a three-step questionnaire:
+I designed a linear flow (Use Case → Preferences → Budget → Recommendations) to collect parameters without forcing users to understand hardware specifications.
 
-**Use case → Preferences → Budget → Recommendations**
+### Friction over Clutter
 
-The idea was to collect what Pickwise needs to recommend laptops without asking users to understand hardware specifications first.
+I split the inputs across three screens with a progress indicator rather than building one long form. For a beginner with a short attention span, reducing cognitive load per screen is more important than reducing the total click count.
 
-## Why this solution?
+## UI & Interaction Decisions
 
-### Why three questionnaire screens instead of one?
+### Use Cases over Specifications
 
-At first, I considered putting all three questions on one screen. This would reduce the number of screens and let users see everything upfront.
-
-But that meant Neil would have to process three different questions and input types at once. Since he's already unfamiliar with laptop buying and prefers short experiences, a long form could make the task feel more demanding than it needs to be.
-
-I went with three focused screens instead. Each screen asks one main question, and a progress indicator tells the user how many steps remain.
-
-**My reasoning:** Reducing the number of screens isn't always the best solution. In this case, making each step easier to understand was more important.
-
-### Why start with the use case instead of specifications?
-
-I could have started with traditional filters such as processor, RAM, and graphics. But that would require users to understand specifications before they could get useful recommendations.
-
-Instead, the first question asks:
-
-**“What will you use the laptop for?”**
-
-Users can type their needs in their own words or select from Quick Picks.
-
-### Why Quick Picks?
-
-I wanted users to complete the task quickly without having to type every requirement or know the exact name of their software.
-
-Quick Picks include common workloads such as Game Development, 3D Modeling, Video Editing, Architecture, and Software Development. Users can also search for other workloads or tools.
-
-I considered showing the entire library upfront, but that would make the first screen overwhelming. Instead, I kept common choices visible and made the wider library searchable.
-
-**This way, users can pick a common option quickly without losing the flexibility to describe more specific needs.**
+The flow asks, “What will you use the laptop for?” Users can type their needs or select "Quick Picks" (e.g., Game Development, Video Editing). To prevent UI overwhelm, common choices remain visible while the wider library is searchable.
 
 ![Choose instead of type](visual:quick-picks)
 
-### Why inline clarification instead of a modal?
+### Inline Clarification (No Modals)
 
-A broad answer like “editing” might not give Pickwise enough information to recommend suitable laptops.
-
-I considered asking for clarification in a modal, but that would interrupt the flow and put another layer over the existing input.
-
-I chose inline clarification because the user can answer the follow-up in the same context.
-
-For example: *“What kind of designing or editing will you be doing?”*
-
-It's not an error state. The user hasn't done anything wrong; Pickwise just needs a little more information.
+If an input is too broad (e.g., "editing"), the UI asks a follow-up question inline. This preserves context without interrupting the flow with a modal or making the user feel like they triggered an error state.
 
 ![Clarify without interrupting](visual:inline-clarification)
 
-### Why collect preferences separately?
+### Separating Preferences
 
-Two laptops can run the same software but provide very different everyday experiences.
+I separated "Needs" (workload) from "Preferences" (portability, cooling) to distinguish hardware requirements from everyday usability.
 
-After understanding the workload, Pickwise asks what matters to the user personally, such as portability, battery life, cooling, or display quality.
+### Smart Budget Expectations
 
-This helps separate what the user **needs** from what they **prefer**.
-
-### Why a recommended minimum budget and a small set of Quick Picks?
-
-I considered having a detailed budget drawer with lots of predefined options. But the user's use case and preferences already influence what budget is realistic.
-
-A large drawer would add unnecessary work and could show arbitrary amounts that don't make sense for their requirements.
-
-Instead, Pickwise provides a recommended minimum budget and a few useful Quick Picks around it.
+Instead of a generic slider, Pickwise calculates a recommended minimum budget based on the user's workload and provides realistic Quick Picks. This actively prevents "no-match" dead ends caused by unrealistic budget expectations.
 
 For example, if the recommended minimum is ₹95,000, the user might see ₹90,000, ₹1 lakh, ₹1.1 lakh, and ₹1.2 lakh.
 
-This makes budget selection quicker and helps users understand the likely cost before proceeding. It also reduces the chances of running into a no-match result simply because the selected budget is unrealistic.
-
-It doesn't eliminate every no-match case, but it gives users more information before they continue.
-
 ![Set realistic budget expectations](visual:budget)
 
-## The recommendations screen
+### Familiar Recommendation Cards
 
-I followed familiar laptop and e-commerce website patterns instead of inventing a new listing layout. Users already understand product cards, prices, and clicking a product to see its details.
-
-I kept the cards simple, showing laptop images, names, and prices. Since users have already entered their requirements, showing lots of technical specifications at this stage would just add more information to process.
+I used standard e-commerce patterns (image, name, price) and intentionally hid dense technical specs at this stage to avoid information overload.
 
 Users can edit their inputs, open laptop details, add laptops to Compare, or save them to Wishlist.
 
-I also designed a no-exact-match state. If no laptop satisfies all the user's requirements, Pickwise shows the closest alternatives instead of making them look like perfect matches.
+## Edge Cases Handled
 
-### Edge cases I designed for
-
-- **Vague use case:** Ask an inline clarification question.
-- **Budget too low:** Explain the recommended minimum and show feasible alternatives where available.
-- **No laptop matches all inputs:** Show a clear no-exact-match state and the closest alternatives.
-- **Laptop matches the use case but exceeds budget:** Explain the budget mismatch.
-- **Laptop matches use case and budget but misses a preference:** Keep the result if it's still relevant, but make the trade-off clear.
+- **Vague use case:** Triggers inline clarification.
+- **Budget too low / No exact match:** Displays a clear "no-exact-match" state and surfaces the closest feasible alternatives.
+- **Matches use case but exceeds budget:** Explicitly labels the budget mismatch on the result card.
+- **Matches use case but misses preference:** Retains the result but visually labels the trade-off.
 - **No preferences selected:** Continue using the use case and budget.
-- **AI or network request fails:** Preserve user inputs and fall back to deterministic results and predefined copy where possible.
+- **AI or network failure:** Preserves user inputs and falls back to deterministic results and predefined copy.
 
 > **[VISUAL 07: RECOMMENDATIONS AND EDGE CASES]**
 
-## How it works behind the scenes
+## Behind the Scenes: Technical Architecture
 
-The recommendation system combines structured data, deterministic rules, and AI-assisted interpretation.
+**Data & Logic:** Built on a curated `laptops.ts` catalogue (~30 items) and `workloads.ts` which maps software to hardware minimums.
 
-**Curated data:** `laptops.ts` contains approximately 30 curated laptops with specifications, tags, and INR prices. `workloads.ts` maps use cases to minimum and recommended hardware requirements.
+**AI Integration:** The `/api/recommend` route uses the Gemini API strictly to normalize free-text inputs into structured tags and generate explanation copy. The actual filtering and ranking engine is deterministic.
 
-**Input normalization:** The `/api/recommend` route can use Gemini to translate free-text inputs into known workload and tag keys.
+**Performance:** Uses caching and Upstash rate limiting to reduce redundant network requests.
 
-**Recommendation engine:** The system filters and ranks laptops using structured requirements. The core evaluation doesn't depend on an AI network request.
+## Technical Trade-offs
 
-**Explanations:** Gemini generates structured recommendation explanations where available. If AI fails, predefined logic and copy can still present results.
-
-**Caching and rate limiting:** Caching and Upstash rate limiting help reduce repeated requests and manage external-service usage.
-
-### Technical trade-offs and limitations
-
-The curated catalogue gives me control over the data and evaluation rules, but it covers only approximately 30 laptops rather than every laptop available in the market.
-
-This means recommendations are limited by the products and information available. If a specification is missing or outdated, Pickwise may not be able to evaluate that laptop reliably.
-
-I also need to distinguish between a confirmed mismatch and information the system doesn't have. Missing data shouldn't automatically mean that a laptop is unsuitable.
-
-I chose a structured catalogue and deterministic rules because they're easier to test and reason about than asking an AI model to judge every laptop without consistent product data.
+The primary limitation is scale: relying on a manually curated catalogue restricts recommendations to approximately 30 laptops rather than the entire market, meaning missing data could exclude a viable machine. However, I deliberately chose structured, deterministic rules over raw LLM evaluation because they are structurally sound, easier to test, and completely eliminate the risk of AI hallucinating hardware specs.
 
 ## How I measure success
 
@@ -230,115 +167,49 @@ This tells me whether users are completing the starting flow. If multiple users 
 
 *As a non-technical, first-time buyer, I want to easily evaluate the real-world differences between my shortlisted laptops, so that I can make a confident decision without needing to memorize technical specifications or manually go through long chat responses & excessive text-layouts.*
 
-## Laptop details: conclusion first, evidence after
+## Laptop Details, Conclusion First, Evidence After
 
-Initially, I explored showing human-language explanations for individual specifications directly on the laptop details page.
+- **Initial idea:** Explain every specification in simple language.
+- **Problem:** Repetitive copy and clutter as explanations vary by workload and preferences.
+- **Solution:** One global fit summary with three states:
+  - Strong match for your needs
+  - Good match with one trade-off
+  - Not the best match for your needs
+- Highlight specific mismatches separately.
 
-For example, instead of showing only the amount of RAM, the page could say that the laptop handles heavy multitasking well.
+**Global summary = Conclusion · Specs = Evidence**
 
-But I realised this wouldn't scale well.
+## Comparison, Explain the Differences
 
-Each specification could have multiple capability levels, and the wording could depend on the user's workload, preferences, and other requirements. Writing and maintaining unique sentences for every combination would create a large, repetitive library. The page could also become cluttered by explaining every single specification.
+- **Layout:** Familiar comparison table for easy side-by-side scanning.
+- **Relevant specs first:** Prioritise specs based on the user's needs.
+- **No forced winner:** Highlight meaningful differences without declaring a winner in every row.
+- **Final verdict:** Summarise the comparison after showing the evidence.
 
-I needed a simpler way to communicate the overall result without repeating the same message throughout the page.
+### Reusable Specification Copy
 
-### Why the global fit summary?
+- **Problem:** Raw specifications require technical knowledge; unique contextual explanations are difficult to maintain.
+- **Solution:** A reusable copy library maps capability levels to predefined, plain-language explanations.
+- **Coverage:** Processor, graphics, RAM, storage, weight and other relevant properties.
+- **Why not AI-generated copy for every spec?** Higher cost, latency and inconsistent wording.
+- **AI's role:** Interpret free-text inputs and generate the overall comparison verdict; predefined copy explains individual specifications.
 
-I moved the overall interpretation into one global fit container with three fixed states:
+## Behind the scenes
 
-- **Strong match for your needs**
-- **Good match with one trade-off**
-- **Not the best match for your needs**
+- `translations.ts` stores reusable specification explanations.
+- Application rules map laptop data to capability levels.
+- Separate rules handle properties such as OS compatibility.
+- Gemini generates the structured comparison verdict.
+- Caching, retries, timeouts and fallback logic improve reliability.
 
-The supporting copy stays consistent, while specific trade-offs or unmet requirements are shown separately.
+## Trade-offs & Limitations
 
-For example, a strong match might say:
+- Explanations depend on accurate laptop data and capability-mapping rules.
+- Copy must avoid exaggerated performance claims.
+- **Global fit summary:** Communicates the overall conclusion.
+- **Specification library:** Explains individual differences.
 
-*“Meets your use case, preferences and budget.”*
-
-A good match could say:
-
-*“Meets most of your needs, with one thing to consider.”*
-
-### Why this is more scalable
-
-The global container gives users one overall conclusion, regardless of how many specifications or preferences they have.
-
-The technical specifications remain available as evidence, and important mismatches can be highlighted individually.
-
-Instead of maintaining contextual copy for every possible combination, I only need a small, consistent set of global states and separate logic for specific trade-offs.
-
-**Global summary = conclusion. Specs = evidence.**
-
-## Comparison: explain what the differences actually mean
-
-The details page explains one laptop. The comparison page helps users understand how multiple laptops differ and which one is better suited to their needs.
-
-I used a table-like layout because it's a familiar way to compare products and makes it easier to scan the same specification across several laptops.
-
-I also followed existing laptop and e-commerce patterns for the details and comparison layouts instead of adding unfamiliar interactions without a clear benefit.
-
-### Why a reusable natural-language specification library?
-
-I considered showing raw technical values in the comparison table, but users would still have to interpret those values themselves, the exact problem Pickwise is trying to solve.
-
-I also explored contextual copy for individual specifications, but creating unique sentences for every combination of user needs and laptop capabilities would be difficult to maintain.
-
-Instead, I created a reusable natural-language specification library that maps normalized capability levels to short, prewritten statements.
-
-| Specification | Low | Medium | High |
-|---|---|---|---|
-| Processor | May struggle with demanding software | Handles demanding software well | Handles demanding software smoothly |
-| Graphics | Better for lighter graphics work | Handles demanding graphics work well | Handles demanding graphics work smoothly |
-| RAM | Better for lighter multitasking | Handles heavy multitasking well | Great for heavy multitasking |
-| Storage | May feel limiting for large apps and files | Enough space for apps and projects | Plenty of space for apps, projects and files |
-| Weight | Heavier for everyday carrying | Reasonably easy to carry | Easy to carry every day |
-
-The wording is specific to each type of specification. Not everything follows Low/Medium/High; OS compatibility, for example, needs a different approach.
-
-### Why not generate every comparison with AI?
-
-**Consistency:** AI might describe the same capability differently across comparisons, making the experience less predictable.
-
-**Cost and quotas:** Generating copy for every specification in every comparison would consume tokens on repetitive sentences. That would exhaust the available model quota faster and increase costs without adding much value to the user.
-
-**Control:** Prewritten copy mapped through explicit rules is easier to test, inspect, and update. It also reduces the risk of exaggerated or misleading statements.
-
-I chose to use AI where it adds value, interpreting inputs and generating the overall comparison verdict, while using predefined copy for individual specification rows.
-
-### Other design decisions
-
-**Relevant specifications appear first.** The order reflects the user's workload and preferences. Other core specifications follow without another section heading that would make the table more complicated.
-
-**No forced winner indicator.** I considered marking the better laptop in every row, but not every difference represents a meaningful advantage. A forced winner could create false precision.
-
-**The final verdict comes last.** Users see the comparison before receiving the overall conclusion. If multiple laptops are equally suitable, the verdict can acknowledge that instead of inventing a single winner.
-
-> **[VISUAL 09: COMPARISON EXPERIENCE]**
->
-> Show the comparison screen prominently. Add callouts to the relevant-first ordering, human-language copy, and final verdict.
->
-> Include a small inset showing how one specification maps to Low, Medium, and High copy.
-
-## How it works behind the scenes
-
-The comparison system uses the same structured laptop catalogue and evaluation approach as the recommendation engine.
-
-- `translations.ts` stores the reusable human-language specification copy.
-- Specification values are evaluated using application rules and available product data.
-- Normalized capability levels map to the relevant phrases.
-- OS compatibility and other non-graded properties use separate rules.
-- Gemini can generate a structured comparison verdict through the comparison API.
-
-The implementation includes timeouts, retries, model fall-through, caching, and fallback behaviour so a failed AI request doesn't necessarily block the experience.
-
-### Technical trade-offs and limitations
-
-The copy library depends on reliable rules for mapping actual specifications to capability levels. A phrase is only as reliable as the underlying data and classification logic.
-
-The wording also needs to stay realistic. It should explain capability without promising that a laptop will never lag, overheat, or struggle.
-
-The global fit summary and comparison library therefore serve different purposes: one gives the overall conclusion, and the other explains individual differences.
+Together, they create a consistent, easy-to-understand comparison experience.
 
 ## How I measure success
 
@@ -356,96 +227,69 @@ This metric doesn't prove that users understood the comparison or chose the righ
 
 *As a first-time buyer, I want to view accurate online and nearby offline buying options for my final choice, so that I can pick a buying option effortlessly without having to risk clicking hallucinated or outdated links.*
 
-## The solution
+## The Solution
 
-I designed a single buying-options screen that presents available online and nearby offline options together, pulled from search and place data, not AI-invented links.
+- **Unified buying-options screen:** Combines online retailers and nearby offline stores in one list.
+- **Information shown:** Retailer/store name, price where available, category, and store location.
+- **Data sources:** Search and place APIs, not AI-generated links.
+- **Familiar table/list layout:** Makes options easy to scan and compare.
 
-The screen includes the retailer or store name, price where available, category, and location for offline stores.
+## Why One Unified List?
 
-I followed a familiar table/list pattern because users need to compare several pieces of information across multiple options. I didn't want to introduce another interaction pattern that would make the data harder to scan.
+- **Rejected:** Separating options into “Better” and “Other” categories.
+- **Reason:** Available data can't reliably rank every option by price, trust, warranty, returns, delivery, distance, and availability.
+- **Chosen:** One list with a Recommended label when supported by available evidence.
+- Removed the secondary details drawer because it largely repeated existing information.
 
-### Why one unified table?
+![One list for online and offline options](visual:buying-options-iteration)
 
-I considered separating results into **“Better options” and “Other options.”**
+## Why Request Location at This Stage?
 
-But this would imply that Pickwise could reliably rank every retailer and store across price, warranty, returns, trustworthiness, delivery, distance, and availability.
+- **Rejected:** Requesting location during onboarding.
+- **Reason:** Users have no immediate need to share their location at that point.
+- **Chosen:** Contextual permission modal when users explore nearby stores.
+- **Why a modal?** Location is a prerequisite for nearby-store discovery, not a separate journey.
+- **Fallback:** Users can deny permission and still view online options.
 
-The available data didn't support that level of certainty.
+## Why Show Partial Results?
 
-I chose one unified list, with a small **Recommended** label when the available evidence supports a recommendation. This avoids suggesting that one option is objectively the safest or cheapest without enough evidence.
+- **No nearby stores** → Keep online options visible.
+- **No online results** → Keep nearby stores visible.
+- **Neither available** → Show an appropriate empty/unavailable state.
+- **Reason:** One failed data source shouldn't hide useful results from another.
 
-I also removed the secondary details drawer because it would mostly repeat information available on the retailer or map destination.
+![No offline stores nearby](visual:no-offline-stores)
 
-> **[VISUAL 10: BUYING OPTIONS ITERATION]**
->
-> Show the rejected two-section concept beside the final unified table.
->
-> Callouts:
->
-> - One list avoids an unreliable overall ranking.
-> - A small Recommended pill keeps the recommendation visible without competing with the content.
-> - Store and retailer names take users to the relevant destination.
+![No online options available](visual:no-online-options)
 
-### Why ask for location at this point?
+## Behind the Scenes
 
-I considered requesting location during onboarding, but that would ask users to share their location before they had a clear reason to do so.
+### Online Options (SerpApi)
 
-Instead, Pickwise asks when the user reaches buying options and wants to see nearby offline stores.
+- `/api/buying-options` retrieves Google organic search results for India.
+- Uses retailer query templates and trusted-host checks.
+- Falls back to retailer search links when reliable direct results aren't available.
+- In-memory caching, request deduplication, timeouts, and retries help manage failures.
 
-At this point, the user has already selected or compared laptops and is exploring where to buy one. I expected the permission request to have a better chance of being accepted because the reason is clear and directly related to what they're trying to do.
+### Offline Stores (Geoapify)
 
-I chose a contextual modal rather than a separate screen because location is a small prerequisite to the buying task, not a separate journey.
+- `/api/stores` handles reverse geocoding, nearby-place discovery, and address geocoding.
+- Uses timeouts and returns an empty/unavailable state when requests fail.
+- Finds nearby stores but doesn't verify laptop-specific inventory.
 
-Users can still continue without location access and view online options.
+## Edge Cases & Trade-offs
 
-### Why keep partial results visible?
+- **Location denied:** Continue with online options.
+- **One source fails:** Preserve results from the other source.
+- **Both sources fail or return no usable options:** Explain that no suitable results were found through currently supported sources.
+- **Price missing or unreliable:** Don't invent or present it as verified.
+- **Inventory uncertainty:** A nearby store's existence doesn't confirm that it stocks the selected laptop.
 
-If no nearby stores are found, online options should remain accessible. If online results are unavailable, nearby stores may still help.
+## Key Limitation
 
-Replacing the entire screen with an empty state would hide useful information just because one source failed.
+Pickwise consolidates available search results and nearby-store information, but cannot guarantee complete retailer coverage, current prices, product availability, or the objectively safest and cheapest option.
 
-> **[VISUAL 11: LOCATION AND PARTIAL STATES]**
->
-> Show the location modal, the buying-options screen with location enabled, and a partial-result state.
->
-> Callout: *“Ask when the location is useful, not before.”*
-
-## How it works behind the scenes
-
-### Online buying options (SerpApi)
-
-The `/api/buying-options` route uses SerpApi to retrieve Google organic search results for the Indian market.
-
-The system uses retailer query templates, checks trusted hosts, and provides retailer-search links if it can't obtain a reliable direct result.
-
-I implemented in-memory caching, in-flight request deduplication, timeouts, and retry handling to reduce repeated requests and handle failures.
-
-Search-derived results aren't the same as verified live stock or guaranteed prices.
-
-### Offline-store discovery (Geoapify)
-
-The `/api/stores` route uses Geoapify for reverse geocoding and nearby-place discovery. It can also geocode a manually entered address.
-
-The requests have timeouts, and the system returns an empty or unavailable state if the service fails.
-
-However, a nearby-store API tells Pickwise that a store exists in an area. It doesn't tell us whether that store has the selected laptop in stock.
-
-I treated these as two separate problems: finding a nearby store and verifying product-specific inventory.
-
-### Edge cases and trade-offs
-
-- **Online options available, no nearby stores:** Keep online results visible and explain that no nearby stores were found.
-- **Nearby stores available, no online match:** Keep offline results visible and explain that the current online search didn't find a matching option.
-- **No usable buying options:** Explain that no verified options were found through currently supported sources, rather than claiming the laptop isn't available anywhere.
-- **Location permission denied:** Continue with online options.
-- **API timeout or failure:** Return an unavailable/empty state and allow recovery.
-- **Missing or unreliable price:** Don't invent a price or imply that a search result guarantees current availability.
-
-The main technical limitation is that the online flow relies primarily on search-derived information, while offline discovery identifies nearby stores but doesn't verify their exact inventory.
-
-This means Pickwise can consolidate available buying options, but it cannot guarantee that every retailer has been checked or that an option is objectively the safest and most cost-effective.
-
-I chose to make these limitations explicit instead of creating a more confident-looking interface without the data to support it.
+**Design principle:** Be transparent about what the data supports rather than presenting uncertain information as fact.
 
 ## How I measure success
 
@@ -462,10 +306,6 @@ An outbound click shows that the user found an option worth exploring. It doesn'
 I wanted to measure whether the recommendation label helps users identify an option worth considering.
 
 Only users who are shown a Recommended option should be included. If no option is recommended, that session shouldn't count towards this metric.
-
-> **[VISUAL 12: FINAL BUYING OPTIONS]**
->
-> Show a readable screenshot of the final buying-options table, with callouts for the recommendation label and location information.
 
 # 09. Analytics implementation
 

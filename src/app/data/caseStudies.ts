@@ -25,13 +25,48 @@ export function desktopTocLabel(label: string): string {
 
 /** Sub-section nav under User story 1–3 only. Keys become `#section-NN--{key}` anchors. */
 export const USER_STORY_SUBNAV = [
-  // Story 1/3 use "The solution"; story 2 leads with laptop details as the solution.
+  // Story 1/3 use "The solution"; story 2 leads with laptop details.
   {
     key: "solution",
-    match: /^(the\s+)?solution\b|^laptop details\b/i,
+    match: /^(the\s+)?solution\b/i,
     label: "Solution",
   },
+  {
+    key: "laptop-details",
+    match: /^laptop details\b/i,
+    label: "Laptop Details",
+  },
+  {
+    key: "ui-decisions",
+    match: /^ui\s*&\s*interaction decisions/i,
+    label: "UI & Interaction Decisions",
+  },
+  {
+    key: "edge-cases",
+    match: /^edge cases handled/i,
+    label: "Edge Cases Handled",
+  },
+  {
+    key: "edge-cases-trade-offs",
+    match: /^edge cases\s*&/i,
+    label: "Edge Cases & Trade-offs",
+  },
   { key: "why-this-solution", match: /^why this solution/i, label: "Why this solution" },
+  {
+    key: "why-unified-list",
+    match: /^why one unified list/i,
+    label: "Why One Unified List?",
+  },
+  {
+    key: "why-location",
+    match: /^why request location/i,
+    label: "Why Request Location?",
+  },
+  {
+    key: "why-partial-results",
+    match: /^why show partial results/i,
+    label: "Why Show Partial Results?",
+  },
   {
     key: "recommendations",
     match: /^the recommendations screen\b/i,
@@ -43,9 +78,29 @@ export const USER_STORY_SUBNAV = [
     label: "Comparison",
   },
   {
+    key: "behind-the-scenes",
+    match: /^behind the scenes/i,
+    label: "Behind the Scenes",
+  },
+  {
     key: "how-it-works",
     match: /^how it works behind the scenes/i,
     label: "How it works",
+  },
+  {
+    key: "technical-trade-offs",
+    match: /^technical trade-offs/i,
+    label: "Technical Trade-offs",
+  },
+  {
+    key: "trade-offs",
+    match: /^trade-offs\s*&/i,
+    label: "Trade-offs & Limitations",
+  },
+  {
+    key: "key-limitation",
+    match: /^key limitation/i,
+    label: "Key Limitation",
   },
   {
     key: "measure-success",
