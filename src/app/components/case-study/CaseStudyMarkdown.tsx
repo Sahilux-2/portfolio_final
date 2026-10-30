@@ -74,7 +74,7 @@ function createComponents(
       const id = subnav ? `${headingIdPrefix}--${subnav.key}` : undefined;
 
       return isOverview ? (
-        <h3 className={`${bold} mt-8 sm:mt-9 mb-2 text-[11px] sm:text-[12px] uppercase tracking-[0.1em] text-[#6e6d97]`}>
+        <h3 className={`${bold} mt-8 sm:mt-9 mb-2 text-[11px] sm:text-[12px] uppercase tracking-[0.5px] text-[#6e6d97]`}>
           {children}
         </h3>
       ) : (

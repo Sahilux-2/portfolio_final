@@ -218,13 +218,15 @@ export default function CaseStudyDetail() {
           />
 
           {/* Right Main Article Stream */}
-          <article ref={articleRef} className="max-w-[840px] w-full min-w-0">
+          <article ref={articleRef} className="w-[720px] max-w-full min-w-0">
             {caseStudy.sections.map((section, idx) => (
               <section
                 key={section.id}
                 id={section.id}
                 ref={(el) => (sectionRefs.current[section.id] = el)}
-                className="scroll-mt-32 sm:scroll-mt-28 mb-14 pb-12 sm:mb-24 sm:pb-16 border-b border-black/[0.06] last:border-b-0 last:mb-4 last:pb-0"
+                className={`scroll-mt-32 sm:scroll-mt-28 mb-14 pb-12 sm:mb-24 sm:pb-16 border-b border-black/[0.06] last:border-b-0 last:mb-4 last:pb-0${
+                  section.label === "Persona" ? " [&_p]:mb-[14px]" : ""
+                }`}
               >
                 {idx === 0 ? (
                   <h2 className="max-w-[760px] font-editorial text-[26px] sm:text-[36px] md:text-[44px] leading-[1.15] text-[#0d0b36] tracking-tight mb-3 text-balance">

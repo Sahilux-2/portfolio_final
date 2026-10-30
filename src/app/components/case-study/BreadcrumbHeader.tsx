@@ -11,10 +11,10 @@ export function BreadcrumbHeader({ title }: { title: string }) {
           <Link
             to="/#case-study"
             className="group flex items-center gap-1.5 py-2 -my-2 px-1 -mx-1 text-[#6e6d97] hover:text-[#0d0b36] font-['Satoshi:Medium',sans-serif] transition-colors shrink-0 active:opacity-70"
-            aria-label="Back to Work"
+            aria-label="Back to Case study"
           >
             <ArrowLeft className="size-4 sm:size-3.5 transition-transform group-hover:-translate-x-0.5" />
-            <span>Work</span>
+            <span>Case study</span>
           </Link>
           <span className="text-[#6e6d97] font-light select-none">/</span>
           <span className="text-[#0d0b36] font-['Satoshi:Bold',sans-serif] truncate max-w-[200px] sm:max-w-none">
