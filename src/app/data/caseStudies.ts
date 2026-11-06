@@ -9,12 +9,16 @@ export interface TocItem {
 
 /** Full section titles for desktop headings and the sidebar. Mobile keeps the short TOC label. */
 const DESKTOP_TOC_LABELS: Record<string, string> = {
-  Persona: "User persona",
-  Needs: "User actions/needs",
+  Intro: "Introduction",
+  "Target users": "Who are the target users?",
+  Actions: "User Actions",
   Scenario: "Current scenario",
-  "Story 1": "User story 1",
-  "Story 2": "User story 2",
-  "Story 3": "User story 3",
+  Insights: "Key insights",
+  "Pain points": "Addressing user pain points",
+  Pickwise: "Introducing Pickwise",
+  "Solution 1": "Solution 1: Finding suitable laptops",
+  "Solution 2": "Solution 2: Comparing laptops",
+  "Solution 3": "Solution 3: Finding buying options",
   Analytics: "Analytics implementation",
   Learnings: "My learnings",
 };
@@ -114,8 +118,13 @@ export function matchUserStorySubnav(heading: string) {
   return USER_STORY_SUBNAV.find((entry) => entry.match.test(text)) ?? null;
 }
 
+export function isSolutionSection(label: string): boolean {
+  return /^Solution [123]$/.test(label);
+}
+
+/** @deprecated Use isSolutionSection */
 export function isUserStorySection(label: string): boolean {
-  return /^Story [123]$/.test(label);
+  return isSolutionSection(label);
 }
 
 export interface CaseStudySection {
@@ -169,13 +178,17 @@ function parseCaseStudy(md: string) {
   /** Short TOC / section titles — keep mobile nav scannable */
   const tocLabel = (heading: string) => {
     const base = heading.split(" — ")[0].trim();
+    const solution = base.match(/^Solution ([123])\b/i);
+    if (solution) return `Solution ${solution[1]}`;
+
     const map: Record<string, string> = {
-      "User persona": "Persona",
-      "User actions/needs": "Needs",
+      Introduction: "Intro",
+      "Who are the target users?": "Target users",
+      "User Actions": "Actions",
       "Current scenario": "Scenario",
-      "User story 1": "Story 1",
-      "User story 2": "Story 2",
-      "User story 3": "Story 3",
+      "Key insights": "Insights",
+      "Addressing user pain points": "Pain points",
+      "Introducing Pickwise": "Pickwise",
       "Analytics implementation": "Analytics",
       "My learnings": "Learnings",
     };
@@ -209,7 +222,7 @@ function parseCaseStudy(md: string) {
 }
 
 function userStorySubnav(section: CaseStudySection): TocItem[] | undefined {
-  if (!isUserStorySection(section.label)) return undefined;
+  if (!isSolutionSection(section.label)) return undefined;
 
   const seen = new Set<string>();
   const children: TocItem[] = [];

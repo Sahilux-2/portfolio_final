@@ -14,6 +14,8 @@ Find, compare, and buy the right laptop without reading text walls or risking st
 
 **[View the source code](https://github.com/Sahilux-2/pickwise)**
 
+![Pickwise hero](/case-study/pickwise-hero.svg)
+
 ## Product walkthrough
 
 ![Product walkthrough](/pickwise-full-walkthrough.mp4)
@@ -22,35 +24,29 @@ End-to-end journey: from entering software needs to live buying options.
 
 ---
 
-# 02. Context
+# 02. Introduction
 
 While looking for high-end laptops myself, I faced certain problems that arrived due to some of my traits and the existing solutions (AI chatbots, Laptop Arena etc) not catering to them.
 
 So decided to solve the problems to the maximum extent I can and build the product end-to-end.
 
-# 03. User persona
+# 03. Who are the target users?
 
-Neil is a college fresher.
+They are first-time laptop buyers who know what they want to use a laptop for but [don't have the technical knowledge of laptops to know which specification would work for their usage.](highlight:)
 
-Wants to buy his first laptop.
+Will be using the laptop for heavy software usage.
 
-Will mostly use it for game development and light gaming.
+[Have short attention span and prefers concise content with straightforward experiences.](highlight:)
 
-[Has no technical knowledge about laptop specs.](highlight:)
+# 04. User Actions
 
-But knows what he wants to use the laptop for.
+Things the target users do when they are in the process of buying a laptop:
 
-[Has a short attention span and prefers concise content with straightforward experiences.](highlight:)
+Search and explore different laptops. And eventually pick few that fit within user's needs.
 
-This is a working persona based on my own experience and the target scenario. I used it to guide my decisions, rather than treating it as a persona validated through formal user interviews.
+Compare the picked laptops to deeply understand each one's capabilities and try to find out which is better for them.
 
-# 04. User actions/needs
-
-3 needs/actions of the persona while looking for a laptop, specifically valid for this target user:
-
-1. Explore & pick laptop/s.
-2. Comparing few picked laptops.
-3. Exploring different online & offline buying options to know which one is best for them.
+Explore different buying options of the picked laptop (both online & offline). And choose the most reliable option.
 
 # 05. Current scenario
 
@@ -82,9 +78,41 @@ YouTube reviews are useful, but users still need to find reviewers they trust, w
 
 The problem isn't that reviews are useless. It's that users still have to connect all that information to their own needs.
 
-# 06. User story 1
+# 06. Key insights
 
-*As a non-technical, first-time buyer with a short attention span, I want to find laptops that fit within my needs without having to learn specs terminology or read through paragraphs of text, so that I can quickly narrow down my choices without experiencing cognitive overload or prompt exhaustion.*
+Users know their software needs but not specs jargon. While an AI chatbot can translate these needs, it outputs dense text paragraphs that cause cognitive overload and prompt exhaustion for a user with a short attention span.
+
+Users need to evaluate differences between shortlisted laptops, but traditional platforms only show raw technical specs. Using an AI chatbot for this creates a cluttered, linear chat log that forces tedious back-and-forth scrolling to manually cross-reference details, especially after a few conversations.
+
+They want to seamlessly find accurate online and nearby offline buying options for their final choice. Relying on an AI chatbot introduces the risk of hallucinated links, forcing the user to manually verify availability on other websites anyway.
+
+Solely text-based layout, lot of back & forth scrolling, continuous user effort of prompting and AI hallucinations, these are prevailing problems in all 3 actions.
+
+# 07. Addressing user pain points
+
+# 08. Introducing Pickwise
+
+A web app that helps first-time buyers who don't have any technical knowledge, explore & find laptops with their buying options effortlessly.
+
+Pickwise allows target users to:
+
+- Input their needs in small chunks, get relevant laptop listings.
+- Understand about laptop's capabilities in human-language.
+- Compare multiple laptops.
+- Get to see all possible buying options of the picked laptop.
+- And small features like Quick Picks, Global Match container, Final Verdict Container, make these features more easy & efficient to use.
+
+## Why is this useful?
+
+**Maximum value in minimum user effort:**
+User gets straightforward & concise tasks to do with ways to make that even quicker. And gets what they want effortlessly.
+
+**No wrong info due to hallucinations:**
+A dedicated library of laptops to analyze from, rather than scraping the entire internet, reliable & correct listing & info of laptops.
+
+# 09. Solution 1: Finding suitable laptops
+
+*Non-technical first-time buyers with a short attention span struggle to find laptops that fit their needs without learning specs terminology or reading through paragraphs of text, which leads to cognitive overload and prompt exhaustion.*
 
 ## The Solution: A 3-Step Questionnaire
 
@@ -163,9 +191,9 @@ Completing the questionnaire doesn't necessarily mean users found the recommenda
 
 This tells me whether users are completing the starting flow. If multiple users abandon the questionnaire, I'd investigate where they're dropping off and find out why.
 
-# 07. User story 2
+# 10. Solution 2: Comparing laptops
 
-*As a non-technical, first-time buyer, I want to easily evaluate the real-world differences between my shortlisted laptops, so that I can make a confident decision without needing to memorize technical specifications or manually go through long chat responses & excessive text-layouts.*
+*Non-technical first-time buyers struggle to evaluate the real-world differences between shortlisted laptops without memorizing technical specifications or manually going through long chat responses and excessive text layouts.*
 
 ## Laptop Details, Conclusion First, Evidence After
 
@@ -223,9 +251,9 @@ I measure this transition specifically from the comparison screen, excluding use
 
 This metric doesn't prove that users understood the comparison or chose the right laptop. It tells me whether they're progressing to the next step.
 
-# 08. User story 3
+# 11. Solution 3: Finding buying options
 
-*As a first-time buyer, I want to view accurate online and nearby offline buying options for my final choice, so that I can pick a buying option effortlessly without having to risk clicking hallucinated or outdated links.*
+*First-time buyers need accurate online and nearby offline buying options for their final choice, without risking hallucinated or outdated links.*
 
 ## The Solution
 
@@ -307,7 +335,7 @@ I wanted to measure whether the recommendation label helps users identify an opt
 
 Only users who are shown a Recommended option should be included. If no option is recommended, that session shouldn't count towards this metric.
 
-# 09. Analytics implementation
+# 12. Analytics implementation
 
 ## Measuring the journey without forcing account creation
 
@@ -327,7 +355,7 @@ The `trackEvent` function sends allowlisted events to Firestore. Rules restrict 
 
 This demonstrates that instrumentation is implemented and recording events. It isn't evidence of improved conversion or validated user outcomes.
 
-# 10. My learnings
+# 13. My learnings
 
 ## Understanding the WHY matters more than adding more information.
 

@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
 import { Play, Pause } from "lucide-react";
 import svgPaths from "./svg-asll6uiju1";
 import heroSvg from "../../../Hero container.svg";
@@ -241,8 +240,10 @@ export default function PortfolioWeb() {
         <div className="content-stretch flex flex-col gap-[24px] sm:gap-[32px] md:gap-[40px] items-center justify-center max-w-[960px] relative shrink-0 w-full" data-name="Content container">
           <HText text="Case study" />
 
-          <Link
-            to="/work/pickwise"
+          <a
+            href="https://medium.com/@sahilsin04/effortless-laptop-picking-and-buying-for-non-technical-first-time-buyers-8bc4a5895c88"
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-full max-w-[960px] grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-8 items-center group cursor-pointer"
             data-name="Featured case study"
           >
@@ -276,7 +277,7 @@ export default function PortfolioWeb() {
                 Find, compare, and buy the right laptop without reading text walls or risking stale data.
               </p>
             </div>
-          </Link>
+          </a>
         </div>
       </div>
 

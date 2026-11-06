@@ -5,9 +5,10 @@ import { SidebarToc } from "../components/case-study/SidebarToc";
 import { CaseStudyMarkdown } from "../components/case-study/CaseStudyMarkdown";
 import {
   desktopTocLabel,
-  isUserStorySection,
+  isSolutionSection,
   PICKWISE_CASE_STUDY,
 } from "../data/caseStudies";
+import { PainPointCards } from "../components/case-study/PainPointCards";
 import svgPaths from "../imports/svg-asll6uiju1";
 
 function Socials({ children }: React.PropsWithChildren<{}>) {
@@ -225,7 +226,7 @@ export default function CaseStudyDetail() {
                 id={section.id}
                 ref={(el) => (sectionRefs.current[section.id] = el)}
                 className={`scroll-mt-32 sm:scroll-mt-28 mb-14 pb-12 sm:mb-24 sm:pb-16 border-b border-black/[0.06] last:border-b-0 last:mb-4 last:pb-0${
-                  section.label === "Persona" ? " [&_p]:mb-[14px]" : ""
+                  section.label === "Target users" ? " [&_p]:mb-[14px]" : ""
                 }`}
               >
                 {idx === 0 ? (
@@ -235,14 +236,18 @@ export default function CaseStudyDetail() {
                 ) : (
                   <SectionHeading label={section.label} heading={section.heading!} />
                 )}
-                <CaseStudyMarkdown
-                  variant={idx === 0 ? "overview" : "default"}
-                  headingIdPrefix={
-                    isUserStorySection(section.label) ? section.id : undefined
-                  }
-                >
-                  {section.body}
-                </CaseStudyMarkdown>
+                {section.label === "Pain points" ? (
+                  <PainPointCards />
+                ) : (
+                  <CaseStudyMarkdown
+                    variant={idx === 0 ? "overview" : "default"}
+                    headingIdPrefix={
+                      isSolutionSection(section.label) ? section.id : undefined
+                    }
+                  >
+                    {section.body}
+                  </CaseStudyMarkdown>
+                )}
 
               </section>
             ))}
