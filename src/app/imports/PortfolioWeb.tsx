@@ -140,7 +140,7 @@ export default function PortfolioWeb() {
                 }}
                 className="font-['Satoshi:Medium',sans-serif] text-[24px] text-[#0d0b36] tracking-[-0.24px] cursor-pointer hover:text-[#6e6d97] transition-colors"
               >
-                AI builds
+                Playground
               </p>
               <p
                 onClick={() => {
@@ -175,7 +175,7 @@ export default function PortfolioWeb() {
                     <div className="bg-gradient-to-b content-stretch flex from-[#404040] gap-[20px] items-center justify-center overflow-hidden px-[20px] py-[16px] relative rounded-[16px] shadow-[0px_34px_34px_-12px_rgba(0,0,0,0.2),0px_12px_12px_-2px_rgba(0,0,0,0.16),0px_4px_4px_0px_rgba(0,0,0,0.25),inset_0px_-1px_2px_0px_rgba(0,0,0,0.99),inset_0px_1px_0.7px_0px_rgba(255,255,255,0.26)] shrink-0 to-[#292929] w-full" data-name="Inner">
                       <p onClick={() => scrollToSection(heroRef)} className="font-['Satoshi:Medium',sans-serif] leading-[22px] not-italic relative shrink-0 text-[16px] text-center text-nowrap text-white tracking-[-0.16px] cursor-pointer hover:text-white/80 transition-colors">Home</p>
                       <p onClick={() => scrollToSection(caseStudyRef)} className="font-['Satoshi:Medium',sans-serif] leading-[22px] not-italic relative shrink-0 text-[16px] text-center text-nowrap text-white tracking-[-0.16px] cursor-pointer hover:text-white/80 transition-colors">Case study</p>
-                      <p onClick={() => scrollToSection(aiBuildsRef)} className="font-['Satoshi:Medium',sans-serif] leading-[22px] not-italic relative shrink-0 text-[16px] text-center text-nowrap text-white tracking-[-0.16px] cursor-pointer hover:text-white/80 transition-colors">AI builds</p>
+                      <p onClick={() => scrollToSection(aiBuildsRef)} className="font-['Satoshi:Medium',sans-serif] leading-[22px] not-italic relative shrink-0 text-[16px] text-center text-nowrap text-white tracking-[-0.16px] cursor-pointer hover:text-white/80 transition-colors">Playground</p>
                       <p onClick={() => scrollToSection(footerRef)} className="font-['Satoshi:Medium',sans-serif] leading-[22px] not-italic relative shrink-0 text-[16px] text-center text-nowrap text-white tracking-[-0.16px] cursor-pointer hover:text-white/80 transition-colors">Contact</p>
                       <div className="w-px h-[16px] bg-white/20 self-center shrink-0" />
                       <button
@@ -278,7 +278,7 @@ export default function PortfolioWeb() {
       {/* AI builds wrapper */}
       <div ref={aiBuildsRef} className="bg-white content-stretch flex flex-col items-center justify-center w-full px-[24px] sm:px-4 md:px-6 lg:px-6 py-[40px] sm:py-[60px] md:py-[120px] lg:py-[120px]" data-name="AI builds wrapper">
         <div className="content-stretch flex flex-col gap-[16px] sm:gap-[24px] items-center justify-center max-w-[830px] relative shrink-0 w-full" data-name="Content container">
-          <HText text="AI builds" />
+          <HText text="Playground" />
           <div className="content-stretch flex flex-col md:flex-col lg:flex-row gap-[40px] sm:gap-[30px] md:gap-[40px] lg:gap-[24px] items-start relative shrink-0 w-full" data-name="AI builds container">
             <a
               href="https://pokedex-rose-two-70.vercel.app/"
@@ -299,19 +299,25 @@ export default function PortfolioWeb() {
                 </p>
               </div>
             </a>
-            <div className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0" data-name="Card & text container">
-              <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full" data-name="Card">
-                <div className="content-stretch flex items-start px-[24px] py-[20px] sm:p-[16px] md:p-[24px] lg:p-[24px] relative size-full">
-                  <p className="font-['Satoshi:Medium',sans-serif] leading-[18px] sm:leading-[22px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.16px] text-nowrap">WIP</p>
-                </div>
-              </div>
+            <a
+              href="https://simplest-todo-webapp.vercel.app/home"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full lg:basis-0 content-stretch flex flex-col gap-[12px] sm:gap-[16px] md:gap-[24px] lg:gap-[24px] lg:grow items-start min-h-px min-w-px relative shrink-0 group cursor-pointer"
+              data-name="Card & text container"
+            >
+              <div className="bg-[#e2e2ed] h-[300px] sm:h-[300px] md:h-[400px] lg:h-[468px] relative rounded-[16px] shrink-0 w-full transition-transform duration-300 group-hover:-translate-y-0.5" data-name="Card" />
               <div className="content-stretch flex flex-col gap-0 sm:gap-[4px] items-start relative shrink-0 w-full" data-name="Text container">
                 <div className="content-stretch flex items-center relative shrink-0 w-full" data-name="H2">
-                  <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em]">AI powered Calories tracker</p>
+                  <p className="basis-0 font-['Satoshi:Bold',sans-serif] grow leading-[22px] sm:leading-[24px] md:leading-[32px] lg:leading-[30px] min-h-px min-w-px not-italic relative shrink-0 text-[#0d0b36] text-[16px] sm:text-[18px] md:text-[24px] lg:text-[24px] tracking-[-0.16px] sm:tracking-[-0.01em] md:tracking-[-0.24px] lg:tracking-[-0.01em] group-hover:text-[#6e6d97] transition-colors">
+                    Tick
+                  </p>
                 </div>
-                <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full">{`Track calories by uploading or clicking picture of the dish. Made with Gemini & Figma make.`}</p>
+                <p className="font-['Satoshi:Medium',sans-serif] sm:font-['Satoshi:Bold',sans-serif] leading-[18px] sm:leading-[20px] md:leading-[22px] lg:leading-[22px] max-w-[280px] sm:max-w-[340px] not-italic relative shrink-0 text-[#6e6d97] text-[12px] sm:text-[14px] md:text-[16px] lg:text-[16px] tracking-[-0.12px] sm:tracking-[-0.01em] md:tracking-[-0.16px] lg:tracking-[-0.01em] w-full">
+                  A simple to-do list web app. Designed in Figma, developed with Cursor.
+                </p>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
